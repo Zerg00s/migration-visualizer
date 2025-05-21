@@ -1,0 +1,100 @@
+/* Loading indicator and error message styles */
+.loading-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(30, 136, 229, 0.2);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  background-color: #ffebee;
+  color: #e53935;
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  border-left: 4px solid #e53935;
+  display: none;
+}
+
+/* Migrated status indicator */
+.migrated-indicator {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--success-color);
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px var(--success-color);
+  animation: pulseIndicator 2s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes pulseIndicator {
+  0% { transform: scale(1); box-shadow: 0 0 0 1px var(--success-color); }
+  50% { transform: scale(1.1); box-shadow: 0 0 5px var(--success-color); }
+  100% { transform: scale(1); box-shadow: 0 0 0 1px var(--success-color); }
+}
+
+/* Object info panel enhancements */
+.object-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.meta-tag {
+  background-color: var(--bg-light);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-tag.migrated {
+  background-color: rgba(67, 160, 71, 0.1);
+  color: var(--success-color);
+}
+
+.meta-tag.not-migrated {
+  background-color: rgba(255, 179, 0, 0.1);
+  color: var(--warning-color);
+}
+
+.meta-tag.disabled {
+  background-color: rgba(229, 57, 53, 0.1);
+  color: var(--danger-color);
+}
+
+.meta-tag.readonly {
+  background-color: rgba(126, 87, 194, 0.1);
+  color: var(--secondary-color);
+}

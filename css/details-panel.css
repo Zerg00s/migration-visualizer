@@ -1,0 +1,77 @@
+/* Object detail panel styles */
+.object-details-section {
+  margin-top: 1.5rem;
+  background-color: var(--bg-light);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+}
+
+.object-details-section h5 {
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+  font-size: 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+}
+
+.details-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.details-row {
+  display: flex;
+  line-height: 1.4;
+}
+
+.details-label {
+  width: 120px;
+  font-weight: 500;
+  color: #616161;
+}
+
+.details-value {
+  flex: 1;
+}
+
+/* Connection visualization styles */
+.connection-line {
+  transition: opacity 0.2s ease, stroke-width 0.2s ease;
+}
+
+.connection-line.highlighted {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { 
+    stroke-width: 2;
+    opacity: 0.8;
+  }
+  50% { 
+    stroke-width: 3;
+    opacity: 1;
+  }
+  100% { 
+    stroke-width: 2;
+    opacity: 0.8;
+  }
+}
+
+/* Object type color coding in details */
+.details-value .object-type {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+}
+
+.details-value .object-type.user { background-color: rgba(100, 181, 246, 0.2); color: var(--user-color); }
+.details-value .object-type.group { background-color: rgba(126, 87, 194, 0.2); color: var(--group-color); }
+.details-value .object-type.sharepoint { background-color: rgba(76, 175, 80, 0.2); color: var(--sharepoint-color); }
+.details-value .object-type.teams { background-color: rgba(103, 58, 183, 0.2); color: var(--teams-color); }
+.details-value .object-type.onedrive { background-color: rgba(33, 150, 243, 0.2); color: var(--onedrive-color); }
+.details-value .object-type.m365-group { background-color: rgba(255, 152, 0, 0.2); color: var(--m365-color); }
+.details-value .object-type.mailbox { background-color: rgba(233, 30, 99, 0.2); color: var(--mailbox-color); }
