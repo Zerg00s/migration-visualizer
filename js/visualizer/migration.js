@@ -41,8 +41,10 @@ export function migrateSelectedObjects(
     }
   });
   
-  // Migrate each type
+  // Migrate each type with staggered animation
   let migratedCount = 0;
+  let migrationDelay = 0;
+  const staggerDelay = 300; // ms between each object migration
   
   Object.keys(objectsByType).forEach(type => {
     const ids = objectsByType[type];
@@ -54,72 +56,86 @@ export function migrateSelectedObjects(
         // Get the source element
         const sourceElement = document.querySelector(`#source-${id}`);
         
-        // Create the destination object
-        const destObj = copyObjectToDestination(
-          id, 
-          type, 
-          objects, 
-          connections, 
-          addDestinationConnections,
-          updateConnections
-        );
-        
-        if (destObj) {
-          migratedCount++;
+        // Use setTimeout to stagger the migrations
+        setTimeout(() => {
+          // Create the destination object
+          const destObj = copyObjectToDestination(
+            id, 
+            type, 
+            objects, 
+            connections, 
+            addDestinationConnections,
+            updateConnections
+          );
           
-          // Mark the source object as migrated
-          if (sourceElement) {
-            sourceElement.classList.add('migrated-source');
+          if (destObj) {
+            migratedCount++;
             
-            // Add the migrated indicator to the source element
-            const migratedIndicator = document.createElement('div');
-            migratedIndicator.className = 'migrated-indicator';
-            
-            // Add check icon to migrated indicator
-            const checkIcon = document.createElement('i');
-            checkIcon.className = 'fas fa-check';
-            checkIcon.style.fontSize = '8px';
-            checkIcon.style.color = 'white';
-            migratedIndicator.appendChild(checkIcon);
-            
-            // Only add if not already present
-            if (!sourceElement.querySelector('.migrated-indicator')) {
-              sourceElement.appendChild(migratedIndicator);
+            // Mark the source object as migrated
+            if (sourceElement) {
+              sourceElement.classList.add('migrated-source');
+              
+              // Add the migrated indicator to the source element
+              const migratedIndicator = document.createElement('div');
+              migratedIndicator.className = 'migrated-indicator';
+              
+              // Add check icon to migrated indicator
+              const checkIcon = document.createElement('i');
+              checkIcon.className = 'fas fa-check';
+              checkIcon.style.fontSize = '8px';
+              checkIcon.style.color = 'white';
+              migratedIndicator.appendChild(checkIcon);
+              
+              // Only add if not already present
+              if (!sourceElement.querySelector('.migrated-indicator')) {
+                sourceElement.appendChild(migratedIndicator);
+              }
+              
+              // Update the object state
+              const sourceId = `source-${id}`;
+              if (objects[sourceId]) {
+                objects[sourceId].migrated = true;
+              }
             }
             
-            // Update the object state
-            const sourceId = `source-${id}`;
-            if (objects[sourceId]) {
-              objects[sourceId].migrated = true;
+            // If this is the last object, show notification and clear selection
+            if (migratedCount === selectedSourceIds.length) {
+              // Show notification
+              showNotification(`Migrated ${migratedCount} object${migratedCount > 1 ? 's' : ''}`, 'success');
+              
+              // Update selection counter
+              const selectedCount = document.getElementById('selected-count');
+              if (selectedCount) {
+                selectedCount.textContent = '0';
+              }
+              
+              // Update selection counter visibility
+              const selectionCounter = document.getElementById('selection-counter');
+              if (selectionCounter) {
+                selectionCounter.style.opacity = '0.5';
+                selectionCounter.style.transform = 'scale(0.95)';
+              }
+              
+              // Clear selection
+              clearSelection();
             }
           }
-        }
+        }, migrationDelay);
+        
+        // Increase delay for the next object
+        migrationDelay += staggerDelay;
+      } else {
+        // If object already exists in destination, count it as "migrated"
+        migratedCount++;
       }
     });
   });
   
-  // Show notification
-  if (migratedCount > 0) {
-    showNotification(`Migrated ${migratedCount} object${migratedCount > 1 ? 's' : ''}`, 'success');
-    
-    // Update selection counter
-    const selectedCount = document.getElementById('selected-count');
-    if (selectedCount) {
-      selectedCount.textContent = '0';
-    }
-    
-    // Update selection counter visibility
-    const selectionCounter = document.getElementById('selection-counter');
-    if (selectionCounter) {
-      selectionCounter.style.opacity = '0.5';
-      selectionCounter.style.transform = 'scale(0.95)';
-    }
-  } else {
+  // If all objects were already migrated, show notification immediately
+  if (migratedCount === 0) {
     showNotification('All selected objects already exist in destination', 'warning');
+    clearSelection();
   }
-  
-  // Clear selection
-  clearSelection();
 }
 
 /**

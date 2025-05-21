@@ -1,0 +1,29 @@
+/**
+ * Debug and testing styles
+ */
+
+.debug-panel {
+  display: block; 
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* Test selection box */
+.selection-box-test {
+  animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.7;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+  }
+  to {
+    opacity: 0.3;
+    box-shadow: 0 0 20px rgba(255, 87, 34, 0.7);
+  }
+}

@@ -1,0 +1,39 @@
+/**
+ * Selection Box CSS
+ */
+ 
+/* Simple selection box */
+.simple-selection-box {
+  position: absolute;
+  border: 3px dashed #4a89dc;
+  background-color: rgba(74, 137, 220, 0.15);
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Highlight objects when in selection mode */
+.object-circle.in-selection-box {
+  box-shadow: 0 0 0 4px rgba(74, 137, 220, 0.7);
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  z-index: 10;
+}
+
+/* Selection help tooltip */
+.selection-help {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-right: 10px;
+  background-color: rgba(74, 137, 220, 0.1);
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(74, 137, 220, 0.2);
+}
+
+.selection-help i {
+  color: #4a89dc;
+}

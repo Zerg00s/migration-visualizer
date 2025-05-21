@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="css/status-indicators.css">
     <link rel="stylesheet" href="css/details-panel.css">
     <link rel="stylesheet" href="css/debug.css">
+    <link rel="stylesheet" href="css/selection-box.css">
+    <link rel="stylesheet" href="css/selection-debug.css">
+    <link rel="stylesheet" href="css/migration-animations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +41,6 @@
         <main class="visualizer-main">
             <div class="visualizer-header">
                 <h2>Tenant-to-Tenant Migration Visualizer</h2>
-                <p>Drag and drop elements between source and destination environments</p>
                 
                 <div class="controls">
                     <div id="selection-counter" class="selection-counter">
@@ -157,6 +159,7 @@
             
             <div class="debug-panel">
                 <div id="debug-output"></div>
+                <!-- Debug buttons will be added here programmatically -->
             </div>
             
             <div class="object-details">
@@ -183,5 +186,6 @@
     <script type="module" src="js/app.js"></script>
     <script type="module" src="js/tenant-to-tenant.js"></script>
     <script type="module" src="js/utils/debug.js"></script>
+    <script type="module" src="js/utils/debug-utils.js"></script>
 </body>
 </html>

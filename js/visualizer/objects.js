@@ -1,6 +1,7 @@
 /**
  * Object creation and management functionality
  */
+import { createFlyingAnimation } from './animations.js';
 
 /**
  * Create a draggable object element
@@ -163,41 +164,32 @@ export function copyObjectToDestination(objectId, objectType, objects, connectio
   const containerSelector = typeToContainerMap[objectType];
   const container = document.getElementById(containerSelector);
   if (container) {
+    // First, hide the destination object (we'll show it after animation)
+    destObj.style.opacity = '0';
     container.appendChild(destObj);
+    
+    // Get source element for animation
+    const sourceEl = document.getElementById(`source-${objectId}`);
+    if (sourceEl) {
+      // Create the flying animation
+      createFlyingAnimation(sourceEl, destObj, sourceObj);
+      
+      // Show the destination object after animation completes
+      setTimeout(() => {
+        destObj.style.opacity = '1';
+        
+        // Add the migrating class for additional effects
+        destObj.classList.add('migrating');
+        
+        // Remove class after animation
+        setTimeout(() => {
+          destObj.classList.remove('migrating');
+        }, 800);
+      }, 1200); // Match this with animation duration
+    }
   } else {
     console.warn(`Destination container not found: ${containerSelector} for type: ${objectType}`);
     return null;
-  }
-  
-  // Get source element position for animation
-  const sourceEl = document.getElementById(`source-${objectId}`);
-  if (sourceEl) {
-    const sourceRect = sourceEl.getBoundingClientRect();
-    const destRect = destObj.getBoundingClientRect();
-    
-    // Set initial position for animation
-    const deltaX = sourceRect.left - destRect.left;
-    const deltaY = sourceRect.top - destRect.top;
-    
-    // Apply the initial offset
-    destObj.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.9)`;
-    destObj.style.opacity = '0.3';
-    
-    // Trigger the animation
-    setTimeout(() => {
-      destObj.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
-      destObj.style.transform = 'translate(0, 0) scale(1)';
-      destObj.style.opacity = '1';
-      
-      // Add the migrating class for additional effects
-      destObj.classList.add('migrating');
-      
-      // Remove transition and classes after animation
-      setTimeout(() => {
-        destObj.style.transition = '';
-        destObj.classList.remove('migrating');
-      }, 800);
-    }, 50);
   }
   
   // Add the connections to this object

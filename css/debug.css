@@ -1,23 +1,14 @@
 .debug-panel {
-  display: none; /* Hide by default */
+  display: flex;
+  justify-content: center;
   margin: 1rem 0;
   padding: 1rem;
   background-color: #f5f5f5;
   border: 1px solid #e0e0e0;
-  border-radius: var(--border-radius);
+  border-radius: 4px;
   font-family: monospace;
-  white-space: pre;
-  overflow-x: auto;
-  max-height: 200px;
-  overflow-y: auto;
 }
 
-/* To show debug panel, add debug-mode class to body */
-body.debug-mode .debug-panel {
-  display: block;
-}
-
-/* Quick debug toggle */
 .debug-toggle {
   position: fixed;
   bottom: 20px;

@@ -1,5 +1,9 @@
 /**
  * Object selection and details functionality
+ * 
+ * Selection can be done in two ways:
+ * 1. Click or Ctrl/Cmd+Click individual objects
+ * 2. Draw a selection box by dragging (implemented in SelectionBox.js)
  */
 
 /**
