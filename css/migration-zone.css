@@ -1,0 +1,273 @@
+/* Migration Zone Arrows and Clickable Area */
+
+/* Migration zone wrapper */
+.migration-zone {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    background: linear-gradient(180deg, 
+        rgba(30, 136, 229, 0.05) 0%, 
+        rgba(30, 136, 229, 0.1) 50%, 
+        rgba(67, 160, 71, 0.05) 100%);
+    border: 2px dashed transparent;
+    margin: 20px -20px; /* Extend beyond environment containers */
+    z-index: 1;
+}
+
+.migration-zone:hover {
+    background: linear-gradient(180deg, 
+        rgba(30, 136, 229, 0.1) 0%, 
+        rgba(30, 136, 229, 0.15) 50%, 
+        rgba(67, 160, 71, 0.1) 100%);
+    border-color: rgba(30, 136, 229, 0.3);
+}
+
+.migration-zone.has-selection {
+    background: linear-gradient(180deg, 
+        rgba(30, 136, 229, 0.1) 0%, 
+        rgba(30, 136, 229, 0.2) 50%, 
+        rgba(67, 160, 71, 0.1) 100%);
+    border-color: rgba(30, 136, 229, 0.5);
+    cursor: pointer;
+}
+
+.migration-zone.has-selection:hover {
+    background: linear-gradient(180deg, 
+        rgba(30, 136, 229, 0.15) 0%, 
+        rgba(30, 136, 229, 0.25) 50%, 
+        rgba(67, 160, 71, 0.15) 100%);
+    border-color: rgba(30, 136, 229, 0.7);
+    box-shadow: 0 4px 20px rgba(30, 136, 229, 0.2);
+}
+
+/* Arrow container */
+.migration-arrows-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    position: relative;
+    padding: 40px 20px;
+    pointer-events: none; /* Allow clicks to pass through to parent */
+}
+
+/* Individual arrows */
+.migration-arrow {
+    color: var(--primary-color);
+    font-size: 24px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    animation: arrowPulse 2s infinite;
+    position: relative;
+    /* Removed rotation - arrows should point right for horizontal migration */
+}
+
+.migration-zone:hover .migration-arrow {
+    opacity: 1;
+    color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.migration-zone.has-selection .migration-arrow {
+    opacity: 1;
+    color: var(--success-color);
+    animation: arrowPulseActive 1s infinite;
+}
+
+/* Override hover effects when migrating to prevent conflicts */
+.migration-zone.migrating:hover .migration-arrow {
+    opacity: 1;
+    color: var(--success-color);
+    transform: none;
+    animation: none;
+    transition: none;
+}
+
+/* Arrow animations */
+@keyframes arrowPulse {
+    0% { 
+        transform: translateX(0) scale(1); 
+        opacity: 0.7; 
+    }
+    50% { 
+        transform: translateX(8px) scale(1.05); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateX(0) scale(1); 
+        opacity: 0.7; 
+    }
+}
+
+@keyframes arrowPulseActive {
+    0% { 
+        transform: translateX(0) scale(1); 
+        opacity: 1;
+        color: var(--success-color);
+    }
+    50% { 
+        transform: translateX(12px) scale(1.15); 
+        opacity: 1;
+        color: var(--primary-color);
+        text-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
+    }
+    100% { 
+        transform: translateX(0) scale(1); 
+        opacity: 1;
+        color: var(--success-color);
+    }
+}
+
+/* Stagger arrow animations */
+.migration-arrow:nth-child(1) { animation-delay: 0s; }
+.migration-arrow:nth-child(2) { animation-delay: 0.2s; }
+.migration-arrow:nth-child(3) { animation-delay: 0.4s; }
+.migration-arrow:nth-child(4) { animation-delay: 0.6s; }
+.migration-arrow:nth-child(5) { animation-delay: 0.8s; }
+
+/* Migration action text overlay */
+.migration-action-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(30, 136, 229, 0.9);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.migration-zone.has-selection:hover .migration-action-text {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* Completely prevent ANY animation on migration zone when migrating */
+.migration-zone.migrating,
+.migration-zone.migrating *,
+.migration-zone.migrating::before,
+.migration-zone.migrating::after,
+.migration-zone .migrating,
+.migration-zone * .migrating {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+}
+
+/* Override any global migrating class that might be applied */
+.migration-zone.migrating.migrating {
+    animation: none !important;
+    transform: none !important;
+}
+
+/* Prevent the global migrateObject animation from affecting this zone */
+.migration-zone {
+    animation: none !important;
+}
+
+.migration-zone.migrating {
+    background: linear-gradient(180deg, 
+        rgba(67, 160, 71, 0.2) 0%, 
+        rgba(67, 160, 71, 0.4) 50%, 
+        rgba(67, 160, 71, 0.2) 100%) !important;
+    border-color: rgba(67, 160, 71, 0.8) !important;
+    cursor: wait !important;
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.migration-zone.migrating .migration-arrow {
+    color: var(--success-color);
+    opacity: 1;
+    animation: none; /* Completely disable all animations during migration */
+    transform: none; /* Remove any transforms */
+    transition: none; /* Remove transitions that might cause jumping */
+}
+
+/* Removed arrowMigrating animation - was causing crazy jumping */
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .migration-zone {
+        margin: 20px 0;
+        min-height: 60px;
+        background: linear-gradient(90deg, 
+            rgba(30, 136, 229, 0.05) 0%, 
+            rgba(30, 136, 229, 0.1) 50%, 
+            rgba(67, 160, 71, 0.05) 100%);
+    }
+    
+    .migration-arrows-container {
+        flex-direction: row;
+        justify-content: space-evenly;
+        height: 60px;
+        width: 100%;
+        min-height: auto;
+        padding: 10px 40px;
+    }
+    
+    .migration-arrow {
+        transform: rotate(0deg); /* Reset to horizontal arrows */
+        font-size: 20px;
+    }
+    
+    @keyframes arrowPulse {
+        0% { 
+            transform: translateX(0) scale(1); 
+            opacity: 0.7; 
+        }
+        50% { 
+            transform: translateX(8px) scale(1.05); 
+            opacity: 1; 
+        }
+        100% { 
+            transform: translateX(0) scale(1); 
+            opacity: 0.7; 
+        }
+    }
+    
+    @keyframes arrowPulseActive {
+        0% { 
+            transform: translateX(0) scale(1); 
+            opacity: 1;
+        }
+        50% { 
+            transform: translateX(12px) scale(1.15); 
+            opacity: 1;
+            text-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
+        }
+        100% { 
+            transform: translateX(0) scale(1); 
+            opacity: 1;
+        }
+    }
+    
+    /* Removed arrowMigrating animation from responsive section */
+}
+
+@media (max-width: 768px) {
+    .migration-arrow {
+        font-size: 18px;
+    }
+    
+    .migration-arrows-container {
+        padding: 15px 8px;
+    }
+}

@@ -53,6 +53,11 @@ export function toggleObjectSelection(element, selectedObjects, updateConnection
   
   // Update migrate button state
   updateMigrateButtonState();
+  
+  // Dispatch custom event for migration zone to listen to
+  document.dispatchEvent(new CustomEvent('selectionChanged', {
+    detail: { selectedObjects: selectedObjects }
+  }));
 }
 
 /**

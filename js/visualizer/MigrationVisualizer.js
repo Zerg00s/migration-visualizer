@@ -360,6 +360,11 @@ export class MigrationVisualizer {
     this.updateConnections();
     this.updateObjectDetails(null);
     this.updateMigrateButtonState();
+    
+    // Dispatch custom event for migration zone
+    document.dispatchEvent(new CustomEvent('selectionChanged', {
+      detail: { selectedObjects: this.selectedObjects }
+    }));
   }
   
   /**
