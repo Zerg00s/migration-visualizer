@@ -84,16 +84,25 @@ class GoogleWorkspaceDataService {
   generateConnections(data) {
     const connections = [];
     
+    console.log('Generating Google Workspace connections from data:', {
+      googleUsers: data.GoogleUsers?.length || 0,
+      googleGroups: data.GoogleGroups?.length || 0,
+      googleMailboxes: data.GoogleMailboxes?.length || 0,
+      googleSharedDrives: data.GoogleSharedDrives?.length || 0,
+      googleDrives: data.GoogleDrives?.length || 0
+    });
+    
     // User-to-mailbox connections (1:1) - using Owner property
     if (data.GoogleUsers && data.GoogleMailboxes) {
       data.GoogleUsers.forEach(user => {
         const mailbox = data.GoogleMailboxes.find(m => m.Owner === user.id);
         if (mailbox) {
           connections.push({
-            from: `source-${user.id}`,
-            to: `source-${mailbox.id}`,
+            source: user.id,
+            target: mailbox.id,
             type: 'ownership'
           });
+          console.log(`Connection: ${user.DisplayName} -> ${mailbox.DisplayName}`);
         }
       });
     }
@@ -104,10 +113,11 @@ class GoogleWorkspaceDataService {
         const drive = data.GoogleDrives.find(d => d.Owner === user.id);
         if (drive) {
           connections.push({
-            from: `source-${user.id}`,
-            to: `source-${drive.id}`,
+            source: user.id,
+            target: drive.id,
             type: 'ownership'
           });
+          console.log(`Connection: ${user.DisplayName} -> ${drive.DisplayName}`);
         }
       });
     }
@@ -121,10 +131,11 @@ class GoogleWorkspaceDataService {
             const user = data.GoogleUsers.find(u => u.id === userId);
             if (user) {
               connections.push({
-                from: `source-${user.id}`,
-                to: `source-${drive.id}`,
+                source: user.id,
+                target: drive.id,
                 type: 'organizer'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${drive.DisplayName} (organizer)`);
             }
           });
         }
@@ -135,10 +146,11 @@ class GoogleWorkspaceDataService {
             const user = data.GoogleUsers.find(u => u.id === userId);
             if (user) {
               connections.push({
-                from: `source-${user.id}`,
-                to: `source-${drive.id}`,
+                source: user.id,
+                target: drive.id,
                 type: 'content-manager'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${drive.DisplayName} (content manager)`);
             }
           });
         }
@@ -153,16 +165,18 @@ class GoogleWorkspaceDataService {
             const user = data.GoogleUsers.find(u => u.id === memberId);
             if (user) {
               connections.push({
-                from: `source-${user.id}`,
-                to: `source-${group.id}`,
+                source: user.id,
+                target: group.id,
                 type: 'membership'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${group.DisplayName} (member)`);
             }
           });
         }
       });
     }
     
+    console.log(`Generated ${connections.length} total Google Workspace connections`);
     return connections;
   }
 }
@@ -205,7 +219,10 @@ export class GoogleWorkspaceVisualizer extends BaseVisualizer {
    * Create visual objects in the DOM
    */
   createObjects(objects, connections) {
-    this.connections = connections;
+    // Don't assign the array reference directly - copy the connections instead
+    this.connections.length = 0;
+    this.connections.push(...connections);
+    console.log('createObjects - stored Google Workspace connections:', this.connections.length);
     this.createInitialObjects(objects, connections);
   }
 
@@ -311,9 +328,8 @@ export class GoogleWorkspaceVisualizer extends BaseVisualizer {
       });
     });
     
-    // Store connections
-    this.connections.length = 0;
-    this.connections.push(...connections);
+    // Connections are already stored in this.connections by createObjects method
+    console.log('createInitialObjects - Google Workspace connections already stored:', this.connections.length);
   }
 
   /**
@@ -411,24 +427,33 @@ export class GoogleWorkspaceVisualizer extends BaseVisualizer {
   addDestinationConnections(objectId) {
     // Find all connections involving this object
     const relatedConnections = this.connections.filter(conn => 
-      conn.from.includes(objectId) || conn.to.includes(objectId)
+      conn.source === objectId || conn.target === objectId
     );
     
     relatedConnections.forEach(conn => {
       // Create destination equivalent
       const destConnection = {
         ...conn,
-        from: conn.from.replace('source-', 'destination-'),
-        to: conn.to.replace('source-', 'destination-'),
+        source: conn.source,
+        target: conn.target,
         environment: 'destination'
       };
       
       // Only add if both objects exist in destination
-      const fromExists = document.getElementById(destConnection.from);
-      const toExists = document.getElementById(destConnection.to);
+      const fromExists = document.getElementById(`destination-${conn.source}`);
+      const toExists = document.getElementById(`destination-${conn.target}`);
       
       if (fromExists && toExists) {
-        this.connections.push(destConnection);
+        // Check if this connection already exists
+        const exists = this.connections.some(c => 
+          c.source === destConnection.source && 
+          c.target === destConnection.target &&
+          c.environment === 'destination'
+        );
+        
+        if (!exists) {
+          this.connections.push(destConnection);
+        }
       }
     });
   }

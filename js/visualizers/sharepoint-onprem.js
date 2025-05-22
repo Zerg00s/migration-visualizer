@@ -84,19 +84,43 @@ class SharePointOnPremDataService {
   generateConnections(data) {
     const connections = [];
     
+    console.log('Generating SharePoint OnPrem connections from data:', {
+      users: data.Users?.length || 0,
+      securityGroups: data.SecurityGroups?.length || 0,
+      sharePointSites: data.SharePointSites?.length || 0,
+      infoPathForms: data.InfoPathForms?.length || 0,
+      workflows: data.Workflows?.length || 0
+    });
+    
     // User-to-site connections based on permissions
-    if (data.sites && data.users) {
-      data.sites.forEach(site => {
-        if (site.permissions) {
-          site.permissions.forEach(permission => {
-            const user = data.users.find(u => u.id === permission.userId);
+    if (data.SharePointSites && data.Users) {
+      data.SharePointSites.forEach(site => {
+        // Site owners
+        if (site.Owners) {
+          site.Owners.forEach(ownerId => {
+            const user = data.Users.find(u => u.id === ownerId);
             if (user) {
               connections.push({
-                from: `source-${user.id}`,
-                to: `source-${site.id}`,
-                type: 'access',
-                permission: permission.level
+                source: user.id,
+                target: site.id,
+                type: 'site-owner'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${site.DisplayName} (owner)`);
+            }
+          });
+        }
+        
+        // Site members
+        if (site.Members) {
+          site.Members.forEach(memberId => {
+            const user = data.Users.find(u => u.id === memberId);
+            if (user) {
+              connections.push({
+                source: user.id,
+                target: site.id,
+                type: 'site-member'
+              });
+              console.log(`Connection: ${user.DisplayName} -> ${site.DisplayName} (member)`);
             }
           });
         }
@@ -104,18 +128,38 @@ class SharePointOnPremDataService {
     }
     
     // Group-to-site connections
-    if (data.sites && data.groups) {
-      data.sites.forEach(site => {
-        if (site.groupPermissions) {
-          site.groupPermissions.forEach(permission => {
-            const group = data.groups.find(g => g.id === permission.groupId);
+    if (data.SharePointSites && data.SecurityGroups) {
+      data.SharePointSites.forEach(site => {
+        // Group members
+        if (site.Members) {
+          site.Members.forEach(memberId => {
+            const group = data.SecurityGroups.find(g => g.id === memberId);
             if (group) {
               connections.push({
-                from: `source-${group.id}`,
-                to: `source-${site.id}`,
-                type: 'group-access',
-                permission: permission.level
+                source: group.id,
+                target: site.id,
+                type: 'group-access'
               });
+              console.log(`Connection: ${group.DisplayName} -> ${site.DisplayName} (group access)`);
+            }
+          });
+        }
+      });
+    }
+    
+    // User-to-group membership connections
+    if (data.Users && data.SecurityGroups) {
+      data.SecurityGroups.forEach(group => {
+        if (group.Members) {
+          group.Members.forEach(memberId => {
+            const user = data.Users.find(u => u.id === memberId);
+            if (user) {
+              connections.push({
+                source: user.id,
+                target: group.id,
+                type: 'membership'
+              });
+              console.log(`Connection: ${user.DisplayName} -> ${group.DisplayName} (member)`);
             }
           });
         }
@@ -123,37 +167,40 @@ class SharePointOnPremDataService {
     }
     
     // InfoPath form-to-site connections
-    if (data.infoPathForms && data.sites) {
-      data.infoPathForms.forEach(form => {
-        if (form.siteId) {
-          const site = data.sites.find(s => s.id === form.siteId);
+    if (data.InfoPathForms && data.SharePointSites) {
+      data.InfoPathForms.forEach(form => {
+        if (form.HostingSite) {
+          const site = data.SharePointSites.find(s => s.id === form.HostingSite);
           if (site) {
             connections.push({
-              from: `source-${form.id}`,
-              to: `source-${site.id}`,
+              source: form.id,
+              target: site.id,
               type: 'hosted-on'
             });
+            console.log(`Connection: ${form.DisplayName} -> ${site.DisplayName} (hosted on)`);
           }
         }
       });
     }
     
     // Workflow-to-site connections
-    if (data.workflows && data.sites) {
-      data.workflows.forEach(workflow => {
-        if (workflow.siteId) {
-          const site = data.sites.find(s => s.id === workflow.siteId);
+    if (data.Workflows && data.SharePointSites) {
+      data.Workflows.forEach(workflow => {
+        if (workflow.AssociatedSite) {
+          const site = data.SharePointSites.find(s => s.id === workflow.AssociatedSite);
           if (site) {
             connections.push({
-              from: `source-${workflow.id}`,
-              to: `source-${site.id}`,
+              source: workflow.id,
+              target: site.id,
               type: 'runs-on'
             });
+            console.log(`Connection: ${workflow.DisplayName} -> ${site.DisplayName} (runs on)`);
           }
         }
       });
     }
     
+    console.log(`Generated ${connections.length} total SharePoint OnPrem connections`);
     return connections;
   }
 }
@@ -196,7 +243,10 @@ export class SharePointOnPremVisualizer extends BaseVisualizer {
    * Create visual objects in the DOM
    */
   createObjects(objects, connections) {
-    this.connections = connections;
+    // Don't assign the array reference directly - copy the connections instead
+    this.connections.length = 0;
+    this.connections.push(...connections);
+    console.log('createObjects - stored SharePoint OnPrem connections:', this.connections.length);
     this.createInitialObjects(objects, connections);
   }
 
@@ -302,9 +352,8 @@ export class SharePointOnPremVisualizer extends BaseVisualizer {
       });
     });
     
-    // Store connections
-    this.connections.length = 0;
-    this.connections.push(...connections);
+    // Connections are already stored in this.connections by createObjects method
+    console.log('createInitialObjects - SharePoint OnPrem connections already stored:', this.connections.length);
   }
 
   /**
@@ -394,24 +443,33 @@ export class SharePointOnPremVisualizer extends BaseVisualizer {
   addDestinationConnections(objectId) {
     // Find all connections involving this object
     const relatedConnections = this.connections.filter(conn => 
-      conn.from.includes(objectId) || conn.to.includes(objectId)
+      conn.source === objectId || conn.target === objectId
     );
     
     relatedConnections.forEach(conn => {
       // Create destination equivalent
       const destConnection = {
         ...conn,
-        from: conn.from.replace('source-', 'destination-'),
-        to: conn.to.replace('source-', 'destination-'),
+        source: conn.source,
+        target: conn.target,
         environment: 'destination'
       };
       
       // Only add if both objects exist in destination
-      const fromExists = document.getElementById(destConnection.from);
-      const toExists = document.getElementById(destConnection.to);
+      const fromExists = document.getElementById(`destination-${conn.source}`);
+      const toExists = document.getElementById(`destination-${conn.target}`);
       
       if (fromExists && toExists) {
-        this.connections.push(destConnection);
+        // Check if this connection already exists
+        const exists = this.connections.some(c => 
+          c.source === destConnection.source && 
+          c.target === destConnection.target &&
+          c.environment === 'destination'
+        );
+        
+        if (!exists) {
+          this.connections.push(destConnection);
+        }
       }
     });
   }

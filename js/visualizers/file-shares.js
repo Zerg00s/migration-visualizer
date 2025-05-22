@@ -62,6 +62,12 @@ class FileSharesDataService {
   generateConnections(data) {
     const connections = [];
     
+    console.log('Generating file shares connections from data:', {
+      users: data.Users?.length || 0,
+      securityGroups: data.SecurityGroups?.length || 0,
+      fileShares: data.FileShares?.length || 0
+    });
+    
     // Generate user-to-file-share connections based on permissions
     if (data.FileShares && data.Users) {
       data.FileShares.forEach(share => {
@@ -70,11 +76,12 @@ class FileSharesDataService {
             const user = data.Users.find(u => u.id === permission.Principal);
             if (user) {
               connections.push({
-                from: `source-${user.id}`,
-                to: `source-${share.id}`,
+                source: user.id,
+                target: share.id,
                 type: 'access',
                 permission: permission.Access
               });
+              console.log(`Connection: ${user.DisplayName} -> ${share.DisplayName} (${permission.Access})`);
             }
           });
         }
@@ -89,11 +96,12 @@ class FileSharesDataService {
             const group = data.SecurityGroups.find(g => g.id === permission.Principal);
             if (group) {
               connections.push({
-                from: `source-${group.id}`,
-                to: `source-${share.id}`,
+                source: group.id,
+                target: share.id,
                 type: 'group-access',
                 permission: permission.Access
               });
+              console.log(`Connection: ${group.DisplayName} -> ${share.DisplayName} (${permission.Access})`);
             }
           });
         }
@@ -108,16 +116,18 @@ class FileSharesDataService {
             const user = data.Users.find(u => u.id === memberId);
             if (user) {
               connections.push({
-                from: `source-${user.id}`,
-                to: `source-${group.id}`,
+                source: user.id,
+                target: group.id,
                 type: 'membership'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${group.DisplayName} (member)`);
             }
           });
         }
       });
     }
     
+    console.log(`Generated ${connections.length} total file shares connections`);
     return connections;
   }
 }
@@ -160,7 +170,10 @@ export class FileSharesVisualizer extends BaseVisualizer {
    * Create visual objects in the DOM
    */
   createObjects(objects, connections) {
-    this.connections = connections;
+    // Don't assign the array reference directly - copy the connections instead
+    this.connections.length = 0;
+    this.connections.push(...connections);
+    console.log('createObjects - stored file shares connections:', this.connections.length);
     this.createInitialObjects(objects, connections);
   }
 
@@ -264,9 +277,8 @@ export class FileSharesVisualizer extends BaseVisualizer {
       });
     });
     
-    // Store connections
-    this.connections.length = 0;
-    this.connections.push(...connections);
+    // Connections are already stored in this.connections by createObjects method
+    console.log('createInitialObjects - file shares connections already stored:', this.connections.length);
   }
 
   /**
@@ -346,24 +358,33 @@ export class FileSharesVisualizer extends BaseVisualizer {
   addDestinationConnections(objectId) {
     // Find all connections involving this object
     const relatedConnections = this.connections.filter(conn => 
-      conn.from.includes(objectId) || conn.to.includes(objectId)
+      conn.source === objectId || conn.target === objectId
     );
     
     relatedConnections.forEach(conn => {
       // Create destination equivalent
       const destConnection = {
         ...conn,
-        from: conn.from.replace('source-', 'destination-'),
-        to: conn.to.replace('source-', 'destination-'),
+        source: conn.source,
+        target: conn.target,
         environment: 'destination'
       };
       
       // Only add if both objects exist in destination
-      const fromExists = document.getElementById(destConnection.from);
-      const toExists = document.getElementById(destConnection.to);
+      const fromExists = document.getElementById(`destination-${conn.source}`);
+      const toExists = document.getElementById(`destination-${conn.target}`);
       
       if (fromExists && toExists) {
-        this.connections.push(destConnection);
+        // Check if this connection already exists
+        const exists = this.connections.some(c => 
+          c.source === destConnection.source && 
+          c.target === destConnection.target &&
+          c.environment === 'destination'
+        );
+        
+        if (!exists) {
+          this.connections.push(destConnection);
+        }
       }
     });
   }

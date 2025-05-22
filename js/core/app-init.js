@@ -104,13 +104,13 @@ export function setupKeyboardShortcuts(visualizer) {
     // Ctrl/Cmd + Z - Undo (if state manager is integrated)
     if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
       e.preventDefault();
-      // visualizer.stateManager.undo();
+      visualizer.stateManager.undo();
     }
     
     // Ctrl/Cmd + Shift + Z - Redo
     if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
       e.preventDefault();
-      // visualizer.stateManager.redo();
+      visualizer.stateManager.redo();
     }
   });
 }

@@ -80,6 +80,11 @@ export class BaseVisualizer {
       const allObjects = this.extractObjects(this.migrationData);
       const allConnections = this.extractConnections(this.migrationData);
       
+      console.log('BaseVisualizer - Extracted data:', {
+        objects: allObjects.length,
+        connections: allConnections.length
+      });
+      
       // Create objects in source environment
       this.createObjects(allObjects, allConnections);
       

@@ -125,19 +125,41 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
   };
   
   // Find connections for this object
+  // Extract the basic ID from the full objectId (remove environment prefix)
+  const basicObjectId = objectId.split('-')[1]; // e.g., 'source-user_1' becomes 'user_1'
+  
+  console.log('Looking for connections for:', { objectId, basicObjectId, connectionsTotal: connections.length });
+  
   const relatedConnections = connections.filter(conn => 
-    `${obj.environment}-${conn.source}` === objectId || 
-    `${obj.environment}-${conn.target}` === objectId
+    conn.source === basicObjectId || conn.target === basicObjectId
   );
   
+  console.log('Found related connections:', relatedConnections.length, relatedConnections);
+  
   const connectedObjectIds = relatedConnections.map(conn => {
-    const isSource = `${obj.environment}-${conn.source}` === objectId;
-    return isSource ? `${obj.environment}-${conn.target}` : `${obj.environment}-${conn.source}`;
+    const isSource = conn.source === basicObjectId;
+    const connectedBasicId = isSource ? conn.target : conn.source;
+    // Look for the connected object in the same environment first, then any environment
+    return `${obj.environment}-${connectedBasicId}`;
   });
   
   const connectedObjects = connectedObjectIds
     .map(id => objects[id])
     .filter(obj => !!obj);
+  
+  // If we didn't find objects in the same environment, try other environments
+  if (connectedObjects.length < relatedConnections.length) {
+    const additionalConnectedObjects = relatedConnections
+      .map(conn => {
+        const isSource = conn.source === basicObjectId;
+        const connectedBasicId = isSource ? conn.target : conn.source;
+        // Try both environments
+        return objects[`source-${connectedBasicId}`] || objects[`destination-${connectedBasicId}`];
+      })
+      .filter(obj => !!obj && !connectedObjects.includes(obj));
+    
+    connectedObjects.push(...additionalConnectedObjects);
+  }
   
   // Build clean, structured HTML
   let detailsHtml = `

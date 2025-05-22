@@ -149,6 +149,7 @@ class TenantDataService {
             target: mailbox.id,
             type: 'ownership'
           });
+          console.log(`Connection: ${user.DisplayName} -> ${mailbox.DisplayName}`);
         }
       });
     }
@@ -163,6 +164,7 @@ class TenantDataService {
             target: drive.id,
             type: 'ownership'
           });
+          console.log(`Connection: ${user.DisplayName} -> ${drive.DisplayName}`);
         }
       });
     }
@@ -180,6 +182,7 @@ class TenantDataService {
                 target: site.id,
                 type: 'site-owner'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${site.DisplayName} (owner)`);
             }
           });
         }
@@ -194,6 +197,7 @@ class TenantDataService {
                 target: site.id,
                 type: 'site-member'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${site.DisplayName} (member)`);
             }
           });
         }
@@ -212,6 +216,54 @@ class TenantDataService {
                 target: group.id,
                 type: 'membership'
               });
+              console.log(`Connection: ${user.DisplayName} -> ${group.DisplayName} (member)`);
+            }
+          });
+        }
+      });
+    }
+    
+    // M365 Group membership connections - using Owners and Members properties
+    if (data.Users && data.M365Groups) {
+      data.M365Groups.forEach(group => {
+        // Group owners
+        if (group.Owners) {
+          group.Owners.forEach(ownerId => {
+            const user = data.Users.find(u => u.id === ownerId);
+            if (user) {
+              connections.push({
+                source: user.id,
+                target: group.id,
+                type: 'group-owner'
+              });
+              console.log(`Connection: ${user.DisplayName} -> ${group.DisplayName} (owner)`);
+            }
+          });
+        }
+        
+        // Group members  
+        if (group.Members) {
+          group.Members.forEach(memberId => {
+            // Check if it's a user
+            const user = data.Users.find(u => u.id === memberId);
+            if (user) {
+              connections.push({
+                source: user.id,
+                target: group.id,
+                type: 'group-member'
+              });
+              console.log(`Connection: ${user.DisplayName} -> ${group.DisplayName} (member)`);
+            } else {
+              // Check if it's a security group
+              const securityGroup = data.SecurityGroups.find(sg => sg.id === memberId);
+              if (securityGroup) {
+                connections.push({
+                  source: securityGroup.id,
+                  target: group.id,
+                  type: 'group-member'
+                });
+                console.log(`Connection: ${securityGroup.DisplayName} -> ${group.DisplayName} (security group member)`);
+              }
             }
           });
         }
@@ -229,6 +281,7 @@ class TenantDataService {
               target: flow.id,
               type: 'ownership'
             });
+            console.log(`Connection: ${user.DisplayName} -> ${flow.DisplayName}`);
           }
         }
       });
@@ -244,6 +297,7 @@ class TenantDataService {
               target: app.id,
               type: 'ownership'
             });
+            console.log(`Connection: ${user.DisplayName} -> ${app.DisplayName}`);
           }
         }
       });
@@ -259,11 +313,13 @@ class TenantDataService {
               target: report.id,
               type: 'ownership'
             });
+            console.log(`Connection: ${user.DisplayName} -> ${report.DisplayName}`);
           }
         }
       });
     }
     
+    console.log(`Generated ${connections.length} total connections`);
     return connections;
   }
 }
@@ -306,7 +362,10 @@ export class TenantToTenantVisualizer extends BaseVisualizer {
    * Create visual objects in the DOM
    */
   createObjects(objects, connections) {
-    this.connections = connections;
+    // Don't assign the array reference directly - copy the connections instead
+    this.connections.length = 0;
+    this.connections.push(...connections);
+    console.log('createObjects - stored connections:', this.connections.length);
     this.createInitialObjects(objects, connections);
   }
 
@@ -417,9 +476,8 @@ export class TenantToTenantVisualizer extends BaseVisualizer {
       });
     });
     
-    // Store connections
-    this.connections.length = 0;
-    this.connections.push(...connections);
+    // Connections are already stored in this.connections by createObjects method
+    console.log('createInitialObjects - connections already stored:', this.connections.length);
   }
 
   /**
