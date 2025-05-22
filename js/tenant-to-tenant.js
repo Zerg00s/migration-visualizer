@@ -8,6 +8,10 @@ import { initializeMigrationZone, adjustArrowsForScreenSize } from './migration-
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize the visualizer
   const migrationVisualizer = new MigrationVisualizer();
+  
+  // Make it globally available for migration zone
+  window.migrationVisualizer = migrationVisualizer;
+  
   migrationVisualizer.init();
   
   // Initialize migration zone

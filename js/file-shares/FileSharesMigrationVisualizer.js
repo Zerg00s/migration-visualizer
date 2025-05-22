@@ -1,21 +1,21 @@
 /**
- * Tenant-to-Tenant Migration Visualizer
- * Main controller class
+ * File Shares Migration Visualizer
+ * Main controller class for file shares to SharePoint migration
  */
 import { throttle } from '../utils/helpers.js';
-import { loadMigrationData, getAllObjects, getAllConnections } from '../data/data-loader.js';
-import { createInitialObjects } from './objects.js';
-import { updateConnections, drawConnection, addDestinationConnections } from './connections.js';
-import { toggleObjectSelection, updateObjectDetails } from './selection.js';
-import { migrateSelectedObjects, resetVisualization } from './migration.js';
-import { animateInitialRender } from './animations.js';
-import { SimpleAreaSelection } from './selection-box/SimpleAreaSelection.js';
+import { loadFileSharesData, getAllFileSharesObjects, getAllFileSharesConnections } from '../data/file-shares-data-loader.js';
+import { createInitialFileSharesObjects } from './file-shares-objects.js';
+import { updateConnections, drawConnection, addDestinationConnections } from '../visualizer/connections.js';
+import { toggleObjectSelection, updateObjectDetails } from '../visualizer/selection.js';
+import { migrateSelectedObjects, resetVisualization } from '../visualizer/migration.js';
+import { animateInitialRender } from '../visualizer/animations.js';
+import { SimpleAreaSelection } from '../visualizer/selection-box/SimpleAreaSelection.js';
 
 /**
- * MigrationVisualizer class
- * Handles the interactive visualization of migration elements
+ * FileSharesMigrationVisualizer class
+ * Handles the interactive visualization of file shares migration elements
  */
-export class MigrationVisualizer {
+export class FileSharesMigrationVisualizer {
   constructor() {
     // State
     this.objects = {};
@@ -48,15 +48,15 @@ export class MigrationVisualizer {
       const svgContainer = document.getElementById('svg-container');
       this.svg = d3.select('#connections-svg');
       
-      // Load migration data
-      this.migrationData = await loadMigrationData();
+      // Load file shares migration data
+      this.migrationData = await loadFileSharesData();
       
       // Extract objects and connections
-      const allObjects = getAllObjects(this.migrationData);
-      const allConnections = getAllConnections(this.migrationData);
+      const allObjects = getAllFileSharesObjects(this.migrationData);
+      const allConnections = getAllFileSharesConnections(this.migrationData);
       
       // Create objects in source environment
-      createInitialObjects(
+      createInitialFileSharesObjects(
         allObjects,
         this.connections, 
         allConnections, 
@@ -88,8 +88,8 @@ export class MigrationVisualizer {
       // Animate the initial render
       animateInitialRender();
     } catch (error) {
-      console.error('Failed to initialize visualizer:', error);
-      this.showError('Failed to load migration data. Please try refreshing the page.');
+      console.error('Failed to initialize file shares visualizer:', error);
+      this.showError('Failed to load file shares migration data. Please try refreshing the page.');
     } finally {
       // Hide loading indicator
       this.showLoading(false);
@@ -195,18 +195,6 @@ export class MigrationVisualizer {
       // Update connections
       this.updateConnections();
     }, 200));
-    
-    // Debug button
-    const debugSvgBtn = document.getElementById('debug-show-svg');
-    if (debugSvgBtn) {
-      debugSvgBtn.parentNode.removeChild(debugSvgBtn); // Remove debug button
-    }
-    
-    // Remove debug test selection box button as well
-    const testSelectionBoxBtn = document.getElementById('test-selection-box');
-    if (testSelectionBoxBtn) {
-      testSelectionBoxBtn.parentNode.removeChild(testSelectionBoxBtn);
-    }
   }
   
   // Method implementations that delegate to the imported functionality
@@ -269,7 +257,8 @@ export class MigrationVisualizer {
       this.connections,
       (objectId) => this.addDestinationConnections(objectId),
       () => this.updateConnections(),
-      () => this.clearSelection()
+      () => this.clearSelection(),
+      'file-shares'
     );
   }
   
@@ -278,7 +267,7 @@ export class MigrationVisualizer {
    */
   resetVisualization() {
     if (this.migrationData) {
-      const allConnections = getAllConnections(this.migrationData);
+      const allConnections = getAllFileSharesConnections(this.migrationData);
       
       resetVisualization(
         this.objects,

@@ -5,11 +5,12 @@
 
 /**
  * Load migration data from JSON file
+ * @param {string} dataFile - The data file to load (defaults to tenant-to-tenant-data.json)
  * @returns {Promise<Object>} The loaded migration data
  */
-export async function loadMigrationData() {
+export async function loadMigrationData(dataFile = 'data/tenant-to-tenant-data.json') {
   try {
-    const response = await fetch('data/migration-data.json');
+    const response = await fetch(dataFile);
     if (!response.ok) {
       throw new Error(`Failed to load migration data: ${response.status} ${response.statusText}`);
     }
@@ -131,6 +132,67 @@ export function extractMailboxes(data) {
     ownedBy: mailbox.OwnedBy,
     delegateAccess: mailbox.DelegateAccess,
     migrated: mailbox.Migrated
+  }));
+}
+
+/**
+ * Extract Power Automate objects from migration data
+ * @param {Object} data - The migration data
+ * @returns {Array} Array of Power Automate objects formatted for visualization
+ */
+export function extractPowerAutomate(data) {
+  return data.PowerAutomate.map(flow => ({
+    id: flow.id,
+    name: flow.DisplayName,
+    type: 'power-automate',
+    color: '#0066ff',
+    icon: 'fa-bolt',
+    description: flow.Description,
+    ownedBy: flow.OwnedBy,
+    state: flow.State,
+    runs: flow.Runs,
+    triggerType: flow.TriggerType,
+    category: flow.Category
+  }));
+}
+
+/**
+ * Extract Power Apps objects from migration data
+ * @param {Object} data - The migration data
+ * @returns {Array} Array of Power Apps objects formatted for visualization
+ */
+export function extractPowerApps(data) {
+  return data.PowerApps.map(app => ({
+    id: app.id,
+    name: app.DisplayName,
+    type: 'power-apps',
+    color: '#742774',
+    icon: 'fa-mobile-alt',
+    description: app.Description,
+    ownedBy: app.OwnedBy,
+    appType: app.AppType,
+    users: app.Users,
+    category: app.Category
+  }));
+}
+
+/**
+ * Extract Power BI objects from migration data
+ * @param {Object} data - The migration data
+ * @returns {Array} Array of Power BI objects formatted for visualization
+ */
+export function extractPowerBI(data) {
+  return data.PowerBI.map(report => ({
+    id: report.id,
+    name: report.DisplayName,
+    type: 'power-bi',
+    color: '#f2c811',
+    icon: 'fa-chart-bar',
+    description: report.Description,
+    ownedBy: report.OwnedBy,
+    workspaceName: report.WorkspaceName,
+    viewers: report.Viewers,
+    category: report.Category
   }));
 }
 
@@ -292,6 +354,60 @@ export function generateConnections(data) {
     }
   });
   
+  // Add Power Automate connections
+  data.PowerAutomate.forEach(flow => {
+    connections.push({
+      source: flow.OwnedBy,
+      target: flow.id
+    });
+    
+    // Connect to SharePoint sites if specified
+    if (flow.ConnectedSharePointSites) {
+      flow.ConnectedSharePointSites.forEach(siteId => {
+        connections.push({
+          source: flow.id,
+          target: siteId
+        });
+      });
+    }
+  });
+  
+  // Add Power Apps connections
+  data.PowerApps.forEach(app => {
+    connections.push({
+      source: app.OwnedBy,
+      target: app.id
+    });
+    
+    // Connect to SharePoint sites if specified
+    if (app.ConnectedSharePointSites) {
+      app.ConnectedSharePointSites.forEach(siteId => {
+        connections.push({
+          source: app.id,
+          target: siteId
+        });
+      });
+    }
+  });
+  
+  // Add Power BI connections
+  data.PowerBI.forEach(report => {
+    connections.push({
+      source: report.OwnedBy,
+      target: report.id
+    });
+    
+    // Connect to SharePoint sites if specified
+    if (report.ConnectedSharePointSites) {
+      report.ConnectedSharePointSites.forEach(siteId => {
+        connections.push({
+          source: report.id,
+          target: siteId
+        });
+      });
+    }
+  });
+  
   return connections;
 }
 
@@ -308,7 +424,10 @@ export function getAllObjects(data) {
     ...extractSharePointSites(data),
     ...extractOneDrives(data),
     ...extractMailboxes(data),
-    ...extractM365Groups(data)
+    ...extractM365Groups(data),
+    ...extractPowerAutomate(data),
+    ...extractPowerApps(data),
+    ...extractPowerBI(data)
   ];
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tenant-to-Tenant Migration Visualizer</title>
+    <title>SharePoint On-Premises Migration Visualizer</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/status-indicators.css">
     <link rel="stylesheet" href="css/details-panel.css">
@@ -31,9 +31,9 @@
                 </div>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="tenant-to-tenant.html" class="active">Tenant-to-Tenant</a></li>
+                    <li><a href="tenant-to-tenant.html">Tenant-to-Tenant</a></li>
                     <li><a href="file-shares.html">File Shares</a></li>
-                    <li><a href="sharepoint-onprem.html">On-Prem SharePoint</a></li>
+                    <li><a href="sharepoint-onprem.html" class="active">On-Prem SharePoint</a></li>
                     <li><a href="google-workspace.html">Google Workspace</a></li>
                 </ul>
             </nav>
@@ -41,7 +41,7 @@
 
         <main class="visualizer-main">
             <div class="visualizer-header">
-                <h2>Tenant-to-Tenant Migration Visualizer</h2>
+                <h2>SharePoint On-Premises to Microsoft 365 Migration</h2>
                 
                 <div class="controls">
                     <button id="toggle-connections" class="btn-secondary">
@@ -63,57 +63,32 @@
 
                 <div class="migration-container">
                 <div class="environment source-environment">
-                    <h3 class="environment-title">Source Tenant</h3>
+                    <h3 class="environment-title">SharePoint On-Premises</h3>
                     
                     <div class="bucket-container">
                         <div class="bucket" data-type="users">
-                            <h4 class="bucket-title">Entra ID Users</h4>
+                            <h4 class="bucket-title">AD Users</h4>
                             <div class="bucket-content" id="source-users"></div>
                         </div>
                         
                         <div class="bucket" data-type="security-groups">
-                            <h4 class="bucket-title">Entra ID Security Groups</h4>
+                            <h4 class="bucket-title">AD Security Groups</h4>
                             <div class="bucket-content" id="source-security-groups"></div>
                         </div>
                         
-                        <div class="bucket" data-type="sharepoint">
-                            <h4 class="bucket-title">SharePoint Online</h4>
-                            <div class="bucket-content" id="source-sharepoint"></div>
+                        <div class="bucket" data-type="sharepoint-sites">
+                            <h4 class="bucket-title">SharePoint Sites</h4>
+                            <div class="bucket-content" id="source-sharepoint-sites"></div>
                         </div>
                         
-                        <div class="bucket" data-type="teams">
-                            <h4 class="bucket-title">Teams</h4>
-                            <div class="bucket-content" id="source-teams"></div>
+                        <div class="bucket" data-type="infopath-forms">
+                            <h4 class="bucket-title">InfoPath Forms</h4>
+                            <div class="bucket-content" id="source-infopath-forms"></div>
                         </div>
                         
-                        <div class="bucket" data-type="onedrive">
-                            <h4 class="bucket-title">OneDrive</h4>
-                            <div class="bucket-content" id="source-onedrive"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="m365-groups">
-                            <h4 class="bucket-title">M365 Groups</h4>
-                            <div class="bucket-content" id="source-m365-groups"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="mailboxes">
-                            <h4 class="bucket-title">Mailboxes</h4>
-                            <div class="bucket-content" id="source-mailboxes"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="power-automate">
-                            <h4 class="bucket-title">Power Automate</h4>
-                            <div class="bucket-content" id="source-power-automate"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="power-apps">
-                            <h4 class="bucket-title">Power Apps</h4>
-                            <div class="bucket-content" id="source-power-apps"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="power-bi">
-                            <h4 class="bucket-title">Power BI</h4>
-                            <div class="bucket-content" id="source-power-bi"></div>
+                        <div class="bucket" data-type="workflows">
+                            <h4 class="bucket-title">Workflows</h4>
+                            <div class="bucket-content" id="source-workflows"></div>
                         </div>
                     </div>
                 </div>
@@ -130,7 +105,7 @@
                 </div>
                 
                 <div class="environment destination-environment">
-                    <h3 class="environment-title">Destination Tenant</h3>
+                    <h3 class="environment-title">Microsoft 365</h3>
                     
                     <div class="bucket-container">
                         <div class="bucket" data-type="users">
@@ -143,34 +118,9 @@
                             <div class="bucket-content" id="destination-security-groups"></div>
                         </div>
                         
-                        <div class="bucket" data-type="sharepoint">
+                        <div class="bucket" data-type="sharepoint-online">
                             <h4 class="bucket-title">SharePoint Online</h4>
-                            <div class="bucket-content" id="destination-sharepoint"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="teams">
-                            <h4 class="bucket-title">Teams</h4>
-                            <div class="bucket-content" id="destination-teams"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="onedrive">
-                            <h4 class="bucket-title">OneDrive</h4>
-                            <div class="bucket-content" id="destination-onedrive"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="m365-groups">
-                            <h4 class="bucket-title">M365 Groups</h4>
-                            <div class="bucket-content" id="destination-m365-groups"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="mailboxes">
-                            <h4 class="bucket-title">Mailboxes</h4>
-                            <div class="bucket-content" id="destination-mailboxes"></div>
-                        </div>
-                        
-                        <div class="bucket" data-type="power-automate">
-                            <h4 class="bucket-title">Power Automate</h4>
-                            <div class="bucket-content" id="destination-power-automate"></div>
+                            <div class="bucket-content" id="destination-sharepoint-online"></div>
                         </div>
                         
                         <div class="bucket" data-type="power-apps">
@@ -178,9 +128,9 @@
                             <div class="bucket-content" id="destination-power-apps"></div>
                         </div>
                         
-                        <div class="bucket" data-type="power-bi">
-                            <h4 class="bucket-title">Power BI</h4>
-                            <div class="bucket-content" id="destination-power-bi"></div>
+                        <div class="bucket" data-type="power-automate">
+                            <h4 class="bucket-title">Power Automate</h4>
+                            <div class="bucket-content" id="destination-power-automate"></div>
                         </div>
                     </div>
                 </div>
@@ -211,6 +161,6 @@
     </div>
 
     <script type="module" src="js/app.js"></script>
-    <script type="module" src="js/tenant-to-tenant.js"></script>
+    <script type="module" src="js/sharepoint-onprem.js"></script>
 </body>
 </html>

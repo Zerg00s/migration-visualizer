@@ -1,15 +1,15 @@
 /**
- * Object creation and management functionality
+ * File Shares Object creation and management functionality
  */
-import { createFlyingAnimation } from './animations.js';
+import { createFlyingAnimation } from '../visualizer/animations.js';
 
 /**
- * Create a draggable object element
+ * Create a draggable object element for file shares migration
  * @param {Object} data - Object data
  * @param {Object} objects - Objects state reference
  * @returns {HTMLElement} Created element
  */
-export function createObjectElement(data, objects) {
+export function createFileSharesObjectElement(data, objects) {
   const element = document.createElement('div');
   element.className = `object-circle ${data.type}`;
   element.id = `${data.environment}-${data.id}`;
@@ -68,13 +68,13 @@ export function createObjectElement(data, objects) {
 }
 
 /**
- * Create initial objects in source environment
+ * Create initial objects in source environment for file shares
  * @param {Array} allObjects - All objects data
  * @param {Array} connections - Connection data reference
  * @param {Array} initialConnections - Initial connection data
  * @param {Object} objects - Objects state reference
  */
-export function createInitialObjects(allObjects, connections, initialConnections, objects) {
+export function createInitialFileSharesObjects(allObjects, connections, initialConnections, objects) {
   // Group objects by type
   const objectsByType = allObjects.reduce((acc, obj) => {
     if (!acc[obj.type]) acc[obj.type] = [];
@@ -82,18 +82,11 @@ export function createInitialObjects(allObjects, connections, initialConnections
     return acc;
   }, {});
   
-  // Map of object types to container IDs
+  // Map of object types to container IDs for file shares
   const typeToContainerMap = {
     'user': 'source-users',
     'group': 'source-security-groups',
-    'teams': 'source-teams',
-    'sharepoint': 'source-sharepoint',
-    'onedrive': 'source-onedrive',
-    'm365-group': 'source-m365-groups',
-    'mailbox': 'source-mailboxes',
-    'power-automate': 'source-power-automate',
-    'power-apps': 'source-power-apps',
-    'power-bi': 'source-power-bi'
+    'file-share': 'source-file-shares'
   };
   
   // Create objects by type
@@ -113,7 +106,7 @@ export function createInitialObjects(allObjects, connections, initialConnections
     }
     
     objectsByType[type].forEach(obj => {
-      const sourceObj = createObjectElement({
+      const sourceObj = createFileSharesObjectElement({
         ...obj,
         environment: 'source'
       }, objects);
@@ -128,7 +121,7 @@ export function createInitialObjects(allObjects, connections, initialConnections
 }
 
 /**
- * Copy an object from source to destination environment
+ * Copy an object from source to destination environment for file shares
  * @param {string} objectId - Object ID to copy
  * @param {string} objectType - Object type
  * @param {Object} objects - Objects state reference
@@ -137,36 +130,41 @@ export function createInitialObjects(allObjects, connections, initialConnections
  * @param {Function} updateConnections - Function to update connection lines
  * @returns {HTMLElement} The created destination object element
  */
-export function copyObjectToDestination(objectId, objectType, objects, connections, addDestinationConnections, updateConnections) {
+export function copyFileSharesObjectToDestination(objectId, objectType, objects, connections, addDestinationConnections, updateConnections) {
   // Get the source object data
   const sourceObj = objects[`source-${objectId}`];
   
   if (!sourceObj) return null;
   
-  // Map of object types to container IDs
-  const typeToContainerMap = {
-    'user': 'destination-users',
-    'group': 'destination-security-groups',
-    'teams': 'destination-teams',
-    'sharepoint': 'destination-sharepoint',
-    'onedrive': 'destination-onedrive',
-    'm365-group': 'destination-m365-groups',
-    'mailbox': 'destination-mailboxes',
-    'power-automate': 'destination-power-automate',
-    'power-apps': 'destination-power-apps',
-    'power-bi': 'destination-power-bi'
+  // Map of source object types to destination container IDs and types
+  const typeToDestinationMap = {
+    'user': { container: 'destination-users', type: 'user' },
+    'group': { container: 'destination-security-groups', type: 'group' },
+    'file-share': { container: 'destination-sharepoint-sites', type: 'sharepoint-site' }
   };
   
-  // Create destination object with same properties but set migrated to true
-  const destObj = createObjectElement({
+  const destinationInfo = typeToDestinationMap[objectType];
+  
+  if (!destinationInfo) {
+    console.warn(`No destination mapping found for type: ${objectType}`);
+    return null;
+  }
+  
+  // Create destination object with transformed properties
+  const destObj = createFileSharesObjectElement({
     ...sourceObj,
     environment: 'destination',
-    migrated: true  // Set migrated to true for destination objects
+    type: destinationInfo.type,
+    migrated: true,
+    // Transform file share to SharePoint site
+    ...(objectType === 'file-share' && {
+      icon: 'fa-share-alt',
+      color: '#4caf50'
+    })
   }, objects);
   
   // Add to appropriate destination bucket
-  const containerSelector = typeToContainerMap[objectType];
-  const container = document.getElementById(containerSelector);
+  const container = document.getElementById(destinationInfo.container);
   if (container) {
     // First, hide the destination object (we'll show it after animation)
     destObj.style.opacity = '0';
@@ -192,7 +190,7 @@ export function copyObjectToDestination(objectId, objectType, objects, connectio
       }, 1200); // Match this with animation duration
     }
   } else {
-    console.warn(`Destination container not found: ${containerSelector} for type: ${objectType}`);
+    console.warn(`Destination container not found: ${destinationInfo.container} for type: ${objectType}`);
     return null;
   }
   

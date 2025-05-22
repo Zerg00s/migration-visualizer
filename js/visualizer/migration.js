@@ -1,8 +1,10 @@
 /**
  * Migration functionality for objects
  */
-import { showNotification } from '../utils/helpers.js';
 import { copyObjectToDestination } from './objects.js';
+import { copyFileSharesObjectToDestination } from '../file-shares/file-shares-objects.js';
+import { copySharePointOnPremObjectToDestination } from '../sharepoint-onprem/sharepoint-onprem-objects.js';
+import { copyGoogleWorkspaceObjectToDestination } from '../google-workspace/google-workspace-objects.js';
 
 /**
  * Migrate selected objects to destination
@@ -12,6 +14,7 @@ import { copyObjectToDestination } from './objects.js';
  * @param {Function} addDestinationConnections - Function to add connections
  * @param {Function} updateConnections - Function to update connections
  * @param {Function} clearSelection - Function to clear selection
+ * @param {string} migrationType - Type of migration ('tenant-to-tenant' or 'file-shares')
  */
 export function migrateSelectedObjects(
   selectedObjects, 
@@ -19,7 +22,8 @@ export function migrateSelectedObjects(
   connections, 
   addDestinationConnections, 
   updateConnections, 
-  clearSelection
+  clearSelection,
+  migrationType = 'tenant-to-tenant'
 ) {
   // Get all selected source objects
   const selectedSourceIds = Array.from(selectedObjects)
@@ -27,6 +31,15 @@ export function migrateSelectedObjects(
     .map(id => id.split('-')[1]);
   
   if (selectedSourceIds.length === 0) return;
+  
+  // Choose the appropriate copy function based on migration type
+  const copyFunction = migrationType === 'file-shares' 
+    ? copyFileSharesObjectToDestination 
+    : migrationType === 'sharepoint-onprem'
+    ? copySharePointOnPremObjectToDestination
+    : migrationType === 'google-workspace'
+    ? copyGoogleWorkspaceObjectToDestination
+    : copyObjectToDestination;
   
   // Group by type
   const objectsByType = {};
@@ -58,8 +71,8 @@ export function migrateSelectedObjects(
         
         // Use setTimeout to stagger the migrations
         setTimeout(() => {
-          // Create the destination object
-          const destObj = copyObjectToDestination(
+          // Create the destination object using the appropriate function
+          const destObj = copyFunction(
             id, 
             type, 
             objects, 
@@ -98,24 +111,8 @@ export function migrateSelectedObjects(
               }
             }
             
-            // If this is the last object, show notification and clear selection
+            // If this is the last object, clear selection
             if (migratedCount === selectedSourceIds.length) {
-              // Show notification
-              showNotification(`Migrated ${migratedCount} object${migratedCount > 1 ? 's' : ''}`, 'success');
-              
-              // Update selection counter
-              const selectedCount = document.getElementById('selected-count');
-              if (selectedCount) {
-                selectedCount.textContent = '0';
-              }
-              
-              // Update selection counter visibility
-              const selectionCounter = document.getElementById('selection-counter');
-              if (selectionCounter) {
-                selectionCounter.style.opacity = '0.5';
-                selectionCounter.style.transform = 'scale(0.95)';
-              }
-              
               // Clear selection
               clearSelection();
             }
@@ -131,9 +128,8 @@ export function migrateSelectedObjects(
     });
   });
   
-  // If all objects were already migrated, show notification immediately
+  // If all objects were already migrated, clear selection immediately
   if (migratedCount === 0) {
-    showNotification('All selected objects already exist in destination', 'warning');
     clearSelection();
   }
 }
@@ -204,7 +200,4 @@ export function resetVisualization(
   
   // Update connections visualization
   updateConnections();
-  
-  // Show notification
-  showNotification('Visualization reset to initial state', 'success');
 }

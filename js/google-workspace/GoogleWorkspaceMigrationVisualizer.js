@@ -1,21 +1,21 @@
 /**
- * Tenant-to-Tenant Migration Visualizer
- * Main controller class
+ * Google Workspace Migration Visualizer
+ * Main controller class for Google Workspace to Microsoft 365 migration
  */
 import { throttle } from '../utils/helpers.js';
-import { loadMigrationData, getAllObjects, getAllConnections } from '../data/data-loader.js';
-import { createInitialObjects } from './objects.js';
-import { updateConnections, drawConnection, addDestinationConnections } from './connections.js';
-import { toggleObjectSelection, updateObjectDetails } from './selection.js';
-import { migrateSelectedObjects, resetVisualization } from './migration.js';
-import { animateInitialRender } from './animations.js';
-import { SimpleAreaSelection } from './selection-box/SimpleAreaSelection.js';
+import { loadGoogleWorkspaceData, getAllGoogleWorkspaceObjects, getAllGoogleWorkspaceConnections } from '../data/google-workspace-data-loader.js';
+import { createInitialGoogleWorkspaceObjects } from './google-workspace-objects.js';
+import { updateConnections, drawConnection, addDestinationConnections } from '../visualizer/connections.js';
+import { toggleObjectSelection, updateObjectDetails } from '../visualizer/selection.js';
+import { migrateSelectedObjects, resetVisualization } from '../visualizer/migration.js';
+import { animateInitialRender } from '../visualizer/animations.js';
+import { SimpleAreaSelection } from '../visualizer/selection-box/SimpleAreaSelection.js';
 
 /**
- * MigrationVisualizer class
- * Handles the interactive visualization of migration elements
+ * GoogleWorkspaceMigrationVisualizer class
+ * Handles the interactive visualization of Google Workspace migration elements
  */
-export class MigrationVisualizer {
+export class GoogleWorkspaceMigrationVisualizer {
   constructor() {
     // State
     this.objects = {};
@@ -48,15 +48,15 @@ export class MigrationVisualizer {
       const svgContainer = document.getElementById('svg-container');
       this.svg = d3.select('#connections-svg');
       
-      // Load migration data
-      this.migrationData = await loadMigrationData();
+      // Load Google Workspace migration data
+      this.migrationData = await loadGoogleWorkspaceData();
       
       // Extract objects and connections
-      const allObjects = getAllObjects(this.migrationData);
-      const allConnections = getAllConnections(this.migrationData);
+      const allObjects = getAllGoogleWorkspaceObjects(this.migrationData);
+      const allConnections = getAllGoogleWorkspaceConnections(this.migrationData);
       
       // Create objects in source environment
-      createInitialObjects(
+      createInitialGoogleWorkspaceObjects(
         allObjects,
         this.connections, 
         allConnections, 
@@ -88,8 +88,8 @@ export class MigrationVisualizer {
       // Animate the initial render
       animateInitialRender();
     } catch (error) {
-      console.error('Failed to initialize visualizer:', error);
-      this.showError('Failed to load migration data. Please try refreshing the page.');
+      console.error('Failed to initialize Google Workspace visualizer:', error);
+      this.showError('Failed to load Google Workspace migration data. Please try refreshing the page.');
     } finally {
       // Hide loading indicator
       this.showLoading(false);
@@ -195,18 +195,6 @@ export class MigrationVisualizer {
       // Update connections
       this.updateConnections();
     }, 200));
-    
-    // Debug button
-    const debugSvgBtn = document.getElementById('debug-show-svg');
-    if (debugSvgBtn) {
-      debugSvgBtn.parentNode.removeChild(debugSvgBtn); // Remove debug button
-    }
-    
-    // Remove debug test selection box button as well
-    const testSelectionBoxBtn = document.getElementById('test-selection-box');
-    if (testSelectionBoxBtn) {
-      testSelectionBoxBtn.parentNode.removeChild(testSelectionBoxBtn);
-    }
   }
   
   // Method implementations that delegate to the imported functionality
@@ -269,7 +257,8 @@ export class MigrationVisualizer {
       this.connections,
       (objectId) => this.addDestinationConnections(objectId),
       () => this.updateConnections(),
-      () => this.clearSelection()
+      () => this.clearSelection(),
+      'google-workspace'
     );
   }
   
@@ -278,7 +267,7 @@ export class MigrationVisualizer {
    */
   resetVisualization() {
     if (this.migrationData) {
-      const allConnections = getAllConnections(this.migrationData);
+      const allConnections = getAllGoogleWorkspaceConnections(this.migrationData);
       
       resetVisualization(
         this.objects,

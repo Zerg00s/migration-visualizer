@@ -28,6 +28,19 @@
     --onedrive-color: #2196f3;
     --m365-color: #ff9800;
     --mailbox-color: #e91e63;
+    --power-automate-color: #0066ff;
+    --power-apps-color: #742774;
+    --power-bi-color: #f2c811;
+    --file-share-color: #795548;
+    --infopath-color: #607d8b;
+    --workflow-color: #9c27b0;
+    --sharepoint-onprem-color: #2e7d32;
+    --google-user-color: #4285f4;
+    --google-group-color: #34a853;
+    --google-mailbox-color: #ea4335;
+    --google-shared-drive-color: #fbbc05;
+    --google-drive-color: #ff6d01;
+    --exchange-online-color: #0078d4;
 }
 
 * {
@@ -88,6 +101,7 @@ a:hover {
 
 .primary-btn:hover {
     background-color: var(--primary-dark);
+    color: var(--text-light);
     transform: translateY(-2px);
     box-shadow: var(--box-shadow);
 }
@@ -99,6 +113,7 @@ a:hover {
 
 .btn-secondary:hover {
     background-color: #6a4aaf;
+    color: var(--text-light);
     transform: translateY(-2px);
     box-shadow: var(--box-shadow);
 }
@@ -133,7 +148,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
-    max-width: 1400px;
+    max-width: 1900px;
     margin: 0 auto;
 }
 
@@ -186,7 +201,7 @@ nav {
 main {
     flex: 1;
     padding: 2rem;
-    max-width: 1400px;
+    max-width: 1900px;
     margin: 0 auto;
     width: 100%;
 }
@@ -298,7 +313,7 @@ main {
 
 @keyframes pulseArrow {
     0% { transform: translateX(0); }
-    50% { transform: translateX(10px); }
+    50% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
 }
 
@@ -376,7 +391,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1400px;
+    max-width: 1900px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -422,24 +437,6 @@ footer {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-}
-
-.selection-counter {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1rem;
-    background-color: var(--bg-light);
-    border-radius: var(--border-radius);
-    color: var(--primary-color);
-    font-weight: 500;
-    transition: var(--transition);
-    opacity: 0.5;
-    transform: scale(0.95);
-}
-
-.selection-counter i {
-    color: var(--primary-color);
 }
 
 .visualizer-content {
@@ -503,7 +500,14 @@ footer {
 
 .bucket-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+/* File shares specific layout */
+.bucket-container.file-shares-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 
@@ -528,7 +532,7 @@ footer {
 
 .source-environment .bucket-content,
 .destination-environment .bucket-content {
-    min-height: 120px;
+    min-height: 160px;
     min-width: 100px;
     display: flex;
     flex-wrap: wrap;
@@ -597,6 +601,23 @@ footer {
 .object-circle.onedrive { background-color: var(--onedrive-color); }
 .object-circle.m365-group { background-color: var(--m365-color); }
 .object-circle.mailbox { background-color: var(--mailbox-color); }
+.object-circle.power-automate { background-color: var(--power-automate-color); }
+.object-circle.power-apps { background-color: var(--power-apps-color); }
+.object-circle.power-bi { background-color: var(--power-bi-color); }
+.object-circle.file-share { background-color: var(--file-share-color); }
+.object-circle.sharepoint-site { background-color: var(--sharepoint-color); }
+.object-circle.infopath-form { background-color: var(--infopath-color); }
+.object-circle.workflow { background-color: var(--workflow-color); }
+.object-circle.sharepoint-onprem { background-color: var(--sharepoint-onprem-color); }
+.object-circle.sharepoint-online { background-color: var(--sharepoint-color); }
+.object-circle.google-user { background-color: var(--google-user-color); }
+.object-circle.google-group { background-color: var(--google-group-color); }
+.object-circle.google-mailbox { background-color: var(--google-mailbox-color); }
+.object-circle.google-shared-drive { background-color: var(--google-shared-drive-color); }
+.object-circle.google-drive { background-color: var(--google-drive-color); }
+.object-circle.entra-user { background-color: var(--user-color); }
+.object-circle.entra-group { background-color: var(--group-color); }
+.object-circle.exchange-online { background-color: var(--exchange-online-color); }
 
 .object-tooltip {
     position: absolute;
@@ -643,22 +664,22 @@ footer {
 }
 
 .connection-line {
-    stroke-width: 2;
+    stroke-width: 1;
     stroke: var(--primary-color);
-    opacity: 0.8;
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    opacity: 0.3;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
     transition: stroke-dasharray 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
 }
 
 .connection-line.cross-environment {
     stroke-dasharray: 5, 3; /* Create dashed line effect for cross-environment connections */
     stroke: var(--secondary-color);
-    opacity: 0.9; /* Make cross-environment connections slightly more visible */
+    opacity: 0.4; /* Make cross-environment connections slightly more visible */
 }
 
 .connection-line.highlighted {
-    stroke-width: 3;
-    opacity: 1;
+    stroke-width: 2;
+    opacity: 0.7;
     stroke: var(--secondary-color);
 }
 

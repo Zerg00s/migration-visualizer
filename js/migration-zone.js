@@ -5,10 +5,9 @@
 
 export function initializeMigrationZone() {
     const migrationZone = document.getElementById('migration-zone');
-    const migrateButton = document.getElementById('migrate-selected');
     
-    if (!migrationZone || !migrateButton) {
-        console.warn('Migration zone or migrate button not found');
+    if (!migrationZone) {
+        console.warn('Migration zone not found');
         return;
     }
     
@@ -29,7 +28,6 @@ function handleMigrationZoneClick(event) {
     event.preventDefault();
     
     const migrationZone = event.currentTarget;
-    const migrateButton = document.getElementById('migrate-selected');
     
     // Check if we have selected objects
     if (!migrationZone.classList.contains('has-selection')) {
@@ -41,13 +39,16 @@ function handleMigrationZoneClick(event) {
         return;
     }
     
-    // Trigger the same action as the migrate button
-    if (migrateButton && !migrateButton.disabled) {
+    // Get the visualizer instance and trigger migration directly
+    const selectedObjects = document.querySelectorAll('.object-circle.selected');
+    if (selectedObjects.length > 0) {
         // Add visual feedback
         migrationZone.classList.add('migrating');
         
-        // Trigger migration
-        migrateButton.click();
+        // Trigger migration through the global visualizer instance
+        if (window.migrationVisualizer) {
+            window.migrationVisualizer.migrateSelectedObjects();
+        }
         
         // Remove migrating state after animation
         setTimeout(() => {

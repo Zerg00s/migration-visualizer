@@ -1,7 +1,6 @@
 /**
  * Drag and drop functionality for the Migration Visualizer
  */
-import { showNotification } from '../utils/helpers.js';
 import { copyObjectToDestination } from './objects.js';
 
 /**
@@ -234,12 +233,8 @@ export function handleDrop(dragElement, event, visualizer) {
       
       // Apply drag behavior to the new object
       initDestinationDrag(destObj);
-      
-      // Show success notification
-      showNotification(`${dragElement.getAttribute('data-name')} copied to destination`, 'success');
     } else {
-      // Show error notification
-      showNotification(`${dragElement.getAttribute('data-name')} already exists in destination`, 'warning');
+      // Object already exists in destination - do nothing
     }
   }
 }

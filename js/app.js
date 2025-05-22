@@ -2,7 +2,6 @@
  * Migration Visualizer - Main App JS
  * Global script for all pages
  */
-import { addNotificationStyles } from './utils/helpers.js';
 import { animateHero, animateCards } from './visualizer/animations.js';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -17,9 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Add smooth scrolling for anchor links
   setupSmoothScrolling();
-  
-  // Add notification styles
-  addNotificationStyles();
 });
 
 /**
