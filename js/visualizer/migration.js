@@ -2,9 +2,6 @@
  * Migration functionality for objects
  */
 import { copyObjectToDestination } from './objects.js';
-import { copyFileSharesObjectToDestination } from '../file-shares/file-shares-objects.js';
-import { copySharePointOnPremObjectToDestination } from '../sharepoint-onprem/sharepoint-onprem-objects.js';
-import { copyGoogleWorkspaceObjectToDestination } from '../google-workspace/google-workspace-objects.js';
 
 /**
  * Migrate selected objects to destination
@@ -15,6 +12,7 @@ import { copyGoogleWorkspaceObjectToDestination } from '../google-workspace/goog
  * @param {Function} updateConnections - Function to update connections
  * @param {Function} clearSelection - Function to clear selection
  * @param {string} migrationType - Type of migration ('tenant-to-tenant' or 'file-shares')
+ * @param {Object} visualizer - The visualizer instance (contains type-specific methods)
  */
 export function migrateSelectedObjects(
   selectedObjects, 
@@ -23,7 +21,8 @@ export function migrateSelectedObjects(
   addDestinationConnections, 
   updateConnections, 
   clearSelection,
-  migrationType = 'tenant-to-tenant'
+  migrationType = 'tenant-to-tenant',
+  visualizer = null
 ) {
   // Get all selected source objects
   const selectedSourceIds = Array.from(selectedObjects)
@@ -32,13 +31,9 @@ export function migrateSelectedObjects(
   
   if (selectedSourceIds.length === 0) return;
   
-  // Choose the appropriate copy function based on migration type
-  const copyFunction = migrationType === 'file-shares' 
-    ? copyFileSharesObjectToDestination 
-    : migrationType === 'sharepoint-onprem'
-    ? copySharePointOnPremObjectToDestination
-    : migrationType === 'google-workspace'
-    ? copyGoogleWorkspaceObjectToDestination
+  // Use the visualizer's copy method if available, otherwise use generic copy function
+  const copyFunction = visualizer && visualizer.copyObjectToDestination 
+    ? visualizer.copyObjectToDestination.bind(visualizer)
     : copyObjectToDestination;
   
   // Group by type
@@ -72,14 +67,7 @@ export function migrateSelectedObjects(
         // Use setTimeout to stagger the migrations
         setTimeout(() => {
           // Create the destination object using the appropriate function
-          const destObj = copyFunction(
-            id, 
-            type, 
-            objects, 
-            connections, 
-            addDestinationConnections,
-            updateConnections
-          );
+          const destObj = copyFunction(id, type);
           
           if (destObj) {
             migratedCount++;

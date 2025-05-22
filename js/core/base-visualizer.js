@@ -304,7 +304,8 @@ export class BaseVisualizer {
       (objectId) => this.addDestinationConnections(objectId),
       () => this.updateConnections(),
       () => this.clearSelection(),
-      this.config.migrationType
+      this.config.migrationType,
+      this // Pass the visualizer instance
     );
   }
   

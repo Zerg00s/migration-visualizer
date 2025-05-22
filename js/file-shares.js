@@ -2,8 +2,8 @@
  * File Shares Migration Visualizer
  * Entry point for the file shares migration visualization page
  */
-import { FileSharesVisualizer } from './migrations/file-shares/FileSharesVisualizer.js';
-import { visualizerRegistry } from './core/VisualizerRegistry.js';
+import { FileSharesVisualizer } from './visualizers/file-shares.js';
+import { visualizerRegistry } from './core/visualizer-registry.js';
 import { initializeMigrationZone, adjustArrowsForScreenSize } from './migration-zone.js';
 
 // Register the visualizer

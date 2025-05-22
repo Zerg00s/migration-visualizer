@@ -2,11 +2,11 @@
  * App Initialization
  * Central initialization and registration of all visualizers
  */
-import { visualizerRegistry } from './VisualizerRegistry.js';
-import { TenantToTenantVisualizer } from '../migrations/tenant-to-tenant/TenantToTenantVisualizer.js';
-import { FileSharesVisualizer } from '../migrations/file-shares/FileSharesVisualizer.js';
-import { SharePointOnPremVisualizer } from '../migrations/sharepoint-onprem/SharePointOnPremVisualizer.js';
-import { GoogleWorkspaceVisualizer } from '../migrations/google-workspace/GoogleWorkspaceVisualizer.js';
+import { visualizerRegistry } from './visualizer-registry.js';
+import { TenantToTenantVisualizer } from '../visualizers/tenant-to-tenant.js';
+import { FileSharesVisualizer } from '../visualizers/file-shares.js';
+import { SharePointOnPremVisualizer } from '../visualizers/sharepoint-onprem.js';
+import { GoogleWorkspaceVisualizer } from '../visualizers/google-workspace.js';
 
 /**
  * Register all available visualizers

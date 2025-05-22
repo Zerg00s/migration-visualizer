@@ -221,18 +221,26 @@ export function handleDrop(dragElement, event, visualizer) {
     const existingDestination = document.querySelector(`#destination-${elementId}`);
     
     if (!existingDestination) {
-      // Copy the object to destination
-      const destObj = copyObjectToDestination(
-        elementId, 
-        elementType, 
-        visualizer.objects, 
-        visualizer.connections, 
-        visualizer.addDestinationConnections.bind(visualizer), 
-        visualizer.updateConnections.bind(visualizer)
-      );
+      // Use the visualizer's copy method if available
+      let destObj;
+      if (visualizer && visualizer.copyObjectToDestination) {
+        destObj = visualizer.copyObjectToDestination(elementId, elementType);
+      } else {
+        // Fallback to generic copy function
+        destObj = copyObjectToDestination(
+          elementId, 
+          elementType, 
+          visualizer.objects, 
+          visualizer.connections, 
+          visualizer.addDestinationConnections.bind(visualizer), 
+          visualizer.updateConnections.bind(visualizer)
+        );
+      }
       
-      // Apply drag behavior to the new object
-      initDestinationDrag(destObj);
+      // Apply drag behavior to the new object if created
+      if (destObj) {
+        initDestinationDrag(destObj);
+      }
     } else {
       // Object already exists in destination - do nothing
     }

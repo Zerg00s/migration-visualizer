@@ -2,8 +2,8 @@
  * Tenant-to-Tenant Migration Visualizer
  * Entry point for the tenant-to-tenant migration visualization page
  */
-import { TenantToTenantVisualizer } from './migrations/tenant-to-tenant/TenantToTenantVisualizer.js';
-import { visualizerRegistry } from './core/VisualizerRegistry.js';
+import { TenantToTenantVisualizer } from './visualizers/tenant-to-tenant.js';
+import { visualizerRegistry } from './core/visualizer-registry.js';
 import { initializeMigrationZone, adjustArrowsForScreenSize } from './migration-zone.js';
 
 // Register the visualizer

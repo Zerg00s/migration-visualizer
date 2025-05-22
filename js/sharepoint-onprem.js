@@ -2,8 +2,8 @@
  * SharePoint On-Premises Migration Visualizer
  * Entry point for the SharePoint on-prem migration visualization page
  */
-import { SharePointOnPremVisualizer } from './migrations/sharepoint-onprem/SharePointOnPremVisualizer.js';
-import { visualizerRegistry } from './core/VisualizerRegistry.js';
+import { SharePointOnPremVisualizer } from './visualizers/sharepoint-onprem.js';
+import { visualizerRegistry } from './core/visualizer-registry.js';
 import { initializeMigrationZone, adjustArrowsForScreenSize } from './migration-zone.js';
 
 // Register the visualizer

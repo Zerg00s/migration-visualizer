@@ -2,8 +2,8 @@
  * Google Workspace Migration Visualizer
  * Entry point for the Google Workspace migration visualization page
  */
-import { GoogleWorkspaceVisualizer } from './migrations/google-workspace/GoogleWorkspaceVisualizer.js';
-import { visualizerRegistry } from './core/VisualizerRegistry.js';
+import { GoogleWorkspaceVisualizer } from './visualizers/google-workspace.js';
+import { visualizerRegistry } from './core/visualizer-registry.js';
 import { initializeMigrationZone, adjustArrowsForScreenSize } from './migration-zone.js';
 
 // Register the visualizer
