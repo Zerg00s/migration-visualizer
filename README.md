@@ -8,6 +8,10 @@ An interactive web application for visualizing Microsoft 365 migration scenarios
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![Font Awesome](https://img.shields.io/badge/Font%20Awesome-339AF0?logo=fontawesome&logoColor=white)
 
+## [🔍 Open Migration Visualizer](https://zerg00s.github.io/migration-visualizer)
+
+![Sample Screenshot](IMG/image.png)
+
 ## 👨‍💻 Author
 
 **By Denis Molodtsov with 💗**
