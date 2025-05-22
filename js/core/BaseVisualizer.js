@@ -1,22 +1,25 @@
 /**
- * Google Workspace Migration Visualizer
- * Main controller class for Google Workspace to Microsoft 365 migration
+ * BaseVisualizer - Abstract base class for all migration visualizers
+ * Provides common functionality and enforces consistent interface
  */
 import { throttle } from '../utils/helpers.js';
-import { loadGoogleWorkspaceData, getAllGoogleWorkspaceObjects, getAllGoogleWorkspaceConnections } from '../data/google-workspace-data-loader.js';
-import { createInitialGoogleWorkspaceObjects } from './google-workspace-objects.js';
+import { animateInitialRender } from '../visualizer/animations.js';
+import { SimpleAreaSelection } from '../visualizer/selection-box/SimpleAreaSelection.js';
 import { updateConnections, drawConnection, addDestinationConnections } from '../visualizer/connections.js';
 import { toggleObjectSelection, updateObjectDetails } from '../visualizer/selection.js';
 import { migrateSelectedObjects, resetVisualization } from '../visualizer/migration.js';
-import { animateInitialRender } from '../visualizer/animations.js';
-import { SimpleAreaSelection } from '../visualizer/selection-box/SimpleAreaSelection.js';
 
-/**
- * GoogleWorkspaceMigrationVisualizer class
- * Handles the interactive visualization of Google Workspace migration elements
- */
-export class GoogleWorkspaceMigrationVisualizer {
-  constructor() {
+export class BaseVisualizer {
+  constructor(config = {}) {
+    // Configuration
+    this.config = {
+      dataFile: '',
+      migrationType: '',
+      enableSelectionBox: true,
+      enableAnimations: true,
+      ...config
+    };
+    
     // State
     this.objects = {};
     this.selectedObjects = new Set();
@@ -27,13 +30,32 @@ export class GoogleWorkspaceMigrationVisualizer {
     
     // DOM Elements
     this.svg = null;
-    this.toggleConnectionsBtn = document.getElementById('toggle-connections');
-    this.resetBtn = document.getElementById('reset');
-    this.objectDetailsContent = document.getElementById('object-details-content');
-    this.loadingIndicator = document.getElementById('loading-indicator');
+    this.toggleConnectionsBtn = null;
+    this.resetBtn = null;
+    this.objectDetailsContent = null;
+    this.loadingIndicator = null;
     
     // Selection box
     this.selectionBox = null;
+  }
+  
+  /**
+   * Abstract methods to be implemented by subclasses
+   */
+  async loadData() {
+    throw new Error('loadData() must be implemented by subclass');
+  }
+  
+  extractObjects(data) {
+    throw new Error('extractObjects() must be implemented by subclass');
+  }
+  
+  extractConnections(data) {
+    throw new Error('extractConnections() must be implemented by subclass');
+  }
+  
+  createObjects(objects, connections) {
+    throw new Error('createObjects() must be implemented by subclass');
   }
   
   /**
@@ -48,20 +70,18 @@ export class GoogleWorkspaceMigrationVisualizer {
       const svgContainer = document.getElementById('svg-container');
       this.svg = d3.select('#connections-svg');
       
-      // Load Google Workspace migration data
-      this.migrationData = await loadGoogleWorkspaceData();
+      // Initialize DOM elements
+      this.initializeDOMElements();
+      
+      // Load migration data
+      this.migrationData = await this.loadData();
       
       // Extract objects and connections
-      const allObjects = getAllGoogleWorkspaceObjects(this.migrationData);
-      const allConnections = getAllGoogleWorkspaceConnections(this.migrationData);
+      const allObjects = this.extractObjects(this.migrationData);
+      const allConnections = this.extractConnections(this.migrationData);
       
       // Create objects in source environment
-      createInitialGoogleWorkspaceObjects(
-        allObjects,
-        this.connections, 
-        allConnections, 
-        this.objects
-      );
+      this.createObjects(allObjects, allConnections);
       
       // Set up event listeners
       this.setupEventListeners();
@@ -73,27 +93,48 @@ export class GoogleWorkspaceMigrationVisualizer {
       this.updateConnections();
       
       // Add click handler to visualizer main to clear selection on background click
-      document.querySelector('.visualizer-main').addEventListener('click', (e) => {
-        // Only clear if clicking directly on the background, not on objects or controls
-        if (e.target.classList.contains('visualizer-main') || 
-            e.target.classList.contains('visualizer-header') ||
-            e.target.classList.contains('migration-container')) {
-          this.clearSelection();
-        }
-      });
+      this.setupBackgroundClickHandler();
       
       // Initialize selection box
-      this.initSelectionBox();
+      if (this.config.enableSelectionBox) {
+        this.initSelectionBox();
+      }
       
       // Animate the initial render
-      animateInitialRender();
+      if (this.config.enableAnimations) {
+        animateInitialRender();
+      }
     } catch (error) {
-      console.error('Failed to initialize Google Workspace visualizer:', error);
-      this.showError('Failed to load Google Workspace migration data. Please try refreshing the page.');
+      console.error(`Failed to initialize ${this.config.migrationType} visualizer:`, error);
+      this.showError('Failed to load migration data. Please try refreshing the page.');
     } finally {
       // Hide loading indicator
       this.showLoading(false);
     }
+  }
+  
+  /**
+   * Initialize DOM element references
+   */
+  initializeDOMElements() {
+    this.toggleConnectionsBtn = document.getElementById('toggle-connections');
+    this.resetBtn = document.getElementById('reset');
+    this.objectDetailsContent = document.getElementById('object-details-content');
+    this.loadingIndicator = document.getElementById('loading-indicator');
+  }
+  
+  /**
+   * Set up background click handler
+   */
+  setupBackgroundClickHandler() {
+    document.querySelector('.visualizer-main').addEventListener('click', (e) => {
+      // Only clear if clicking directly on the background, not on objects or controls
+      if (e.target.classList.contains('visualizer-main') || 
+          e.target.classList.contains('visualizer-header') ||
+          e.target.classList.contains('migration-container')) {
+        this.clearSelection();
+      }
+    });
   }
   
   /**
@@ -162,6 +203,21 @@ export class GoogleWorkspaceMigrationVisualizer {
     });
     
     // Click handler for object selection
+    this.setupObjectClickHandlers();
+    
+    // Window resize handler
+    window.addEventListener('resize', throttle(() => {
+      // Resize SVG based on container
+      this.adjustSvgSize();
+      // Update connections
+      this.updateConnections();
+    }, 200));
+  }
+  
+  /**
+   * Set up click handlers for objects
+   */
+  setupObjectClickHandlers() {
     document.querySelectorAll('.bucket-content').forEach(bucket => {
       bucket.addEventListener('click', (e) => {
         const objectElement = e.target.closest('.object-circle');
@@ -187,17 +243,7 @@ export class GoogleWorkspaceMigrationVisualizer {
         }
       });
     });
-    
-    // Window resize handler
-    window.addEventListener('resize', throttle(() => {
-      // Resize SVG based on container
-      this.adjustSvgSize();
-      // Update connections
-      this.updateConnections();
-    }, 200));
   }
-  
-  // Method implementations that delegate to the imported functionality
   
   /**
    * Update connections visualization
@@ -258,7 +304,7 @@ export class GoogleWorkspaceMigrationVisualizer {
       (objectId) => this.addDestinationConnections(objectId),
       () => this.updateConnections(),
       () => this.clearSelection(),
-      'google-workspace'
+      this.config.migrationType
     );
   }
   
@@ -267,7 +313,7 @@ export class GoogleWorkspaceMigrationVisualizer {
    */
   resetVisualization() {
     if (this.migrationData) {
-      const allConnections = getAllGoogleWorkspaceConnections(this.migrationData);
+      const allConnections = this.extractConnections(this.migrationData);
       
       resetVisualization(
         this.objects,

@@ -1,20 +1,35 @@
 /**
  * SharePoint On-Premises Migration Visualizer
- * Main entry point for the SharePoint on-premises migration page
+ * Entry point for the SharePoint on-prem migration visualization page
  */
-import { SharePointOnPremMigrationVisualizer } from './sharepoint-onprem/SharePointOnPremMigrationVisualizer.js';
+import { SharePointOnPremVisualizer } from './migrations/sharepoint-onprem/SharePointOnPremVisualizer.js';
+import { visualizerRegistry } from './core/VisualizerRegistry.js';
 import { initializeMigrationZone, adjustArrowsForScreenSize } from './migration-zone.js';
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Initialize the SharePoint on-premises visualizer
-  const sharePointOnPremVisualizer = new SharePointOnPremMigrationVisualizer();
-  
-  // Make it globally available for migration zone
-  window.migrationVisualizer = sharePointOnPremVisualizer;
-  
-  sharePointOnPremVisualizer.init();
-  
-  // Initialize migration zone
-  initializeMigrationZone();
-  adjustArrowsForScreenSize();
+// Register the visualizer
+visualizerRegistry.register('sharepoint-onprem', SharePointOnPremVisualizer);
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Create and initialize the visualizer
+    const visualizer = visualizerRegistry.create('sharepoint-onprem');
+    
+    // Make it globally available for migration zone (temporary for compatibility)
+    window.migrationVisualizer = visualizer;
+    
+    // Initialize the visualizer
+    await visualizer.init();
+    
+    // Initialize migration zone
+    initializeMigrationZone();
+    adjustArrowsForScreenSize();
+    
+    // Make visualizer available globally for debugging
+    if (window.DEBUG || localStorage.getItem('debug') === 'true') {
+      window.visualizer = visualizer;
+    }
+  } catch (error) {
+    console.error('Failed to initialize SharePoint on-prem visualizer:', error);
+  }
 });
