@@ -51,13 +51,10 @@ export class MigrationVisualizer {
       
       // Load migration data
       this.migrationData = await loadMigrationData();
-      console.log('Loaded migration data:', this.migrationData);
       
       // Extract objects and connections
       const allObjects = getAllObjects(this.migrationData);
-      console.log('All objects:', allObjects);
       const allConnections = getAllConnections(this.migrationData);
-      console.log('All connections:', allConnections);
       
       // Create objects in source environment
       createInitialObjects(
@@ -208,104 +205,13 @@ export class MigrationVisualizer {
     // Debug button
     const debugSvgBtn = document.getElementById('debug-show-svg');
     if (debugSvgBtn) {
-      debugSvgBtn.addEventListener('click', () => {
-        const svgContainer = document.getElementById('svg-container');
-        if (svgContainer.style.backgroundColor) {
-          svgContainer.style.backgroundColor = '';
-          svgContainer.style.border = '';
-          this.svg.selectAll('*').attr('stroke-opacity', 0.8);
-        } else {
-          svgContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
-          svgContainer.style.border = '1px solid red';
-          this.svg.selectAll('*').attr('stroke-opacity', 1);
-        }
-      });
+      debugSvgBtn.parentNode.removeChild(debugSvgBtn); // Remove debug button
     }
     
-    // Add a debug button to test selection box
-    const debugContainer = document.querySelector('.debug-panel');
-    if (debugContainer) {
-      const testSelectionBoxBtn = document.createElement('button');
-      testSelectionBoxBtn.id = 'test-selection-box';
-      testSelectionBoxBtn.className = 'btn-secondary';
-      testSelectionBoxBtn.innerHTML = '<i class="fas fa-mouse-pointer"></i> Test Selection';
-      testSelectionBoxBtn.style.marginRight = '10px';
-      
-      testSelectionBoxBtn.addEventListener('click', () => {
-        // Create a real selection box demo
-        const migrationContainer = document.querySelector('.migration-container');
-        if (!migrationContainer) return;
-        
-        // Get container dimensions
-        const containerRect = migrationContainer.getBoundingClientRect();
-        const containerWidth = containerRect.width;
-        const containerHeight = containerRect.height;
-        
-        // Calculate selection box dimensions (cover ~1/3 of the container)
-        const selBoxWidth = containerWidth / 3;
-        const selBoxHeight = containerHeight / 3;
-        
-        // Create a temporary selection element
-        const tempBox = document.createElement('div');
-        tempBox.className = 'simple-selection-box';
-        tempBox.style.position = 'absolute';
-        tempBox.style.left = `${containerWidth / 3}px`;
-        tempBox.style.top = `${containerHeight / 3}px`;
-        tempBox.style.width = `${selBoxWidth}px`;
-        tempBox.style.height = `${selBoxHeight}px`;
-        tempBox.style.border = '3px dashed #ff5722';
-        tempBox.style.backgroundColor = 'rgba(255, 87, 34, 0.2)';
-        tempBox.style.zIndex = '10000';
-        tempBox.style.boxShadow = '0 0 10px rgba(255, 87, 34, 0.5)';
-        tempBox.style.pointerEvents = 'none';
-        tempBox.style.borderRadius = '2px';
-        
-        migrationContainer.appendChild(tempBox);
-        
-        // Highlight objects that would be selected by this box
-        const left = containerWidth / 3;
-        const top = containerHeight / 3;
-        const width = selBoxWidth;
-        const height = selBoxHeight;
-        
-        // Find and highlight objects in this area
-        const objectElements = migrationContainer.querySelectorAll('.object-circle');
-        objectElements.forEach(element => {
-          const rect = element.getBoundingClientRect();
-          
-          // Calculate object position relative to container
-          const objectLeft = rect.left - containerRect.left;
-          const objectTop = rect.top - containerRect.top;
-          
-          // Calculate object center
-          const objectCenterX = objectLeft + (rect.width / 2);
-          const objectCenterY = objectTop + (rect.height / 2);
-          
-          // Check if object center is inside selection
-          if (objectCenterX >= left && objectCenterX <= (left + width) &&
-              objectCenterY >= top && objectCenterY <= (top + height)) {
-            // Add visual feedback
-            element.classList.add('in-selection-box');
-          }
-        });
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-          if (tempBox.parentNode) {
-            tempBox.parentNode.removeChild(tempBox);
-          }
-          
-          // Clear highlights
-          objectElements.forEach(element => {
-            element.classList.remove('in-selection-box');
-          });
-        }, 3000);
-        
-        console.log('Test selection box created with dimensions:', 
-                   { left, top, width, height, containerRect });
-      });
-      
-      debugContainer.appendChild(testSelectionBoxBtn);
+    // Remove debug test selection box button as well
+    const testSelectionBoxBtn = document.getElementById('test-selection-box');
+    if (testSelectionBoxBtn) {
+      testSelectionBoxBtn.parentNode.removeChild(testSelectionBoxBtn);
     }
   }
   
@@ -485,8 +391,6 @@ export class MigrationVisualizer {
         controlsDiv.appendChild(selectionHelpDiv);
       }
     }
-    
-    console.log('Selection box initialized with SimpleAreaSelection');
   }
   
   /**

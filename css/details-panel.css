@@ -1,77 +1,287 @@
-/* Object detail panel styles */
-.object-details-section {
-  margin-top: 1.5rem;
-  background-color: var(--bg-light);
-  border-radius: var(--border-radius);
-  padding: 1rem;
+/* Professional compact details panel */
+.object-details {
+  font-size: 13px;
+  line-height: 1.3;
 }
 
-.object-details-section h5 {
-  margin-bottom: 1rem;
+.object-details h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--primary-dark);
-  font-size: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
 }
 
-.details-table {
+/* Clean header with consistent alignment */
+.object-details-header {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
 }
 
-.details-row {
+.object-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   display: flex;
-  line-height: 1.4;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-.details-label {
-  width: 120px;
-  font-weight: 500;
-  color: #616161;
-}
+.object-icon.user { background-color: var(--user-color); }
+.object-icon.group { background-color: var(--group-color); }
+.object-icon.sharepoint { background-color: var(--sharepoint-color); }
+.object-icon.teams { background-color: var(--teams-color); }
+.object-icon.onedrive { background-color: var(--onedrive-color); }
+.object-icon.m365-group { background-color: var(--m365-color); }
+.object-icon.mailbox { background-color: var(--mailbox-color); }
 
-.details-value {
+.object-info {
   flex: 1;
 }
 
-/* Connection visualization styles */
-.connection-line {
-  transition: opacity 0.2s ease, stroke-width 0.2s ease;
+.object-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-dark);
 }
 
-.connection-line.highlighted {
-  animation: pulse 2s infinite;
+/* Unified info grid */
+.object-details-grid {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 2px 8px;
+  font-size: 12px;
+  margin-top: 4px;
 }
 
-@keyframes pulse {
-  0% { 
-    stroke-width: 2;
-    opacity: 0.8;
-  }
-  50% { 
-    stroke-width: 3;
-    opacity: 1;
-  }
-  100% { 
-    stroke-width: 2;
-    opacity: 0.8;
-  }
+.detail-label {
+  color: #666;
+  font-weight: 500;
+  text-align: right;
+  padding: 1px 0;
 }
 
-/* Object type color coding in details */
-.details-value .object-type {
-  display: inline-block;
+.detail-value {
+  color: var(--text-dark);
+  font-weight: 400;
+  padding: 1px 0;
+  word-break: break-word;
+}
+
+/* Compact status tags */
+.object-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0;
+}
+
+.meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  margin-right: 5px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
-.details-value .object-type.user { background-color: rgba(100, 181, 246, 0.2); color: var(--user-color); }
-.details-value .object-type.group { background-color: rgba(126, 87, 194, 0.2); color: var(--group-color); }
-.details-value .object-type.sharepoint { background-color: rgba(76, 175, 80, 0.2); color: var(--sharepoint-color); }
-.details-value .object-type.teams { background-color: rgba(103, 58, 183, 0.2); color: var(--teams-color); }
-.details-value .object-type.onedrive { background-color: rgba(33, 150, 243, 0.2); color: var(--onedrive-color); }
-.details-value .object-type.m365-group { background-color: rgba(255, 152, 0, 0.2); color: var(--m365-color); }
-.details-value .object-type.mailbox { background-color: rgba(233, 30, 99, 0.2); color: var(--mailbox-color); }
+.meta-tag i {
+  font-size: 9px;
+}
+
+.meta-tag.migrated {
+  background-color: rgba(67, 160, 71, 0.1);
+  color: #43a047;
+  border: 1px solid rgba(67, 160, 71, 0.3);
+}
+
+.meta-tag.not-migrated {
+  background-color: rgba(255, 183, 77, 0.1);
+  color: #ff9800;
+  border: 1px solid rgba(255, 183, 77, 0.3);
+}
+
+.meta-tag.disabled {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #f44336;
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.meta-tag.readonly {
+  background-color: rgba(103, 58, 183, 0.1);
+  color: #673ab7;
+  border: 1px solid rgba(103, 58, 183, 0.3);
+}
+
+/* Ultra-dense connections section */
+.object-connections {
+  margin-top: 10px;
+}
+
+.object-connections h5 {
+  margin: 0 0 2px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.connections-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  background: white;
+}
+
+.connection-item {
+  display: grid;
+  grid-template-columns: 14px 1fr 30px;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 4px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.connection-item:last-child {
+  border-bottom: none;
+}
+
+.connection-item:hover {
+  background-color: #f8f9fa;
+}
+
+.connection-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 6px;
+  flex-shrink: 0;
+}
+
+.connection-icon.user { background-color: var(--user-color); }
+.connection-icon.group { background-color: var(--group-color); }
+.connection-icon.sharepoint { background-color: var(--sharepoint-color); }
+.connection-icon.teams { background-color: var(--teams-color); }
+.connection-icon.onedrive { background-color: var(--onedrive-color); }
+.connection-icon.m365-group { background-color: var(--m365-color); }
+.connection-icon.mailbox { background-color: var(--mailbox-color); }
+
+.connection-name {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-dark);
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 2px 0;
+}
+
+.connection-type {
+  margin: 0;
+  font-size: 8px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  text-align: right;
+  font-weight: 500;
+}
+
+/* Compact detail sections */
+.object-details-section {
+  margin-top: 12px;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+}
+
+.object-details-section h5 {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.details-table {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 1px 6px;
+  font-size: 11px;
+}
+
+.details-label {
+  color: #666;
+  font-weight: 500;
+  text-align: right;
+}
+
+.details-value {
+  color: var(--text-dark);
+  word-break: break-word;
+}
+
+/* Empty state */
+.object-details p {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+  font-size: 13px;
+}
+
+/* No connections message */
+.no-connections {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 12px;
+  font-size: 11px;
+  background-color: #fafbfc;
+  border: 1px solid #e1e8ed;
+  border-radius: 4px;
+}
+
+/* Scrollbar */
+.object-details::-webkit-scrollbar {
+  width: 3px;
+}
+
+.object-details::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.object-details::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 2px;
+}
+
+.object-details::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}

@@ -442,10 +442,39 @@ footer {
     color: var(--primary-color);
 }
 
+.visualizer-content {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.object-details {
+    width: 350px;
+    min-width: 350px;
+    background-color: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    align-self: flex-start;
+    position: sticky;
+    top: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+}
+
+.object-details h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-dark);
+}
+
+#object-details-content {
+    min-height: 200px;
+}
+
 .migration-container {
     display: flex;
     gap: 2rem;
-    margin-bottom: 2rem;
+    flex: 1;
     position: relative; /* Create positioning context for SVG overlay */
 }
 
@@ -633,24 +662,6 @@ footer {
     stroke: var(--secondary-color);
 }
 
-/* Object Details Panel */
-.object-details {
-    background-color: var(--bg-card);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
-    box-shadow: var(--box-shadow);
-    margin-top: 2rem;
-}
-
-.object-details h3 {
-    margin-bottom: 1rem;
-    color: var(--primary-dark);
-}
-
-#object-details-content {
-    min-height: 100px;
-}
-
 /* Animations */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -685,6 +696,17 @@ footer {
 
 /* Responsive Styles */
 @media (max-width: 1200px) {
+    .visualizer-content {
+        flex-direction: column;
+    }
+    
+    .object-details {
+        width: 100%;
+        position: static;
+        margin-bottom: 2rem;
+        max-height: none;
+    }
+    
     .migration-container {
         flex-direction: column;
         align-items: center;

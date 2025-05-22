@@ -89,6 +89,17 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
     return;
   }
   
+  // Get the proper icon for each object type
+  const iconMap = {
+    'user': 'fa-user',
+    'group': 'fa-users',
+    'sharepoint': 'fa-share-alt',
+    'teams': 'fa-comments',
+    'onedrive': 'fa-cloud',
+    'm365-group': 'fa-sitemap',
+    'mailbox': 'fa-envelope'
+  };
+  
   // Find connections for this object
   const relatedConnections = connections.filter(conn => 
     `${obj.environment}-${conn.source}` === objectId || 
@@ -104,21 +115,25 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
     .map(id => objects[id])
     .filter(obj => !!obj);
   
-  // Build details HTML
+  // Build clean, structured HTML
   let detailsHtml = `
     <div class="object-details-header">
       <div class="object-icon ${obj.type}">
-        <i class="fas ${obj.icon}"></i>
+        <i class="fas ${iconMap[obj.type] || 'fa-cube'}"></i>
       </div>
       <div class="object-info">
         <h4>${obj.name}</h4>
-        <p><strong>Type:</strong> ${obj.type.charAt(0).toUpperCase() + obj.type.slice(1)}</p>
-        <p><strong>Environment:</strong> ${obj.environment.charAt(0).toUpperCase() + obj.environment.slice(1)}</p>
-        ${obj.department ? `<p><strong>Department:</strong> ${obj.department}</p>` : ''}
-        ${obj.email ? `<p><strong>Email:</strong> ${obj.email}</p>` : ''}
-        ${obj.title ? `<p><strong>Title:</strong> ${obj.title}</p>` : ''}
-        ${obj.description ? `<p><strong>Description:</strong> ${obj.description}</p>` : ''}
-        ${obj.url ? `<p><strong>URL:</strong> ${obj.url}</p>` : ''}
+        <div class="object-details-grid">
+          <span class="detail-label">Type:</span>
+          <span class="detail-value">${obj.type.charAt(0).toUpperCase() + obj.type.slice(1).replace('-', ' ')}</span>
+          <span class="detail-label">Env:</span>
+          <span class="detail-value">${obj.environment.charAt(0).toUpperCase() + obj.environment.slice(1)}</span>
+          ${obj.department ? `<span class="detail-label">Dept:</span><span class="detail-value">${obj.department}</span>` : ''}
+          ${obj.email ? `<span class="detail-label">Email:</span><span class="detail-value" style="font-size: 10px;">${obj.email}</span>` : ''}
+          ${obj.title ? `<span class="detail-label">Title:</span><span class="detail-value">${obj.title}</span>` : ''}
+          ${obj.description ? `<span class="detail-label">Desc:</span><span class="detail-value">${obj.description}</span>` : ''}
+          ${obj.url ? `<span class="detail-label">URL:</span><span class="detail-value" style="font-size: 10px; word-break: break-all;">${obj.url}</span>` : ''}
+        </div>
       </div>
     </div>
   `;
@@ -128,16 +143,16 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
   
   if (obj.migrated !== undefined) {
     statusTags += obj.migrated 
-      ? `<div class="meta-tag migrated"><i class="fas fa-check-circle"></i> Migrated</div>` 
-      : `<div class="meta-tag not-migrated"><i class="fas fa-clock"></i> Not Migrated</div>`;
+      ? `<div class="meta-tag migrated"><i class="fas fa-check-circle"></i>Migrated</div>` 
+      : `<div class="meta-tag not-migrated"><i class="fas fa-clock"></i>Pending</div>`;
   }
   
   if (obj.disabled) {
-    statusTags += `<div class="meta-tag disabled"><i class="fas fa-ban"></i> Disabled</div>`;
+    statusTags += `<div class="meta-tag disabled"><i class="fas fa-ban"></i>Disabled</div>`;
   }
   
   if (obj.readOnly) {
-    statusTags += `<div class="meta-tag readonly"><i class="fas fa-lock"></i> Read Only</div>`;
+    statusTags += `<div class="meta-tag readonly"><i class="fas fa-lock"></i>Read Only</div>`;
   }
   
   if (statusTags) {
@@ -147,27 +162,29 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
   // Add connections section
   detailsHtml += `
     <div class="object-connections">
-      <h5>Connections (${connectedObjects.length})</h5>
-      ${connectedObjects.length > 0 ? '<ul class="connections-list">' : '<p>No connections</p>'}
+      <h5>Connected Objects (${connectedObjects.length})</h5>
   `;
   
-  // List connected objects
-  connectedObjects.forEach(connObj => {
-    detailsHtml += `
-      <li class="connection-item">
-        <div class="connection-icon ${connObj.type}">
-          <i class="fas ${connObj.icon}"></i>
-        </div>
-        <div class="connection-info">
-          <p class="connection-name">${connObj.name}</p>
-          <p class="connection-type">${connObj.type.charAt(0).toUpperCase() + connObj.type.slice(1)}</p>
-        </div>
-      </li>
-    `;
-  });
-  
   if (connectedObjects.length > 0) {
+    detailsHtml += '<ul class="connections-list">';
+    
+    // List connected objects in ultra-dense format
+    connectedObjects.forEach(connObj => {
+      const connIcon = iconMap[connObj.type] || 'fa-cube';
+      detailsHtml += `
+        <li class="connection-item">
+          <div class="connection-icon ${connObj.type}">
+            <i class="fas ${connIcon}"></i>
+          </div>
+          <span class="connection-name">${connObj.name}</span>
+          <span class="connection-type">${connObj.type.replace('-', '')}</span>
+        </li>
+      `;
+    });
+    
     detailsHtml += '</ul>';
+  } else {
+    detailsHtml += '<div class="no-connections">No connections</div>';
   }
   
   detailsHtml += '</div>';

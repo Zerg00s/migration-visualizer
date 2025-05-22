@@ -130,8 +130,6 @@ export function createFlyingAnimation(sourceElement, destElement, objectData) {
     }, 500);
     
   }, 1200);
-  
-  return flyingElement;
 }
 
 /**

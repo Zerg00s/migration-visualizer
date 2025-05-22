@@ -109,8 +109,6 @@ export function createInitialObjects(allObjects, connections, initialConnections
       return;
     }
     
-    console.log(`Creating ${objectsByType[type].length} objects of type ${type} in container ${containerSelector}`);
-    
     objectsByType[type].forEach(obj => {
       const sourceObj = createObjectElement({
         ...obj,
