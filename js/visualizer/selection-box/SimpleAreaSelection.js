@@ -51,11 +51,24 @@ export class SimpleAreaSelection {
    * @param {MouseEvent} event - Mouse event
    */
   handleMouseDown(event) {
-    // Only start selection if clicking on the container background or specific elements
+    // Allow selection to start from various container elements
+    // Skip if clicking on interactive elements like buttons or objects
+    if (event.target.closest('.object-circle') ||
+        event.target.closest('button') ||
+        event.target.closest('.controls') ||
+        event.target.closest('.migration-zone') ||
+        event.target.tagName === 'H3' ||
+        event.target.tagName === 'H4') {
+      return;
+    }
+    
+    // Only start selection if clicking on valid selection areas
     if (event.target === this.container || 
         event.target.classList.contains('environment') ||
         event.target.classList.contains('bucket-container') ||
-        event.target.classList.contains('bucket-content')) {
+        event.target.classList.contains('bucket-content') ||
+        event.target.classList.contains('bucket') ||
+        event.target.classList.contains('bucket-title')) {
       
       // Get container bounds
       const containerRect = this.container.getBoundingClientRect();

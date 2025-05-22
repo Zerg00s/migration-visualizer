@@ -37,3 +37,17 @@
 .selection-help i {
   color: #4a89dc;
 }
+
+/* Add cursor styling to indicate selectable areas */
+.bucket-container {
+  cursor: crosshair;
+}
+
+.bucket-container .object-circle {
+  cursor: pointer;
+}
+
+/* Improve the visual feedback for drag selection */
+.bucket-container:active {
+  user-select: none;
+}
