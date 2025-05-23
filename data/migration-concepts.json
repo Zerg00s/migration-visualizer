@@ -1,0 +1,56 @@
+{
+  "migrationConcepts": [
+    {
+      "id": "tenant-to-tenant",
+      "name": "Tenant-to-Tenant Migration",
+      "description": "Microsoft 365 Tenant-to-Tenant migration visualization",
+      "icon": "fa-exchange-alt",
+      "page": "tenant-to-tenant.html",
+      "configFile": "data/migration-concepts/tenant-to-tenant.json"
+    },
+    {
+      "id": "file-shares",
+      "name": "File Shares to M365",
+      "description": "Visualize migration from on-premises file shares to SharePoint Online with AD to Entra ID mapping",
+      "icon": "fa-folder",
+      "page": "file-shares.html",
+      "configFile": "data/migration-concepts/file-shares.json"
+    },
+    {
+      "id": "sharepoint-onprem",
+      "name": "SharePoint On-Prem to M365",
+      "description": "Visualize migration from on-premises SharePoint to Microsoft 365 with InfoPath to Power Apps transformation",
+      "icon": "fa-server",
+      "page": "sharepoint-onprem.html",
+      "configFile": "data/migration-concepts/sharepoint-onprem.json"
+    },
+    {
+      "id": "google-workspace",
+      "name": "Google Workspace to M365",
+      "description": "Visualize migration from Google Workspace to Microsoft 365 with Gmail to Exchange transformation",
+      "icon": "fab fa-google",
+      "page": "google-workspace.html",
+      "configFile": "data/migration-concepts/google-workspace.json"
+    }
+  ],
+  "customConcepts": [
+    {
+      "id": "dropbox-to-onedrive",
+      "name": "Dropbox to OneDrive",
+      "description": "Migrate Dropbox content to OneDrive for Business",
+      "icon": "fab fa-dropbox",
+      "page": "dropbox-to-onedrive.html",
+      "configFile": "data/migration-concepts/dropbox-to-onedrive.json",
+      "status": "example"
+    },
+    {
+      "id": "slack-to-teams",
+      "name": "Slack to Teams",
+      "description": "Migrate Slack workspaces to Microsoft Teams",
+      "icon": "fab fa-slack",
+      "page": "slack-to-teams.html",
+      "configFile": "data/migration-concepts/slack-to-teams.json",
+      "status": "example"
+    }
+  ]
+}

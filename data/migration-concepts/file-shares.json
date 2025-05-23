@@ -1,0 +1,188 @@
+{
+  "id": "file-shares",
+  "name": "File Shares to SharePoint Online",
+  "description": "On-premises file shares to SharePoint Online migration",
+  "dataSource": "data/file-shares-data.json",
+  "sourceEnvironment": {
+    "name": "source",
+    "title": "On-Premises Environment",
+    "description": "On-premises Active Directory and file shares",
+    "buckets": [
+      {
+        "id": "source-users",
+        "title": "AD Users",
+        "objectType": "ad-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "source-security-groups",
+        "title": "AD Security Groups",
+        "objectType": "ad-security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "source-file-shares",
+        "title": "File Shares",
+        "objectType": "file-share",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      }
+    ]
+  },
+  "targetEnvironment": {
+    "name": "destination",
+    "title": "Microsoft 365",
+    "description": "Microsoft 365 cloud environment",
+    "buckets": [
+      {
+        "id": "destination-users",
+        "title": "Entra ID Users",
+        "objectType": "entra-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "destination-security-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "entra-security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "destination-sharepoint-sites",
+        "title": "SharePoint Online Sites",
+        "objectType": "sharepoint-site",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      }
+    ]
+  },
+  "objectTypes": {
+    "ad-user": {
+      "name": "AD User",
+      "pluralName": "AD Users",
+      "icon": "fa-user",
+      "color": "#64b5f6",
+      "dataProperties": {
+        "collection": "Users",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Email", "Title", "Department", "SamAccountName", "Domain"]
+      }
+    },
+    "ad-security-group": {
+      "name": "AD Security Group",
+      "pluralName": "AD Security Groups",
+      "icon": "fa-users",
+      "color": "#7e57c2",
+      "dataProperties": {
+        "collection": "SecurityGroups",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Description", "Members", "SamAccountName", "Domain"]
+      }
+    },
+    "file-share": {
+      "name": "File Share",
+      "pluralName": "File Shares",
+      "icon": "fa-folder",
+      "color": "#795548",
+      "dataProperties": {
+        "collection": "FileShares",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["UNCPath", "Server", "StorageUsed", "FileCount", "ShareType"]
+      }
+    },
+    "entra-user": {
+      "name": "Entra ID User",
+      "pluralName": "Entra ID Users",
+      "icon": "fa-user",
+      "color": "#64b5f6",
+      "dataProperties": {
+        "collection": "Users",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Email", "Title", "Department"]
+      }
+    },
+    "entra-security-group": {
+      "name": "Entra ID Security Group",
+      "pluralName": "Entra ID Security Groups",
+      "icon": "fa-users",
+      "color": "#7e57c2",
+      "dataProperties": {
+        "collection": "SecurityGroups",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Description", "Members"]
+      }
+    },
+    "sharepoint-site": {
+      "name": "SharePoint Site",
+      "pluralName": "SharePoint Sites",
+      "icon": "fa-share-alt",
+      "color": "#4caf50",
+      "dataProperties": {
+        "collection": "FileShares",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["StorageUsed", "FileCount"]
+      }
+    }
+  },
+  "mappings": [
+    {
+      "sourceType": "ad-user",
+      "targetType": "entra-user",
+      "targetBucket": "destination-users"
+    },
+    {
+      "sourceType": "ad-security-group",
+      "targetType": "entra-security-group",
+      "targetBucket": "destination-security-groups"
+    },
+    {
+      "sourceType": "file-share",
+      "targetType": "sharepoint-site",
+      "targetBucket": "destination-sharepoint-sites",
+      "transformations": {
+        "icon": "fa-share-alt",
+        "color": "#4caf50"
+      }
+    }
+  ],
+  "connectionRules": [
+    {
+      "type": "membership",
+      "name": "Member of",
+      "from": {
+        "objectType": "ad-user"
+      },
+      "to": {
+        "objectType": "ad-security-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "access",
+      "name": "Has Access",
+      "from": {
+        "objectType": "ad-user"
+      },
+      "to": {
+        "objectType": "file-share",
+        "arrayProperty": "Permissions",
+        "condition": "permission.Principal === from.id"
+      }
+    },
+    {
+      "type": "group-access",
+      "name": "Group Access",
+      "from": {
+        "objectType": "ad-security-group"
+      },
+      "to": {
+        "objectType": "file-share",
+        "arrayProperty": "Permissions",
+        "condition": "permission.Principal === from.id"
+      }
+    }
+  ]
+}

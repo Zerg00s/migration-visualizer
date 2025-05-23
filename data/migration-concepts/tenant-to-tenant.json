@@ -1,0 +1,394 @@
+{
+  "id": "tenant-to-tenant",
+  "name": "Tenant-to-Tenant Migration",
+  "description": "Microsoft 365 Tenant-to-Tenant migration visualization",
+  "dataSource": "data/tenant-to-tenant-data.json",
+  "sourceEnvironment": {
+    "name": "source",
+    "title": "Source Tenant",
+    "description": "The source Microsoft 365 tenant",
+    "buckets": [
+      {
+        "id": "source-users",
+        "title": "Entra ID Users",
+        "objectType": "user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "source-security-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "source-sharepoint",
+        "title": "SharePoint Online",
+        "objectType": "sharepoint",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "source-teams",
+        "title": "Teams",
+        "objectType": "teams",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "source-onedrive",
+        "title": "OneDrive",
+        "objectType": "onedrive",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      },
+      {
+        "id": "source-m365-groups",
+        "title": "M365 Groups",
+        "objectType": "m365-group",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      },
+      {
+        "id": "source-mailboxes",
+        "title": "Mailboxes",
+        "objectType": "mailbox",
+        "layout": { "gridColumn": 1, "gridRow": 3 }
+      },
+      {
+        "id": "source-power-automate",
+        "title": "Power Automate",
+        "objectType": "power-automate",
+        "layout": { "gridColumn": 2, "gridRow": 3 }
+      },
+      {
+        "id": "source-power-apps",
+        "title": "Power Apps",
+        "objectType": "power-apps",
+        "layout": { "gridColumn": 3, "gridRow": 3 }
+      },
+      {
+        "id": "source-power-bi",
+        "title": "Power BI",
+        "objectType": "power-bi",
+        "layout": { "gridColumn": 2, "gridRow": 4 }
+      }
+    ]
+  },
+  "targetEnvironment": {
+    "name": "destination",
+    "title": "Destination Tenant",
+    "description": "The destination Microsoft 365 tenant",
+    "buckets": [
+      {
+        "id": "destination-users",
+        "title": "Entra ID Users",
+        "objectType": "user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "destination-security-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "destination-sharepoint",
+        "title": "SharePoint Online",
+        "objectType": "sharepoint",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "destination-teams",
+        "title": "Teams",
+        "objectType": "teams",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "destination-onedrive",
+        "title": "OneDrive",
+        "objectType": "onedrive",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      },
+      {
+        "id": "destination-m365-groups",
+        "title": "M365 Groups",
+        "objectType": "m365-group",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      },
+      {
+        "id": "destination-mailboxes",
+        "title": "Mailboxes",
+        "objectType": "mailbox",
+        "layout": { "gridColumn": 1, "gridRow": 3 }
+      },
+      {
+        "id": "destination-power-automate",
+        "title": "Power Automate",
+        "objectType": "power-automate",
+        "layout": { "gridColumn": 2, "gridRow": 3 }
+      },
+      {
+        "id": "destination-power-apps",
+        "title": "Power Apps",
+        "objectType": "power-apps",
+        "layout": { "gridColumn": 3, "gridRow": 3 }
+      },
+      {
+        "id": "destination-power-bi",
+        "title": "Power BI",
+        "objectType": "power-bi",
+        "layout": { "gridColumn": 2, "gridRow": 4 }
+      }
+    ]
+  },
+  "objectTypes": {
+    "user": {
+      "name": "User",
+      "pluralName": "Users",
+      "icon": "fa-user",
+      "color": "#64b5f6",
+      "dataProperties": {
+        "collection": "Users",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Email", "Title", "Department", "Disabled"]
+      }
+    },
+    "security-group": {
+      "name": "Security Group",
+      "pluralName": "Security Groups",
+      "icon": "fa-users",
+      "color": "#7e57c2",
+      "dataProperties": {
+        "collection": "SecurityGroups",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Description", "Members"]
+      }
+    },
+    "sharepoint": {
+      "name": "SharePoint Site",
+      "pluralName": "SharePoint Sites",
+      "icon": "fa-share-alt",
+      "color": "#4caf50",
+      "dataProperties": {
+        "collection": "SharePointSites",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["URL", "Owners", "Members", "Visitors"]
+      }
+    },
+    "teams": {
+      "name": "Teams",
+      "pluralName": "Teams",
+      "icon": "fa-comments",
+      "color": "#673ab7",
+      "dataProperties": {
+        "collection": "Teams",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Owners", "Members", "Channels"]
+      }
+    },
+    "onedrive": {
+      "name": "OneDrive",
+      "pluralName": "OneDrive",
+      "icon": "fa-cloud",
+      "color": "#2196f3",
+      "dataProperties": {
+        "collection": "OneDrives",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["OwnedBy", "URL", "StorageUsed"]
+      }
+    },
+    "m365-group": {
+      "name": "M365 Group",
+      "pluralName": "M365 Groups",
+      "icon": "fa-users-cog",
+      "color": "#ff9800",
+      "dataProperties": {
+        "collection": "M365Groups",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Email", "Owners", "Members"]
+      }
+    },
+    "mailbox": {
+      "name": "Mailbox",
+      "pluralName": "Mailboxes",
+      "icon": "fa-envelope",
+      "color": "#e91e63",
+      "dataProperties": {
+        "collection": "Mailboxes",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["Email", "OwnedBy", "Type"]
+      }
+    },
+    "power-automate": {
+      "name": "Power Automate Flow",
+      "pluralName": "Power Automate Flows",
+      "icon": "fa-bolt",
+      "color": "#0066ff",
+      "dataProperties": {
+        "collection": "PowerAutomate",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["OwnedBy", "State", "Runs"]
+      }
+    },
+    "power-apps": {
+      "name": "Power App",
+      "pluralName": "Power Apps",
+      "icon": "fa-mobile-alt",
+      "color": "#742774",
+      "dataProperties": {
+        "collection": "PowerApps",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["OwnedBy", "AppType", "Users"]
+      }
+    },
+    "power-bi": {
+      "name": "Power BI Report",
+      "pluralName": "Power BI Reports",
+      "icon": "fa-chart-bar",
+      "color": "#f2c811",
+      "dataProperties": {
+        "collection": "PowerBI",
+        "idField": "id",
+        "nameField": "DisplayName",
+        "additionalFields": ["OwnedBy", "WorkspaceName", "Viewers"]
+      }
+    }
+  },
+  "mappings": [
+    {
+      "sourceType": "user",
+      "targetType": "user"
+    },
+    {
+      "sourceType": "security-group",
+      "targetType": "security-group"
+    },
+    {
+      "sourceType": "sharepoint",
+      "targetType": "sharepoint"
+    },
+    {
+      "sourceType": "teams",
+      "targetType": "teams"
+    },
+    {
+      "sourceType": "onedrive",
+      "targetType": "onedrive"
+    },
+    {
+      "sourceType": "m365-group",
+      "targetType": "m365-group"
+    },
+    {
+      "sourceType": "mailbox",
+      "targetType": "mailbox"
+    },
+    {
+      "sourceType": "power-automate",
+      "targetType": "power-automate"
+    },
+    {
+      "sourceType": "power-apps",
+      "targetType": "power-apps"
+    },
+    {
+      "sourceType": "power-bi",
+      "targetType": "power-bi"
+    }
+  ],
+  "connectionRules": [
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "mailbox",
+        "property": "OwnedBy"
+      }
+    },
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "onedrive",
+        "property": "OwnedBy"
+      }
+    },
+    {
+      "type": "membership",
+      "name": "Member of",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "security-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "site-owner",
+      "name": "Site Owner",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "sharepoint",
+        "arrayProperty": "Owners"
+      }
+    },
+    {
+      "type": "site-member",
+      "name": "Site Member",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "sharepoint",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "power-automate",
+        "property": "OwnedBy"
+      }
+    },
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "power-apps",
+        "property": "OwnedBy"
+      }
+    },
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "user"
+      },
+      "to": {
+        "objectType": "power-bi",
+        "property": "OwnedBy"
+      }
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://migration-visualizer.com/schemas/migration-concept.json",
+  "title": "Migration Concept Definition",
+  "description": "Schema for defining migration visualization concepts",
+  "type": "object",
+  "required": ["id", "name", "description", "sourceEnvironment", "targetEnvironment", "objectTypes", "mappings"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the migration concept",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name for the migration concept"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the migration concept"
+    },
+    "dataSource": {
+      "type": "string",
+      "description": "Path to the data file containing objects and connections"
+    },
+    "sourceEnvironment": {
+      "$ref": "#/definitions/environment"
+    },
+    "targetEnvironment": {
+      "$ref": "#/definitions/environment"
+    },
+    "objectTypes": {
+      "type": "object",
+      "description": "Definition of all object types used in this migration",
+      "additionalProperties": {
+        "$ref": "#/definitions/objectType"
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "description": "Transformation rules from source to target",
+      "items": {
+        "$ref": "#/definitions/mapping"
+      }
+    },
+    "connectionRules": {
+      "type": "array",
+      "description": "Rules for generating connections between objects",
+      "items": {
+        "$ref": "#/definitions/connectionRule"
+      }
+    },
+    "customStyles": {
+      "type": "string",
+      "description": "Custom CSS styles for this migration concept"
+    }
+  },
+  "definitions": {
+    "environment": {
+      "type": "object",
+      "required": ["name", "title", "buckets"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Internal name for the environment",
+          "enum": ["source", "destination"]
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title for the environment"
+        },
+        "description": {
+          "type": "string"
+        },
+        "buckets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/bucket"
+          }
+        }
+      }
+    },
+    "bucket": {
+      "type": "object",
+      "required": ["id", "title", "objectType"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique bucket identifier",
+          "pattern": "^[a-z-]+-[a-z0-9-]+$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Display title for the bucket"
+        },
+        "objectType": {
+          "type": "string",
+          "description": "Reference to objectType that this bucket contains"
+        },
+        "layout": {
+          "type": "object",
+          "properties": {
+            "gridColumn": {
+              "type": "integer",
+              "description": "Grid column position (1-based)",
+              "minimum": 1
+            },
+            "gridRow": {
+              "type": "integer",
+              "description": "Grid row position (1-based)",
+              "minimum": 1
+            },
+            "width": {
+              "type": "integer",
+              "description": "Width in grid units",
+              "default": 1,
+              "minimum": 1
+            },
+            "height": {
+              "type": "integer",
+              "description": "Height in grid units",
+              "default": 1,
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "objectType": {
+      "type": "object",
+      "required": ["name", "icon", "color"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name for the object type"
+        },
+        "pluralName": {
+          "type": "string",
+          "description": "Plural form of the name"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Font Awesome icon class",
+          "pattern": "^(fa[brs]? )?fa-[a-z0-9-]+$"
+        },
+        "color": {
+          "type": "string",
+          "description": "Hex color code or CSS color variable",
+          "pattern": "^(#[0-9A-Fa-f]{6}|var\\(--[a-z-]+\\))$"
+        },
+        "dataProperties": {
+          "type": "object",
+          "description": "Mapping of data properties",
+          "properties": {
+            "collection": {
+              "type": "string",
+              "description": "Property name in data file for this collection"
+            },
+            "idField": {
+              "type": "string",
+              "default": "id"
+            },
+            "nameField": {
+              "type": "string",
+              "default": "DisplayName"
+            },
+            "additionalFields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "required": ["sourceType", "targetType"],
+      "properties": {
+        "sourceType": {
+          "type": "string",
+          "description": "Source object type"
+        },
+        "targetType": {
+          "type": "string",
+          "description": "Target object type"
+        },
+        "targetBucket": {
+          "type": "string",
+          "description": "Target bucket ID (if different from default)"
+        },
+        "transformations": {
+          "type": "object",
+          "description": "Property transformations during migration",
+          "properties": {
+            "icon": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            },
+            "nameTransform": {
+              "type": "string",
+              "enum": ["none", "append_migrated", "append_modern", "append_powerapp", "append_flow", "append_onedrive", "custom"],
+              "default": "none"
+            },
+            "customTransform": {
+              "type": "string",
+              "description": "Custom transformation function name"
+            }
+          }
+        }
+      }
+    },
+    "connectionRule": {
+      "type": "object",
+      "required": ["type", "from", "to"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Connection type identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name for the connection type"
+        },
+        "from": {
+          "$ref": "#/definitions/connectionEndpoint"
+        },
+        "to": {
+          "$ref": "#/definitions/connectionEndpoint"
+        },
+        "condition": {
+          "type": "string",
+          "description": "JavaScript expression to evaluate if connection should be created"
+        }
+      }
+    },
+    "connectionEndpoint": {
+      "type": "object",
+      "required": ["objectType"],
+      "properties": {
+        "objectType": {
+          "type": "string"
+        },
+        "property": {
+          "type": "string",
+          "description": "Property that contains the reference"
+        },
+        "arrayProperty": {
+          "type": "string",
+          "description": "If the reference is in an array"
+        }
+      }
+    }
+  }
+}

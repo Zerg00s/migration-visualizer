@@ -1,0 +1,119 @@
+{
+  "DropboxUsers": [
+    {
+      "id": "duser_1",
+      "DisplayName": "John Smith",
+      "Email": "john.smith@company.com",
+      "Role": "Admin",
+      "StorageUsed": 45678,
+      "AccountStatus": "Active"
+    },
+    {
+      "id": "duser_2",
+      "DisplayName": "Sarah Johnson",
+      "Email": "sarah.johnson@company.com",
+      "Role": "Member",
+      "StorageUsed": 32145,
+      "AccountStatus": "Active"
+    },
+    {
+      "id": "duser_3",
+      "DisplayName": "Michael Chen",
+      "Email": "michael.chen@company.com",
+      "Role": "Member",
+      "StorageUsed": 67890,
+      "AccountStatus": "Active"
+    },
+    {
+      "id": "duser_4",
+      "DisplayName": "Emily Davis",
+      "Email": "emily.davis@company.com",
+      "Role": "Member",
+      "StorageUsed": 23456,
+      "AccountStatus": "Active"
+    },
+    {
+      "id": "duser_5",
+      "DisplayName": "Robert Wilson",
+      "Email": "robert.wilson@company.com",
+      "Role": "Member",
+      "StorageUsed": 54321,
+      "AccountStatus": "Active"
+    }
+  ],
+  "DropboxTeams": [
+    {
+      "id": "dteam_1",
+      "DisplayName": "Marketing Team",
+      "Description": "Marketing department collaboration",
+      "Members": ["duser_2", "duser_4"],
+      "CreatedDate": "2023-01-15T10:00:00Z"
+    },
+    {
+      "id": "dteam_2",
+      "DisplayName": "Engineering Team",
+      "Description": "Development and engineering collaboration",
+      "Members": ["duser_3", "duser_5"],
+      "CreatedDate": "2023-02-20T11:30:00Z"
+    },
+    {
+      "id": "dteam_3",
+      "DisplayName": "Leadership Team",
+      "Description": "Executive leadership collaboration",
+      "Members": ["duser_1", "duser_2", "duser_3"],
+      "CreatedDate": "2023-01-10T09:00:00Z"
+    }
+  ],
+  "DropboxSharedFolders": [
+    {
+      "id": "dfolder_1",
+      "DisplayName": "Marketing Assets",
+      "Path": "/Marketing Assets",
+      "SharedWith": ["duser_2", "duser_4", "dteam_1"],
+      "AccessLevel": "Editor",
+      "FileCount": 1234,
+      "StorageUsed": 23456,
+      "LastActivity": "2025-05-20T14:30:00Z"
+    },
+    {
+      "id": "dfolder_2",
+      "DisplayName": "Product Development",
+      "Path": "/Product Development",
+      "SharedWith": ["duser_3", "duser_5", "dteam_2"],
+      "AccessLevel": "Editor",
+      "FileCount": 2345,
+      "StorageUsed": 45678,
+      "LastActivity": "2025-05-21T10:15:00Z"
+    },
+    {
+      "id": "dfolder_3",
+      "DisplayName": "Company Policies",
+      "Path": "/Company Policies",
+      "SharedWith": ["dteam_3"],
+      "AccessLevel": "Viewer",
+      "FileCount": 89,
+      "StorageUsed": 1234,
+      "LastActivity": "2025-05-15T16:45:00Z"
+    },
+    {
+      "id": "dfolder_4",
+      "DisplayName": "Project Apollo",
+      "Path": "/Projects/Apollo",
+      "SharedWith": ["duser_1", "duser_3", "duser_5"],
+      "AccessLevel": "Editor",
+      "FileCount": 567,
+      "StorageUsed": 12345,
+      "LastActivity": "2025-05-22T09:00:00Z"
+    },
+    {
+      "id": "dfolder_5",
+      "DisplayName": "Client Presentations",
+      "Path": "/Client Presentations",
+      "SharedWith": ["dteam_1", "dteam_3"],
+      "AccessLevel": "Editor",
+      "FileCount": 234,
+      "StorageUsed": 6789,
+      "LastActivity": "2025-05-19T13:20:00Z"
+    }
+  ]
+}
