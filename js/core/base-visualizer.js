@@ -235,6 +235,9 @@ export class BaseVisualizer {
       bucket.addEventListener('click', (e) => {
         const objectElement = e.target.closest('.object-circle');
         if (objectElement) {
+          // Add click animation for both source and destination objects
+          this.addObjectClickAnimation(objectElement);
+          
           // Handle ctrl/cmd key for multiple selection
           if (!e.ctrlKey && !e.metaKey) {
             // Single selection - clear previous selection unless it's the same object
@@ -256,6 +259,26 @@ export class BaseVisualizer {
         }
       });
     });
+  }
+  
+  /**
+   * Add click animation to objects when clicked
+   * @param {HTMLElement} element - The clicked object element
+   */
+  addObjectClickAnimation(element) {
+    // Remove any existing click highlight
+    element.classList.remove('clicked');
+    
+    // Force a reflow to ensure the class is removed
+    void element.offsetWidth;
+    
+    // Add the click highlight class
+    element.classList.add('clicked');
+    
+    // Remove the class after a short highlight (200ms)
+    setTimeout(() => {
+      element.classList.remove('clicked');
+    }, 200);
   }
   
   /**

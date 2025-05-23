@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tenant-to-Tenant Migration Visualizer (Generic)</title>
+    <title>Migration Visualizer</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/status-indicators.css">
     <link rel="stylesheet" href="css/details-panel.css">
@@ -15,20 +15,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-    <style>
-        /* Dynamic styles for tenant-to-tenant concept */
-        .bucket-container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 1rem;
-        }
-        
-        /* Ensure Power BI is centered in its row */
-        .bucket[data-type="power-bi"] {
-            grid-column: 2;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -43,19 +29,17 @@
                 </div>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="tenant-to-tenant.html">Tenant-to-Tenant</a></li>
-                    <li><a href="file-shares.html">File Shares</a></li>
-                    <li><a href="sharepoint-onprem.html">On-Prem SharePoint</a></li>
-                    <li><a href="google-workspace.html">Google Workspace</a></li>
-                    <li><a href="tenant-to-tenant-generic.html" class="active">Generic Demo</a></li>
+                    <li><a href="tenant-to-tenant-generic.html?concept=tenant-to-tenant" id="nav-tenant-to-tenant">Tenant-to-Tenant</a></li>
+                    <li><a href="tenant-to-tenant-generic.html?concept=file-shares" id="nav-file-shares">File Shares</a></li>
+                    <li><a href="tenant-to-tenant-generic.html?concept=sharepoint-onprem" id="nav-sharepoint-onprem">On-Prem SharePoint</a></li>
+                    <li><a href="tenant-to-tenant-generic.html?concept=google-workspace" id="nav-google-workspace">Google Workspace</a></li>
                 </ul>
             </nav>
         </header>
 
         <main class="visualizer-main">
             <div class="visualizer-header">
-                <h2 id="concept-title">Loading...</h2>
-                <p id="concept-description" style="text-align: center; color: #666; margin-top: 0.5rem;"></p>
+                <h2 id="page-title">Migration Visualizer</h2>
                 
                 <div class="controls">
                     <button id="toggle-connections" class="btn-secondary">
@@ -75,39 +59,13 @@
                     </div>
                 </div>
 
-                <div class="migration-container">
-                    <!-- Source Environment -->
-                    <div class="environment source-environment">
-                        <h3 class="environment-title" id="source-title">Source Environment</h3>
-                        <div class="bucket-container" id="source-buckets">
-                            <!-- Buckets will be dynamically generated -->
-                        </div>
-                    </div>
-                    
-                    <!-- Migration Zone -->
-                    <div class="migration-zone" id="migration-zone">
-                        <div class="migration-arrows-container">
-                            <div class="migration-arrow"><i class="fas fa-arrow-right"></i></div>
-                            <div class="migration-arrow"><i class="fas fa-arrow-right"></i></div>
-                            <div class="migration-arrow"><i class="fas fa-arrow-right"></i></div>
-                            <div class="migration-arrow"><i class="fas fa-arrow-right"></i></div>
-                            <div class="migration-arrow"><i class="fas fa-arrow-right"></i></div>
-                        </div>
-                        <div class="migration-action-text">Click to Migrate Selected Objects</div>
-                    </div>
-                    
-                    <!-- Target Environment -->
-                    <div class="environment destination-environment">
-                        <h3 class="environment-title" id="destination-title">Destination Environment</h3>
-                        <div class="bucket-container" id="destination-buckets">
-                            <!-- Buckets will be dynamically generated -->
-                        </div>
-                    </div>
-                    
-                    <!-- SVG container for connections -->
-                    <div id="svg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                        <svg id="connections-svg" class="connections-layer" width="100%" height="100%"></svg>
-                    </div>
+                <div class="migration-container" id="migration-container">
+                    <!-- Dynamic content will be loaded here based on concept -->
+                </div>
+                
+                <!-- SVG container for connections -->
+                <div id="svg-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                    <svg id="connections-svg" class="connections-layer" width="100%" height="100%"></svg>
                 </div>
             </div>
         </main>
@@ -119,111 +77,15 @@
                 </div>
                 <div class="footer-links">
                     <a href="index.html">Home</a>
-                    <a href="tenant-to-tenant.html">Tenant-to-Tenant</a>
-                    <a href="file-shares.html">File Shares</a>
-                    <a href="sharepoint-onprem.html">On-Prem SharePoint</a>
-                    <a href="google-workspace.html">Google Workspace</a>
+                    <a href="tenant-to-tenant-generic.html?concept=tenant-to-tenant">Tenant-to-Tenant</a>
+                    <a href="tenant-to-tenant-generic.html?concept=file-shares">File Shares</a>
+                    <a href="tenant-to-tenant-generic.html?concept=sharepoint-onprem">On-Prem SharePoint</a>
+                    <a href="tenant-to-tenant-generic.html?concept=google-workspace">Google Workspace</a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <script type="module">
-        import { createMigrationVisualizer } from './js/visualizers/generic-migration.js';
-        import { initializeMigrationZone, adjustArrowsForScreenSize } from './js/migration-zone.js';
-        
-        /**
-         * Generate HTML for buckets based on concept definition
-         */
-        function generateBuckets(environment, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            
-            environment.buckets.forEach(bucket => {
-                const bucketDiv = document.createElement('div');
-                bucketDiv.className = 'bucket';
-                bucketDiv.setAttribute('data-type', bucket.objectType);
-                
-                // Apply grid positioning if specified
-                if (bucket.layout) {
-                    bucketDiv.style.gridColumn = `${bucket.layout.gridColumn} / span ${bucket.layout.width || 1}`;
-                    bucketDiv.style.gridRow = `${bucket.layout.gridRow} / span ${bucket.layout.height || 1}`;
-                }
-                
-                bucketDiv.innerHTML = `
-                    <h4 class="bucket-title">${bucket.title}</h4>
-                    <div class="bucket-content" id="${bucket.id}"></div>
-                `;
-                
-                container.appendChild(bucketDiv);
-            });
-        }
-        
-        /**
-         * Update page UI based on concept definition
-         */
-        function updatePageUI(conceptDefinition) {
-            // Update titles
-            document.getElementById('concept-title').textContent = conceptDefinition.name;
-            document.getElementById('concept-description').textContent = conceptDefinition.description;
-            document.getElementById('source-title').textContent = conceptDefinition.sourceEnvironment.title;
-            document.getElementById('destination-title').textContent = conceptDefinition.targetEnvironment.title;
-            
-            // Generate buckets
-            generateBuckets(conceptDefinition.sourceEnvironment, 'source-buckets');
-            generateBuckets(conceptDefinition.targetEnvironment, 'destination-buckets');
-            
-            // Update page title
-            document.title = `${conceptDefinition.name} - Migration Visualizer`;
-        }
-        
-        // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', async function() {
-            try {
-                // Get concept ID from URL parameter or default to tenant-to-tenant
-                const urlParams = new URLSearchParams(window.location.search);
-                const conceptId = urlParams.get('concept') || 'tenant-to-tenant';
-                
-                // Load the concept definition first
-                const conceptResponse = await fetch(`data/migration-concepts/${conceptId}.json`);
-                if (!conceptResponse.ok) {
-                    throw new Error(`Failed to load concept: ${conceptId}`);
-                }
-                const conceptDefinition = await conceptResponse.json();
-                
-                // Update the page UI based on the concept
-                updatePageUI(conceptDefinition);
-                
-                // Create and initialize the visualizer
-                const visualizer = await createMigrationVisualizer(conceptId);
-                
-                // Make it globally available for migration zone
-                window.migrationVisualizer = visualizer;
-                
-                // Initialize the visualizer
-                await visualizer.init();
-                
-                // Initialize migration zone
-                initializeMigrationZone();
-                adjustArrowsForScreenSize();
-                
-                // Make visualizer available globally for debugging
-                if (window.DEBUG || localStorage.getItem('debug') === 'true') {
-                    window.visualizer = visualizer;
-                }
-                
-                console.log(`Loaded migration concept: ${conceptDefinition.name}`);
-            } catch (error) {
-                console.error('Failed to initialize visualizer:', error);
-                document.getElementById('loading-indicator').innerHTML = `
-                    <div style="color: #e53935; text-align: center;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
-                        <p>Failed to load migration concept</p>
-                        <p style="font-size: 0.9rem;">${error.message}</p>
-                    </div>
-                `;
-            }
-        });
-    </script>
+    <script type="module" src="js/generic-visualizer.js?v=2.0"></script>
 </body>
 </html>

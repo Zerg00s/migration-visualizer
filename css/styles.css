@@ -580,6 +580,27 @@ footer {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Enhanced source object hover effects */
+.source-environment .object-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    filter: brightness(110%);
+    z-index: 20;
+}
+
+/* Source object click effect */
+.source-environment .object-circle:active {
+    transform: scale(1.05);
+    transition: transform 0.1s ease;
+}
+
+/* Destination object enhanced hover - keep existing behavior but add slight improvement */
+.destination-environment .object-circle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    filter: brightness(110%);
+}
+
 .object-circle.selected {
     box-shadow: 0 0 0 3px white, 0 0 0 5px var(--primary-color);
     transform: scale(1.15);
@@ -715,6 +736,12 @@ footer {
     animation: migrateObject 0.8s ease;
 }
 
+/* Simple click highlight for object circles */
+.object-circle.clicked {
+    filter: brightness(120%);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
     .visualizer-content {
@@ -775,7 +802,7 @@ footer {
 
 .object-circle.migrated-source {
     opacity: 0.6;
-    filter: grayscale(70%);
+    filter: grayscale(70%);  
     box-shadow: 0 0 0 1px rgba(67, 160, 71, 0.5);
     transition: opacity 0.5s ease, filter 0.5s ease, box-shadow 0.5s ease;
 }

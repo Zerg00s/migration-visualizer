@@ -368,7 +368,7 @@ export class SharePointOnPremVisualizer extends BaseVisualizer {
     const typeToDestinationMap = {
       'user': { container: 'destination-users', type: 'user' },
       'group': { container: 'destination-security-groups', type: 'group' },
-      'sharepoint-onprem': { container: 'destination-sharepoint-sites', type: 'sharepoint' },
+      'sharepoint-onprem': { container: 'destination-sharepoint-online', type: 'sharepoint' },
       'infopath-form': { container: 'destination-power-apps', type: 'power-apps' },
       'workflow': { container: 'destination-power-automate', type: 'power-automate' }
     };
