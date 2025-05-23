@@ -4,7 +4,7 @@
       "id": "tenant-to-tenant",
       "name": "Tenant-to-Tenant Migration",
       "description": "Microsoft 365 Tenant-to-Tenant migration visualization",
-      "icon": "fa-exchange-alt",
+      "icon": "fas fa-exchange-alt",
       "page": "tenant-to-tenant.html",
       "configFile": "data/migration-concepts/tenant-to-tenant.json"
     },
@@ -12,7 +12,7 @@
       "id": "file-shares",
       "name": "File Shares to M365",
       "description": "Visualize migration from on-premises file shares to SharePoint Online with AD to Entra ID mapping",
-      "icon": "fa-folder",
+      "icon": "fas fa-folder",
       "page": "file-shares.html",
       "configFile": "data/migration-concepts/file-shares.json"
     },
@@ -20,7 +20,7 @@
       "id": "sharepoint-onprem",
       "name": "SharePoint On-Prem to M365",
       "description": "Visualize migration from on-premises SharePoint to Microsoft 365 with InfoPath to Power Apps transformation",
-      "icon": "fa-server",
+      "icon": "fas fa-server",
       "page": "sharepoint-onprem.html",
       "configFile": "data/migration-concepts/sharepoint-onprem.json"
     },

@@ -9,7 +9,7 @@
     "id": {
       "type": "string",
       "description": "Unique identifier for the migration concept",
-      "pattern": "^[a-z0-9-]+$"
+      "pattern": "^[a-z0-9\\-]+$"
     },
     "name": {
       "type": "string",
@@ -83,7 +83,7 @@
         "id": {
           "type": "string",
           "description": "Unique bucket identifier",
-          "pattern": "^[a-z-]+-[a-z0-9-]+$"
+          "pattern": "^[a-z\\-]+-[a-z0-9\\-]+$"
         },
         "title": {
           "type": "string",
@@ -138,12 +138,12 @@
         "icon": {
           "type": "string",
           "description": "Font Awesome icon class",
-          "pattern": "^(fab?\\s+)?fa-[a-z0-9-]+$"
+          "pattern": "^(fab?\\s+)?fa-[a-z0-9\\-]+$"
         },
         "color": {
           "type": "string",
           "description": "Hex color code or CSS color variable",
-          "pattern": "^(#[0-9A-Fa-f]{6}|var\\(--[a-z-]+\\)|#[0-9A-Fa-f]{3})$"
+          "pattern": "^(#[0-9A-Fa-f]{6}|var\\(--[a-z\\-]+\\)|#[0-9A-Fa-f]{3})$"
         },
         "dataProperties": {
           "type": "object",

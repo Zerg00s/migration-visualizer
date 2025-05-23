@@ -117,7 +117,7 @@
     "infopath-form": {
       "name": "InfoPath Form",
       "pluralName": "InfoPath Forms",
-      "icon": "fa-wpforms",
+      "icon": "fab fa-wpforms",
       "color": "#607d8b",
       "dataProperties": {
         "collection": "InfoPathForms",

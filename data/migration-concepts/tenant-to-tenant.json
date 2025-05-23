@@ -15,7 +15,7 @@
       }
     },
     "group": {
-      "icon": "fa-users", 
+      "icon": "fas fa-users", 
       "color": "#7e57c2",
       "dataProperties": {
         "collection": "SecurityGroups",
