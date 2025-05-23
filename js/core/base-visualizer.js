@@ -6,7 +6,7 @@ import { throttle } from '../utils/helpers.js';
 import { animateInitialRender } from '../visualizer/animations.js';
 import { SimpleAreaSelection } from '../visualizer/selection-box/SimpleAreaSelection.js';
 import { updateConnections, drawConnection, addDestinationConnections } from '../visualizer/connections.js';
-import { toggleObjectSelection, updateObjectDetails } from '../visualizer/selection.js';
+import { toggleObjectSelection, updateObjectDetails } from '../utils/selection.js';
 import { migrateSelectedObjects, resetVisualization } from '../visualizer/migration.js';
 
 export class BaseVisualizer {
@@ -326,7 +326,12 @@ export class BaseVisualizer {
    * Update object details panel
    */
   updateObjectDetails(objectId) {
-    updateObjectDetails(objectId, this.objects, this.connections, this.objectDetailsContent);
+    // Extract categoryMap from the loaded migration data
+    const categoryMap = this.migrationData && this.migrationData._metadata && this.migrationData._metadata.categoryMap 
+      ? this.migrationData._metadata.categoryMap 
+      : null;
+    
+    updateObjectDetails(objectId, this.objects, this.connections, this.objectDetailsContent, categoryMap);
   }
   
   /**
