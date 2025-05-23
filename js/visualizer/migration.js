@@ -31,6 +31,11 @@ export function migrateSelectedObjects(
   
   if (selectedSourceIds.length === 0) return;
   
+  // Save state to undo stack before performing migration
+  if (visualizer && visualizer.saveStateToUndo) {
+    visualizer.saveStateToUndo();
+  }
+  
   // Use the visualizer's copy method if available, otherwise use generic copy function
   const copyFunction = visualizer && visualizer.copyObjectToDestination 
     ? visualizer.copyObjectToDestination.bind(visualizer)
@@ -135,8 +140,13 @@ export function resetVisualization(
   connections, 
   initialConnections, 
   clearSelection, 
-  updateConnections
+  updateConnections,
+  visualizer = null
 ) {
+  // Save state to undo stack before performing reset
+  if (visualizer && visualizer.saveStateToUndo) {
+    visualizer.saveStateToUndo();
+  }
   // Clear destination environment
   document.querySelectorAll('[id^="destination-"]').forEach(el => {
     if (el.classList.contains('bucket-content')) {

@@ -28,6 +28,11 @@ export class BaseVisualizer {
     this.showAllConnections = false;
     this.isLoading = true;
     
+    // Simple undo/redo state
+    this.undoStack = [];
+    this.redoStack = [];
+    this.maxUndoSteps = 20;
+    
     // DOM Elements
     this.svg = null;
     this.toggleConnectionsBtn = null;
@@ -109,6 +114,9 @@ export class BaseVisualizer {
       if (this.config.enableAnimations) {
         animateInitialRender();
       }
+      
+      // Setup keyboard shortcuts
+      this.setupKeyboardShortcuts();
     } catch (error) {
       console.error(`Failed to initialize ${this.config.migrationType} visualizer:`, error);
       this.showError('Failed to load migration data. Please try refreshing the page.');
@@ -326,7 +334,8 @@ export class BaseVisualizer {
         this.connections,
         allConnections,
         () => this.clearSelection(),
-        () => this.updateConnections()
+        () => this.updateConnections(),
+        this // Pass the visualizer instance
       );
       
       // Clear any selection box visual feedback
@@ -398,5 +407,163 @@ export class BaseVisualizer {
         this.toggleObjectSelection(element);
       }
     });
+  }
+  
+  /**
+   * Setup keyboard shortcuts
+   */
+  setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+      // Only handle shortcuts if not in an input field
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+      
+      // Ctrl/Cmd + Z - Undo
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        this.undo();
+      }
+      
+      // Ctrl/Cmd + Shift + Z - Redo
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && e.shiftKey) {
+        e.preventDefault();
+        this.redo();
+      }
+      
+      // Escape - Clear selection
+      if (e.key === 'Escape') {
+        this.clearSelection();
+      }
+    });
+  }
+  
+  /**
+   * Save current state to undo stack
+   */
+  saveStateToUndo() {
+    const currentState = {
+      migratedObjects: this.getMigratedObjectIds(),
+      timestamp: Date.now()
+    };
+    
+    this.undoStack.push(currentState);
+    
+    // Limit undo stack size
+    if (this.undoStack.length > this.maxUndoSteps) {
+      this.undoStack.shift();
+    }
+    
+    // Clear redo stack when new action is performed
+    this.redoStack = [];
+  }
+  
+  /**
+   * Get list of migrated object IDs
+   */
+  getMigratedObjectIds() {
+    const migrated = [];
+    Object.keys(this.objects).forEach(fullId => {
+      if (fullId.startsWith('destination-')) {
+        const basicId = fullId.replace('destination-', '');
+        migrated.push(basicId);
+      }
+    });
+    return migrated;
+  }
+  
+  /**
+   * Undo the last migration action
+   */
+  undo() {
+    if (this.undoStack.length === 0) {
+      console.log('Nothing to undo');
+      return;
+    }
+    
+    // Save current state to redo stack
+    const currentState = {
+      migratedObjects: this.getMigratedObjectIds(),
+      timestamp: Date.now()
+    };
+    this.redoStack.push(currentState);
+    
+    // Get previous state
+    const previousState = this.undoStack.pop();
+    
+    // Apply previous state
+    this.restoreState(previousState);
+    
+    console.log('Undo performed');
+  }
+  
+  /**
+   * Redo the last undone action
+   */
+  redo() {
+    if (this.redoStack.length === 0) {
+      console.log('Nothing to redo');
+      return;
+    }
+    
+    // Save current state to undo stack
+    const currentState = {
+      migratedObjects: this.getMigratedObjectIds(),
+      timestamp: Date.now()
+    };
+    this.undoStack.push(currentState);
+    
+    // Get next state
+    const nextState = this.redoStack.pop();
+    
+    // Apply next state
+    this.restoreState(nextState);
+    
+    console.log('Redo performed');
+  }
+  
+  /**
+   * Restore a previous state
+   */
+  restoreState(state) {
+    // Clear all destination objects
+    const destinationContainers = document.querySelectorAll('[id^="destination-"]');
+    destinationContainers.forEach(container => {
+      if (container.classList.contains('bucket-content')) {
+        container.innerHTML = '';
+      }
+    });
+    
+    // Clear destination objects from state
+    Object.keys(this.objects).forEach(fullId => {
+      if (fullId.startsWith('destination-')) {
+        delete this.objects[fullId];
+      }
+    });
+    
+    // Restore connections to original state
+    if (this.migrationData) {
+      const originalConnections = this.extractConnections(this.migrationData);
+      this.connections.length = 0;
+      this.connections.push(...originalConnections);
+    }
+    
+    // Re-migrate objects that should be migrated (without animation)
+    state.migratedObjects.forEach(objectId => {
+      const sourceObj = this.objects[`source-${objectId}`];
+      if (sourceObj && this.copyObjectToDestination) {
+        // Call copyObjectToDestination without animation
+        const destObj = this.copyObjectToDestination(objectId, sourceObj.type);
+        if (destObj) {
+          // Make sure it's immediately visible (no animation)
+          destObj.style.opacity = '1';
+          destObj.classList.remove('migrating');
+        }
+      }
+    });
+    
+    // Clear selection and update UI
+    this.clearSelection();
+    this.updateConnections();
   }
 }
