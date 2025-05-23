@@ -67,7 +67,6 @@
     transition: all 0.3s ease;
     animation: arrowPulse 2s infinite;
     position: relative;
-    /* Removed rotation - arrows should point right for horizontal migration */
 }
 
 .migration-zone:hover .migration-arrow {
@@ -80,7 +79,7 @@
     opacity: 0.6;
     color: var(--success-color);
     animation: arrowPulseActive 1s infinite;
-    font-size: 20px; /* Slightly smaller than default 24px */
+    font-size: 20px;
 }
 
 /* Override hover effects when migrating to prevent conflicts */
@@ -159,27 +158,11 @@
     transform: translate(-50%, -50%) scale(1.05);
 }
 
-/* Completely prevent ANY animation on migration zone when migrating */
+/* Completely prevent animations during migration */
 .migration-zone.migrating,
-.migration-zone.migrating *,
-.migration-zone.migrating::before,
-.migration-zone.migrating::after,
-.migration-zone .migrating,
-.migration-zone * .migrating {
+.migration-zone.migrating * {
     animation: none !important;
     transition: none !important;
-    transform: none !important;
-}
-
-/* Override any global migrating class that might be applied */
-.migration-zone.migrating.migrating {
-    animation: none !important;
-    transform: none !important;
-}
-
-/* Prevent the global migrateObject animation from affecting this zone */
-.migration-zone {
-    animation: none !important;
 }
 
 .migration-zone.migrating {
@@ -189,20 +172,15 @@
         rgba(67, 160, 71, 0.2) 100%) !important;
     border-color: rgba(67, 160, 71, 0.8) !important;
     cursor: wait !important;
-    animation: none !important;
-    transform: none !important;
-    transition: none !important;
 }
 
 .migration-zone.migrating .migration-arrow {
     color: var(--success-color);
     opacity: 1;
-    animation: none; /* Completely disable all animations during migration */
-    transform: none; /* Remove any transforms */
-    transition: none; /* Remove transitions that might cause jumping */
+    animation: none;
+    transform: none;
+    transition: none;
 }
-
-/* Removed arrowMigrating animation - was causing crazy jumping */
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
@@ -225,7 +203,6 @@
     }
     
     .migration-arrow {
-        transform: rotate(0deg); /* Reset to horizontal arrows */
         font-size: 20px;
     }
     
@@ -259,8 +236,6 @@
             opacity: 0.6;
         }
     }
-    
-    /* Removed arrowMigrating animation from responsive section */
 }
 
 @media (max-width: 768px) {

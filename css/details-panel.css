@@ -47,31 +47,6 @@
   flex-shrink: 0;
 }
 
-.object-icon.user { background-color: var(--user-color); }
-.object-icon.group { background-color: var(--group-color); }
-.object-icon.sharepoint { background-color: var(--sharepoint-color); }
-.object-icon.teams { background-color: var(--teams-color); }
-.object-icon.onedrive { background-color: var(--onedrive-color); }
-.object-icon.m365-group { background-color: var(--m365-color); }
-.object-icon.mailbox { background-color: var(--mailbox-color); }
-.object-icon.power-automate { background-color: var(--power-automate-color); }
-.object-icon.power-apps { background-color: var(--power-apps-color); }
-.object-icon.power-bi { background-color: var(--power-bi-color); }
-.object-icon.file-share { background-color: var(--file-share-color); }
-.object-icon.sharepoint-site { background-color: var(--sharepoint-color); }
-.object-icon.infopath-form { background-color: var(--infopath-color); }
-.object-icon.workflow { background-color: var(--workflow-color); }
-.object-icon.sharepoint-onprem { background-color: var(--sharepoint-onprem-color); }
-.object-icon.sharepoint-online { background-color: var(--sharepoint-color); }
-.object-icon.google-user { background-color: var(--google-user-color); }
-.object-icon.google-group { background-color: var(--google-group-color); }
-.object-icon.google-mailbox { background-color: var(--google-mailbox-color); }
-.object-icon.google-shared-drive { background-color: var(--google-shared-drive-color); }
-.object-icon.google-drive { background-color: var(--google-drive-color); }
-.object-icon.entra-user { background-color: var(--user-color); }
-.object-icon.entra-group { background-color: var(--group-color); }
-.object-icon.exchange-online { background-color: var(--exchange-online-color); }
-
 .object-info {
   flex: 1;
 }
@@ -212,31 +187,6 @@
   font-size: 7px;
   flex-shrink: 0;
 }
-
-.connection-icon.user { background-color: var(--user-color); }
-.connection-icon.group { background-color: var(--group-color); }
-.connection-icon.sharepoint { background-color: var(--sharepoint-color); }
-.connection-icon.teams { background-color: var(--teams-color); }
-.connection-icon.onedrive { background-color: var(--onedrive-color); }
-.connection-icon.m365-group { background-color: var(--m365-color); }
-.connection-icon.mailbox { background-color: var(--mailbox-color); }
-.connection-icon.power-automate { background-color: var(--power-automate-color); }
-.connection-icon.power-apps { background-color: var(--power-apps-color); }
-.connection-icon.power-bi { background-color: var(--power-bi-color); }
-.connection-icon.file-share { background-color: var(--file-share-color); }
-.connection-icon.sharepoint-site { background-color: var(--sharepoint-color); }
-.connection-icon.infopath-form { background-color: var(--infopath-color); }
-.connection-icon.workflow { background-color: var(--workflow-color); }
-.connection-icon.sharepoint-onprem { background-color: var(--sharepoint-onprem-color); }
-.connection-icon.sharepoint-online { background-color: var(--sharepoint-color); }
-.connection-icon.google-user { background-color: var(--google-user-color); }
-.connection-icon.google-group { background-color: var(--google-group-color); }
-.connection-icon.google-mailbox { background-color: var(--google-mailbox-color); }
-.connection-icon.google-shared-drive { background-color: var(--google-shared-drive-color); }
-.connection-icon.google-drive { background-color: var(--google-drive-color); }
-.connection-icon.entra-user { background-color: var(--user-color); }
-.connection-icon.entra-group { background-color: var(--group-color); }
-.connection-icon.exchange-online { background-color: var(--exchange-online-color); }
 
 .connection-name {
   font-size: 10px;

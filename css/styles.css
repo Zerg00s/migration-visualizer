@@ -19,28 +19,6 @@
     /* Environment Colors */
     --source-color: #1e88e5;
     --destination-color: #43a047;
-    
-    /* Object Colors */
-    --user-color: #64b5f6;
-    --group-color: #7e57c2;
-    --sharepoint-color: #4caf50;
-    --teams-color: #673ab7;
-    --onedrive-color: #2196f3;
-    --m365-color: #ff9800;
-    --mailbox-color: #e91e63;
-    --power-automate-color: #0066ff;
-    --power-apps-color: #742774;
-    --power-bi-color: #f2c811;
-    --file-share-color: #795548;
-    --infopath-color: #607d8b;
-    --workflow-color: #9c27b0;
-    --sharepoint-onprem-color: #2e7d32;
-    --google-user-color: #4285f4;
-    --google-group-color: #34a853;
-    --google-mailbox-color: #ea4335;
-    --google-shared-drive-color: #fbbc05;
-    --google-drive-color: #ff6d01;
-    --exchange-online-color: #0078d4;
 }
 
 * {
@@ -281,15 +259,15 @@ main {
 }
 
 .circle:nth-child(1) {
-    background-color: var(--user-color);
+    background-color: #64b5f6;
 }
 
 .circle:nth-child(2) {
-    background-color: var(--group-color);
+    background-color: #7e57c2;
 }
 
 .circle:nth-child(3) {
-    background-color: var(--sharepoint-color);
+    background-color: #4caf50;
 }
 
 .circle.animated {
@@ -504,13 +482,6 @@ footer {
     gap: 1rem;
 }
 
-/* File shares specific layout */
-.bucket-container.file-shares-layout {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-}
-
 .bucket {
     background-color: var(--bg-light);
     border-radius: var(--border-radius);
@@ -552,10 +523,6 @@ footer {
     align-items: center;
     color: var(--primary-color);
     font-size: 2rem;
-}
-
-.arrow {
-    animation: pulseArrow 1.5s infinite;
 }
 
 /* Object Circle Styles */
@@ -614,31 +581,6 @@ footer {
     50% { box-shadow: 0 0 0 3px white, 0 0 0 8px var(--primary-color), 0 0 15px rgba(30, 136, 229, 0.7); }
     100% { box-shadow: 0 0 0 3px white, 0 0 0 5px var(--primary-color); }
 }
-
-.object-circle.user { background-color: var(--user-color); }
-.object-circle.group { background-color: var(--group-color); }
-.object-circle.sharepoint { background-color: var(--sharepoint-color); }
-.object-circle.teams { background-color: var(--teams-color); }
-.object-circle.onedrive { background-color: var(--onedrive-color); }
-.object-circle.m365-group { background-color: var(--m365-color); }
-.object-circle.mailbox { background-color: var(--mailbox-color); }
-.object-circle.power-automate { background-color: var(--power-automate-color); }
-.object-circle.power-apps { background-color: var(--power-apps-color); }
-.object-circle.power-bi { background-color: var(--power-bi-color); }
-.object-circle.file-share { background-color: var(--file-share-color); }
-.object-circle.sharepoint-site { background-color: var(--sharepoint-color); }
-.object-circle.infopath-form { background-color: var(--infopath-color); }
-.object-circle.workflow { background-color: var(--workflow-color); }
-.object-circle.sharepoint-onprem { background-color: var(--sharepoint-onprem-color); }
-.object-circle.sharepoint-online { background-color: var(--sharepoint-color); }
-.object-circle.google-user { background-color: var(--google-user-color); }
-.object-circle.google-group { background-color: var(--google-group-color); }
-.object-circle.google-mailbox { background-color: var(--google-mailbox-color); }
-.object-circle.google-shared-drive { background-color: var(--google-shared-drive-color); }
-.object-circle.google-drive { background-color: var(--google-drive-color); }
-.object-circle.entra-user { background-color: var(--user-color); }
-.object-circle.entra-group { background-color: var(--group-color); }
-.object-circle.exchange-online { background-color: var(--exchange-online-color); }
 
 .object-tooltip {
     position: absolute;

@@ -32,25 +32,6 @@
       "page": "google-workspace.html",
       "configFile": "data/migration-concepts/google-workspace.json"
     }
-  ],
-  "customConcepts": [
-    {
-      "id": "dropbox-to-onedrive",
-      "name": "Dropbox to OneDrive",
-      "description": "Migrate Dropbox content to OneDrive for Business",
-      "icon": "fab fa-dropbox",
-      "page": "dropbox-to-onedrive.html",
-      "configFile": "data/migration-concepts/dropbox-to-onedrive.json",
-      "status": "example"
-    },
-    {
-      "id": "slack-to-teams",
-      "name": "Slack to Teams",
-      "description": "Migrate Slack workspaces to Microsoft Teams",
-      "icon": "fab fa-slack",
-      "page": "slack-to-teams.html",
-      "configFile": "data/migration-concepts/slack-to-teams.json",
-      "status": "example"
-    }
   ]
+
 }

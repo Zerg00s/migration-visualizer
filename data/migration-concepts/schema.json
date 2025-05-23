@@ -58,19 +58,15 @@
   "definitions": {
     "environment": {
       "type": "object",
-      "required": ["name", "title", "buckets"],
+      "required": ["title", "buckets"],
       "properties": {
-        "name": {
-          "type": "string",
-          "description": "Internal name for the environment",
-          "enum": ["source", "destination"]
-        },
         "title": {
           "type": "string",
           "description": "Display title for the environment"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "Optional description of the environment"
         },
         "buckets": {
           "type": "array",
@@ -99,6 +95,7 @@
         },
         "layout": {
           "type": "object",
+          "description": "Optional layout configuration for advanced grid positioning",
           "properties": {
             "gridColumn": {
               "type": "integer",
@@ -128,29 +125,30 @@
     },
     "objectType": {
       "type": "object",
-      "required": ["name", "icon", "color"],
+      "required": ["icon", "color"],
       "properties": {
         "name": {
           "type": "string",
-          "description": "Display name for the object type"
+          "description": "Display name for the object type (optional, can be inferred from key)"
         },
         "pluralName": {
           "type": "string",
-          "description": "Plural form of the name"
+          "description": "Plural form of the name (optional)"
         },
         "icon": {
           "type": "string",
           "description": "Font Awesome icon class",
-          "pattern": "^(fa[brs]? )?fa-[a-z0-9-]+$"
+          "pattern": "^(fab?\\s+)?fa-[a-z0-9-]+$"
         },
         "color": {
           "type": "string",
           "description": "Hex color code or CSS color variable",
-          "pattern": "^(#[0-9A-Fa-f]{6}|var\\(--[a-z-]+\\))$"
+          "pattern": "^(#[0-9A-Fa-f]{6}|var\\(--[a-z-]+\\)|#[0-9A-Fa-f]{3})$"
         },
         "dataProperties": {
           "type": "object",
-          "description": "Mapping of data properties",
+          "description": "Mapping of data properties to source data",
+          "required": ["collection"],
           "properties": {
             "collection": {
               "type": "string",
@@ -158,14 +156,17 @@
             },
             "idField": {
               "type": "string",
-              "default": "id"
+              "default": "id",
+              "description": "Field name containing the unique identifier"
             },
             "nameField": {
               "type": "string",
-              "default": "DisplayName"
+              "default": "DisplayName",
+              "description": "Field name containing the display name"
             },
             "additionalFields": {
               "type": "array",
+              "description": "Additional fields to extract from the data",
               "items": {
                 "type": "string"
               }
@@ -180,34 +181,37 @@
       "properties": {
         "sourceType": {
           "type": "string",
-          "description": "Source object type"
+          "description": "Source object type key"
         },
         "targetType": {
           "type": "string",
-          "description": "Target object type"
+          "description": "Target object type key"
         },
         "targetBucket": {
           "type": "string",
-          "description": "Target bucket ID (if different from default)"
+          "description": "Target bucket ID (optional, can be auto-determined)"
         },
         "transformations": {
           "type": "object",
           "description": "Property transformations during migration",
           "properties": {
             "icon": {
-              "type": "string"
+              "type": "string",
+              "description": "New icon for the migrated object"
             },
             "color": {
-              "type": "string"
+              "type": "string",
+              "description": "New color for the migrated object"
             },
             "nameTransform": {
               "type": "string",
               "enum": ["none", "append_migrated", "append_modern", "append_powerapp", "append_flow", "append_onedrive", "custom"],
-              "default": "none"
+              "default": "none",
+              "description": "How to transform the object name"
             },
             "customTransform": {
               "type": "string",
-              "description": "Custom transformation function name"
+              "description": "Custom transformation function name (when nameTransform is 'custom')"
             }
           }
         }
@@ -242,15 +246,16 @@
       "required": ["objectType"],
       "properties": {
         "objectType": {
-          "type": "string"
+          "type": "string",
+          "description": "Object type key for this endpoint"
         },
         "property": {
           "type": "string",
-          "description": "Property that contains the reference"
+          "description": "Property that contains the reference (for single references)"
         },
         "arrayProperty": {
           "type": "string",
-          "description": "If the reference is in an array"
+          "description": "Property that contains an array of references"
         }
       }
     }

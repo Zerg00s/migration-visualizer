@@ -109,33 +109,8 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
   
   console.log('Found object:', obj);
   
-  // Get the proper icon for each object type
-  const iconMap = {
-    'user': 'fa-user',
-    'group': 'fa-users',
-    'sharepoint': 'fa-share-alt',
-    'teams': 'fa-comments',
-    'onedrive': 'fa-cloud',
-    'm365-group': 'fa-sitemap',
-    'mailbox': 'fa-envelope',
-    'power-automate': 'fa-bolt',
-    'power-apps': 'fa-mobile-alt',
-    'power-bi': 'fa-chart-bar',
-    'file-share': 'fa-folder',
-    'sharepoint-site': 'fa-share-alt',
-    'sharepoint-onprem': 'fa-server',
-    'sharepoint-online': 'fa-share-alt',
-    'infopath-form': 'fa-wpforms',
-    'workflow': 'fa-project-diagram',
-    'google-user': 'fab fa-google',
-    'google-group': 'fab fa-google',
-    'google-mailbox': 'fa-envelope',
-    'google-shared-drive': 'fa-hdd',
-    'google-drive': 'fab fa-google-drive',
-    'entra-user': 'fa-user',
-    'entra-group': 'fa-users',
-    'exchange-online': 'fa-envelope'
-  };
+  // Get the icon from the object data (it should already be stored there from the migration concept)
+  const objectIcon = obj.icon || 'fa-cube'; // Default fallback icon
   
   // Find connections for this object
   // Extract the basic ID from the full objectId (remove environment prefix)
@@ -178,8 +153,8 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
   // Build clean, structured HTML
   let detailsHtml = `
     <div class="object-details-header">
-      <div class="object-icon ${obj.type}">
-        <i class="fas ${iconMap[obj.type] || 'fa-cube'}"></i>
+      <div class="object-icon ${obj.type}" style="background-color: ${obj.color || '#64b5f6'};">
+        <i class="${objectIcon.startsWith('fab') ? objectIcon : `fas ${objectIcon}`}"></i>
       </div>
       <div class="object-info">
         <h4>${obj.name}</h4>
@@ -230,11 +205,11 @@ export function updateObjectDetails(objectId, objects, connections, objectDetail
     
     // List connected objects in ultra-dense format
     connectedObjects.forEach(connObj => {
-      const connIcon = iconMap[connObj.type] || 'fa-cube';
+      const connIcon = connObj.icon || 'fa-cube'; // Get icon from object data
       detailsHtml += `
         <li class="connection-item">
-          <div class="connection-icon ${connObj.type}">
-            <i class="fas ${connIcon}"></i>
+          <div class="connection-icon ${connObj.type}" style="background-color: ${connObj.color || '#64b5f6'};">
+            <i class="${connIcon.startsWith('fab') ? connIcon : `fas ${connIcon}`}"></i>
           </div>
           <span class="connection-name">${connObj.name}</span>
           <span class="connection-type">${connObj.type.replace('-', '')}</span>

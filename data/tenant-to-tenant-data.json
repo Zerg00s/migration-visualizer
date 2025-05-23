@@ -17,8 +17,6 @@
       "URL": "Technical Details",
       "Server": "Technical Details",
       "UncPath": "Technical Details",
-      "GoogleUsername": "Technical Details",
-      "GoogleWorkspaceRole": "Technical Details",
       "StorageUsed": "Storage & Usage",
       "StorageQuota": "Storage & Usage",
       "FileCount": "Storage & Usage",
@@ -53,6 +51,17 @@
       "LastLogin": "2025-04-15T08:45:23Z",
       "MFAEnabled": true,
       "LicenseType": "E5"
+    },
+    {
+      "id": "user_2",
+      "DisplayName": "Sarah Johnson",
+      "Title": "CFO",
+      "Department": "Finance",
+      "Email": "sarah.johnson@contoso.com",
+      "Disabled": false,
+      "LastLogin": "2025-04-20T14:30:11Z",
+      "MFAEnabled": true,
+      "LicenseType": "E5"
     }
   ],
   "SecurityGroups": [
@@ -60,18 +69,181 @@
       "id": "sg_1",
       "DisplayName": "Executive Team",
       "Description": "Executive leadership team members",
-      "Members": ["user_1"],
+      "Members": ["user_1", "user_2"],
       "CreatedDate": "2023-05-10T09:00:00Z",
       "ModifiedDate": "2025-03-15T14:22:10Z",
       "Classification": "Confidential"
+    },
+    {
+      "id": "sg_2",
+      "DisplayName": "Finance Department",
+      "Description": "Finance department staff",
+      "Members": ["user_2"],
+      "CreatedDate": "2023-05-11T10:15:00Z",
+      "ModifiedDate": "2025-03-15T14:22:10Z",
+      "Classification": "Internal"
     }
   ],
-  "Teams": [],
-  "SharePointSites": [],
-  "OneDrives": [],
-  "Mailboxes": [],
-  "M365Groups": [],
-  "PowerAutomate": [],
-  "PowerApps": [],
-  "PowerBI": []
+  "Teams": [
+    {
+      "id": "team_1",
+      "DisplayName": "Executive Team",
+      "Description": "Executive leadership collaboration",
+      "Owners": ["user_1"],
+      "Members": ["user_2"],
+      "Channels": 5,
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "team_2",
+      "DisplayName": "Finance Team",
+      "Description": "Finance department collaboration",
+      "Owners": ["user_2"],
+      "Members": ["user_1"],
+      "Channels": 3,
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "SharePointSites": [
+    {
+      "id": "sp_1",
+      "DisplayName": "Executive Portal",
+      "Description": "Executive team resources",
+      "URL": "https://contoso.sharepoint.com/sites/executive",
+      "Owners": ["user_1"],
+      "Members": ["user_2"],
+      "StorageUsed": 5120,
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "sp_2",
+      "DisplayName": "Finance Hub",
+      "Description": "Finance department resources",
+      "URL": "https://contoso.sharepoint.com/sites/finance",
+      "Owners": ["user_2"],
+      "Members": ["user_1"],
+      "StorageUsed": 3072,
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "OneDrives": [
+    {
+      "id": "od_1",
+      "DisplayName": "John Smith's OneDrive",
+      "OwnedBy": "user_1",
+      "StorageUsed": 2048,
+      "SharedWith": ["user_2"],
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "od_2",
+      "DisplayName": "Sarah Johnson's OneDrive",
+      "OwnedBy": "user_2",
+      "StorageUsed": 1536,
+      "SharedWith": ["user_1"],
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "Mailboxes": [
+    {
+      "id": "mb_1",
+      "DisplayName": "John Smith",
+      "Email": "john.smith@contoso.com",
+      "OwnedBy": "user_1",
+      "StorageUsed": 4096,
+      "ItemCount": 15420,
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "mb_2",
+      "DisplayName": "Sarah Johnson",
+      "Email": "sarah.johnson@contoso.com",
+      "OwnedBy": "user_2",
+      "StorageUsed": 3072,
+      "ItemCount": 12850,
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "M365Groups": [
+    {
+      "id": "m365_1",
+      "DisplayName": "Executive Leadership",
+      "Email": "executive@contoso.com",
+      "Description": "Executive leadership group",
+      "Owners": ["user_1"],
+      "Members": ["user_2"],
+      "Visibility": "Private",
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "m365_2",
+      "DisplayName": "Finance Department",
+      "Email": "finance@contoso.com",
+      "Description": "Finance department group",
+      "Owners": ["user_2"],
+      "Members": ["user_1"],
+      "Visibility": "Private",
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "PowerAutomate": [
+    {
+      "id": "pa_1",
+      "DisplayName": "Executive Approval Flow",
+      "OwnedBy": "user_1",
+      "State": "Started",
+      "Runs": 45,
+      "Category": "Business Process",
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "pa_2",
+      "DisplayName": "Finance Notification Flow",
+      "OwnedBy": "user_2",
+      "State": "Started",
+      "Runs": 128,
+      "Category": "Notification",
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "PowerApps": [
+    {
+      "id": "papp_1",
+      "DisplayName": "Executive Dashboard",
+      "OwnedBy": "user_1",
+      "AppType": "Canvas",
+      "Users": 5,
+      "Category": "Business Intelligence",
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "papp_2",
+      "DisplayName": "Finance Tracker",
+      "OwnedBy": "user_2",
+      "AppType": "Model-driven",
+      "Users": 12,
+      "Category": "Data Management",
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ],
+  "PowerBI": [
+    {
+      "id": "pbi_1",
+      "DisplayName": "Executive Analytics",
+      "OwnedBy": "user_1",
+      "WorkspaceName": "Executive Workspace",
+      "Viewers": 3,
+      "RefreshSchedule": "Daily",
+      "CreatedDate": "2023-05-10T09:00:00Z"
+    },
+    {
+      "id": "pbi_2",
+      "DisplayName": "Finance Reports",
+      "OwnedBy": "user_2",
+      "WorkspaceName": "Finance Workspace",
+      "Viewers": 8,
+      "RefreshSchedule": "Weekly",
+      "CreatedDate": "2023-05-11T10:15:00Z"
+    }
+  ]
 }

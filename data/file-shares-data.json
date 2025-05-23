@@ -21,94 +21,6 @@
       "Domain": "CONTOSO",
       "LastLogin": "2025-04-20T14:30:11Z",
       "AccountStatus": "Active"
-    },
-    {
-      "id": "user_3",
-      "DisplayName": "Michael Chen",
-      "Title": "CTO",
-      "Department": "Engineering",
-      "Email": "michael.chen@contoso.com",
-      "SamAccountName": "mchen",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-19T11:22:45Z",
-      "AccountStatus": "Active"
-    },
-    {
-      "id": "user_4",
-      "DisplayName": "Jessica Lee",
-      "Title": "HR Director",
-      "Department": "Human Resources",
-      "Email": "jessica.lee@contoso.com",
-      "SamAccountName": "jlee",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-18T09:15:33Z",
-      "AccountStatus": "Active"
-    },
-    {
-      "id": "user_5",
-      "DisplayName": "David Wilson",
-      "Title": "Sales Director",
-      "Department": "Sales",
-      "Email": "david.wilson@contoso.com",
-      "SamAccountName": "dwilson",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-17T16:40:22Z",
-      "AccountStatus": "Active"
-    },
-    {
-      "id": "user_6",
-      "DisplayName": "Emily Brown",
-      "Title": "Marketing Manager",
-      "Department": "Marketing",
-      "Email": "emily.brown@contoso.com",
-      "SamAccountName": "ebrown",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-16T13:25:18Z",
-      "AccountStatus": "Active"
-    },
-    {
-      "id": "user_7",
-      "DisplayName": "Robert Taylor",
-      "Title": "Senior Engineer",
-      "Department": "Engineering",
-      "Email": "robert.taylor@contoso.com",
-      "SamAccountName": "rtaylor",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-20T10:10:55Z",
-      "AccountStatus": "Active"
-    },
-    {
-      "id": "user_8",
-      "DisplayName": "Amanda Martinez",
-      "Title": "Financial Analyst",
-      "Department": "Finance",
-      "Email": "amanda.martinez@contoso.com",
-      "SamAccountName": "amartinez",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-19T15:33:42Z",
-      "AccountStatus": "Active"
-    },
-    {
-      "id": "user_9",
-      "DisplayName": "James Anderson",
-      "Title": "Product Manager",
-      "Department": "Product",
-      "Email": "james.anderson@contoso.com",
-      "SamAccountName": "janderson",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-03-28T11:50:19Z",
-      "AccountStatus": "Disabled"
-    },
-    {
-      "id": "user_10",
-      "DisplayName": "Lisa Garcia",
-      "Title": "Customer Support Lead",
-      "Department": "Support",
-      "Email": "lisa.garcia@contoso.com",
-      "SamAccountName": "lgarcia",
-      "Domain": "CONTOSO",
-      "LastLogin": "2025-04-20T09:22:37Z",
-      "AccountStatus": "Active"
     }
   ],
   "SecurityGroups": [
@@ -116,7 +28,7 @@
       "id": "sg_1",
       "DisplayName": "Executive Team",
       "Description": "Executive leadership team members",
-      "Members": ["user_1", "user_2", "user_3"],
+      "Members": ["user_1", "user_2"],
       "SamAccountName": "ExecutiveTeam",
       "Domain": "CONTOSO",
       "CreatedDate": "2023-05-10T09:00:00Z",
@@ -127,43 +39,10 @@
       "id": "sg_2",
       "DisplayName": "Finance Department",
       "Description": "All finance department staff",
-      "Members": ["user_2", "user_8"],
+      "Members": ["user_2"],
       "SamAccountName": "FinanceDept",
       "Domain": "CONTOSO",
       "CreatedDate": "2023-05-11T10:15:00Z",
-      "GroupType": "Security",
-      "GroupScope": "Global"
-    },
-    {
-      "id": "sg_3",
-      "DisplayName": "Engineering Team",
-      "Description": "Engineering department staff",
-      "Members": ["user_3", "user_7"],
-      "SamAccountName": "EngineeringTeam",
-      "Domain": "CONTOSO",
-      "CreatedDate": "2023-05-12T11:30:00Z",
-      "GroupType": "Security",
-      "GroupScope": "Global"
-    },
-    {
-      "id": "sg_4",
-      "DisplayName": "Human Resources",
-      "Description": "HR department staff",
-      "Members": ["user_4"],
-      "SamAccountName": "HumanResources",
-      "Domain": "CONTOSO",
-      "CreatedDate": "2023-05-13T13:45:00Z",
-      "GroupType": "Security",
-      "GroupScope": "Global"
-    },
-    {
-      "id": "sg_5",
-      "DisplayName": "All Employees",
-      "Description": "All active employees",
-      "Members": ["user_1", "user_2", "user_3", "user_4", "user_5", "user_6", "user_7", "user_8", "user_10"],
-      "SamAccountName": "AllEmployees",
-      "Domain": "CONTOSO",
-      "CreatedDate": "2023-05-14T15:00:00Z",
       "GroupType": "Security",
       "GroupScope": "Global"
     }
@@ -199,59 +78,6 @@
       "Permissions": [
         {"Principal": "sg_2", "Access": "FullControl"},
         {"Principal": "user_2", "Access": "FullControl"}
-      ],
-      "ShareType": "Standard",
-      "BackupStatus": "Enabled"
-    },
-    {
-      "id": "fs_3",
-      "DisplayName": "Engineering Data",
-      "Description": "Engineering project files and technical documentation",
-      "UNCPath": "\\\\fileserver01\\Engineering",
-      "ShareName": "Engineering",
-      "Server": "fileserver01.contoso.com",
-      "StorageUsed": 51200,
-      "FileCount": 8934,
-      "LastAccessed": "2025-04-20T12:10:55Z",
-      "Permissions": [
-        {"Principal": "sg_3", "Access": "FullControl"},
-        {"Principal": "user_3", "Access": "FullControl"},
-        {"Principal": "user_7", "Access": "Modify"}
-      ],
-      "ShareType": "DFS",
-      "BackupStatus": "Enabled"
-    },
-    {
-      "id": "fs_4",
-      "DisplayName": "HR Documents",
-      "Description": "Human resources policies and employee files",
-      "UNCPath": "\\\\fileserver03\\HR",
-      "ShareName": "HR",
-      "Server": "fileserver03.contoso.com",
-      "StorageUsed": 12288,
-      "FileCount": 567,
-      "LastAccessed": "2025-04-19T16:25:48Z",
-      "Permissions": [
-        {"Principal": "sg_4", "Access": "FullControl"},
-        {"Principal": "user_4", "Access": "FullControl"}
-      ],
-      "ShareType": "Standard",
-      "BackupStatus": "Enabled"
-    },
-    {
-      "id": "fs_5",
-      "DisplayName": "Company Archive",
-      "Description": "Historical company documents and archived files",
-      "UNCPath": "\\\\fileserver04\\Archive",
-      "ShareName": "Archive",
-      "Server": "fileserver04.contoso.com",
-      "StorageUsed": 102400,
-      "FileCount": 15678,
-      "LastAccessed": "2025-04-18T09:40:27Z",
-      "Permissions": [
-        {"Principal": "sg_5", "Access": "ReadOnly"},
-        {"Principal": "user_1", "Access": "FullControl"},
-        {"Principal": "user_4", "Access": "Modify"}
       ],
       "ShareType": "Standard",
       "BackupStatus": "Enabled"

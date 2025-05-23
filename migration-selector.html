@@ -161,15 +161,8 @@
             </h2>
             <div class="concept-grid" id="activeConceptsGrid">
                 <!-- Active concepts will be loaded here -->
-            </div>
-            
-            <h2 class="section-title">
-                <i class="fas fa-lightbulb" style="color: #ff9800;"></i>
-                Example Concepts
-            </h2>
-            <div class="concept-grid" id="exampleConceptsGrid">
-                <!-- Example concepts will be loaded here -->
-            </div>
+            </div>            
+
         </main>
 
         <footer>
@@ -190,11 +183,7 @@
                 
                 // Render active concepts
                 renderConcepts(data.migrationConcepts, 'activeConceptsGrid', 'active');
-                
-                // Render example concepts
-                if (data.customConcepts) {
-                    renderConcepts(data.customConcepts, 'exampleConceptsGrid', 'example');
-                }
+
                 
                 // Setup search
                 setupSearch();
