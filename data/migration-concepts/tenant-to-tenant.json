@@ -143,6 +143,36 @@
       "type": "ownership",
       "from": {"objectType": "user"}, 
       "to": {"objectType": "power-bi", "property": "OwnedBy"}
+    },
+    {
+      "name": "M365 Group has Teams",
+      "type": "association",
+      "from": {"objectType": "m365-group"},
+      "to": {"objectType": "teams", "property": "ConnectedM365Group"}
+    },
+    {
+      "name": "M365 Group has OneDrive",
+      "type": "association",
+      "from": {"objectType": "m365-group"},
+      "to": {"objectType": "onedrive", "property": "ConnectedM365Group"}
+    },
+    {
+      "name": "M365 Group has Users",
+      "type": "membership",
+      "from": {"objectType": "user"},
+      "to": {"objectType": "m365-group", "arrayProperty": "Members"}
+    },
+    {
+      "name": "M365 Group has SharePoint Site",
+      "type": "association",
+      "from": {"objectType": "m365-group"},
+      "to": {"objectType": "sharepoint", "property": "ConnectedM365Group"}
+    },
+    {
+      "name": "Teams connected to Security Groups",
+      "type": "permission",
+      "from": {"objectType": "group"},
+      "to": {"objectType": "teams", "arrayProperty": "ConnectedSecurityGroups"}
     }
   ],
   
@@ -240,6 +270,8 @@
         "Owners": ["user_1"],
         "Members": ["user_2"],
         "Channels": 5,
+        "ConnectedM365Group": "m365_1",
+        "ConnectedSecurityGroups": ["sg_1"],
         "CreatedDate": "2023-05-10T09:00:00Z"
       },
       {
@@ -249,6 +281,8 @@
         "Owners": ["user_2"],
         "Members": ["user_1"],
         "Channels": 3,
+        "ConnectedM365Group": "m365_2",
+        "ConnectedSecurityGroups": ["sg_2"],
         "CreatedDate": "2023-05-11T10:15:00Z"
       }
     ],
@@ -261,6 +295,7 @@
         "Owners": ["user_1"],
         "Members": ["user_2"],
         "StorageUsed": 5120,
+        "ConnectedM365Group": "m365_1",
         "CreatedDate": "2023-05-10T09:00:00Z"
       },
       {
@@ -271,6 +306,7 @@
         "Owners": ["user_2"],
         "Members": ["user_1"],
         "StorageUsed": 3072,
+        "ConnectedM365Group": "m365_2",
         "CreatedDate": "2023-05-11T10:15:00Z"
       }
     ],
@@ -289,6 +325,22 @@
         "OwnedBy": "user_2",
         "StorageUsed": 1536,
         "SharedWith": ["user_1"],
+        "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "od_3",
+        "DisplayName": "Executive Leadership Group OneDrive",
+        "ConnectedM365Group": "m365_1",
+        "StorageUsed": 512,
+        "SharedWith": ["user_1", "user_2"],
+        "CreatedDate": "2023-05-10T09:00:00Z"
+      },
+      {
+        "id": "od_4",
+        "DisplayName": "Finance Department Group OneDrive",
+        "ConnectedM365Group": "m365_2",
+        "StorageUsed": 256,
+        "SharedWith": ["user_1", "user_2"],
         "CreatedDate": "2023-05-11T10:15:00Z"
       }
     ],

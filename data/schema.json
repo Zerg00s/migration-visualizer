@@ -164,7 +164,7 @@
         "icon": {
           "type": "string",
           "description": "Font Awesome icon class",
-          "pattern": "^(fab?\\s+)?fa-[a-z0-9\\-]+$"
+          "pattern": "^(fa[bsrld]?\\s+)?fa-[a-z0-9\\-]+$"
         },
         "color": {
           "type": "string",
