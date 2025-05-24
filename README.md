@@ -19,6 +19,7 @@ An interactive web application for visualizing Microsoft 365 migration scenarios
 ---
 
 ### Known Limitations
+
 - Static data (no real Microsoft 365 integration)
 - No persistent state across sessions
 - Limited to predefined object types
