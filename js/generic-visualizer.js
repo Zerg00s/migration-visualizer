@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeMigrationZone();
     adjustArrowsForScreenSize();
     
+    // Make logo clickable to go home
+    setupLogoNavigation();
+    
     // Make visualizer available globally for debugging
     if (window.DEBUG || localStorage.getItem('debug') === 'true') {
       window.visualizer = visualizer;
@@ -132,5 +135,19 @@ function showError(message) {
   const loadingIndicator = document.getElementById('loading-indicator');
   if (loadingIndicator) {
     loadingIndicator.style.display = 'none';
+  }
+}
+
+/**
+ * Make logo clickable to navigate to home page
+ */
+function setupLogoNavigation() {
+  const logo = document.querySelector('.logo');
+  if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', function() {
+      // Navigate to home page
+      window.location.href = 'index.html';
+    });
   }
 }

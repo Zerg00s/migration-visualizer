@@ -250,6 +250,28 @@
         "objectType": "google-shared-drive",
         "arrayProperty": "ContentManagers"
       }
+    },
+    {
+      "type": "shared-drive-viewers",
+      "name": "Has View Access to Shared Drive",
+      "from": {
+        "objectType": "google-group"
+      },
+      "to": {
+        "objectType": "google-shared-drive",
+        "arrayProperty": "Viewers"
+      }
+    },
+    {
+      "type": "drive-sharing",
+      "name": "Drive Shared with Group",
+      "from": {
+        "objectType": "google-group"
+      },
+      "to": {
+        "objectType": "google-drive",
+        "arrayProperty": "SharedWith"
+      }
     }
   ],
   

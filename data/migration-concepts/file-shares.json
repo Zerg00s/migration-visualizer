@@ -142,8 +142,7 @@
       },
       "to": {
         "objectType": "file-share",
-        "arrayProperty": "Permissions",
-        "condition": "permission.Principal === from.id"
+        "arrayProperty": "UserAccess"
       }
     },
     {
@@ -154,8 +153,7 @@
       },
       "to": {
         "objectType": "file-share",
-        "arrayProperty": "Permissions",
-        "condition": "permission.Principal === from.id"
+        "arrayProperty": "GroupAccess"
       }
     }
   ],
@@ -220,10 +218,8 @@
         "StorageUsed": 25600,
         "FileCount": 1247,
         "LastAccessed": "2025-04-20T16:30:22Z",
-        "Permissions": [
-          {"Principal": "sg_1", "Access": "FullControl"},
-          {"Principal": "user_1", "Access": "FullControl"}
-        ],
+        "UserAccess": ["user_1"],
+        "GroupAccess": ["sg_1"],
         "ShareType": "DFS",
         "BackupStatus": "Enabled"
       },
@@ -237,10 +233,8 @@
         "StorageUsed": 18432,
         "FileCount": 2156,
         "LastAccessed": "2025-04-20T15:25:33Z",
-        "Permissions": [
-          {"Principal": "sg_2", "Access": "FullControl"},
-          {"Principal": "user_2", "Access": "FullControl"}
-        ],
+        "UserAccess": ["user_2"],
+        "GroupAccess": ["sg_2"],
         "ShareType": "Standard",
         "BackupStatus": "Enabled"
       }

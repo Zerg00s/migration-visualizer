@@ -321,6 +321,28 @@
         "objectType": "dropbox-paper",
         "arrayProperty": "Collaborators"
       }
+    },
+    {
+      "type": "team-folder-group-access",
+      "name": "Group has Team Folder Access",
+      "from": {
+        "objectType": "dropbox-company-group"
+      },
+      "to": {
+        "objectType": "dropbox-team-folder",
+        "property": "ConnectedGroup"
+      }
+    },
+    {
+      "type": "personal-folder-group-sharing",
+      "name": "Personal Folder shared with Group",
+      "from": {
+        "objectType": "dropbox-user-group"
+      },
+      "to": {
+        "objectType": "dropbox-personal-folder",
+        "arrayProperty": "SharedWithGroups"
+      }
     }
   ],
   
@@ -445,6 +467,7 @@
         "FolderPath": "/Executive Documents",
         "TeamName": "Executive",
         "GroupName": "Executive",
+        "ConnectedGroup": "dbgroup_1",
         "AccessType": "Team",
         "AccessMembers": ["dbuser_1", "dbuser_2"],
         "CreatedDate": "2023-03-15T12:00:00Z",
@@ -461,6 +484,7 @@
         "FolderPath": "/Finance Shared",
         "TeamName": "Finance",
         "GroupName": "Finance",
+        "ConnectedGroup": "dbgroup_2",
         "AccessType": "Team",
         "AccessMembers": ["dbuser_2", "dbuser_1"],
         "CreatedDate": "2023-03-16T14:30:00Z",
@@ -481,6 +505,7 @@
         "StorageUsed": 20971520,
         "FileCount": 89,
         "SharedLinkCount": 3,
+        "SharedWithGroups": ["dbgroup_3"],
         "LastAccessed": "2025-04-20T14:30:22Z",
         "SyncStatus": "Synced",
         "SharingPermissions": "Private"
@@ -494,6 +519,7 @@
         "StorageUsed": 16777216,
         "FileCount": 67,
         "SharedLinkCount": 1,
+        "SharedWithGroups": ["dbgroup_4"],
         "LastAccessed": "2025-04-19T16:45:11Z",
         "SyncStatus": "Synced",
         "SharingPermissions": "Private"

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://migration-visualizer.com/schemas/migration-concept.json",
   "title": "Migration Concept Definition",
-  "description": "Schema for defining migration visualization concepts with embedded data",
+  "description": "Schema for defining migration visualization concepts with embedded data. CONNECTION RULES EXPLANATION: The connection engine works by looking FROM 'from' objects TO 'to' objects, checking if the 'to' objects contain references to the 'from' objects. Examples: 1) Users own Mailboxes: from: {objectType: 'user'} to: {objectType: 'mailbox', property: 'OwnedBy'} - looks for mailboxes with 'OwnedBy' property containing user IDs. 2) Users are in Groups: from: {objectType: 'user'} to: {objectType: 'group', arrayProperty: 'Members'} - looks for groups with 'Members' array containing user IDs. 3) Teams connect to Security Groups: from: {objectType: 'group'} to: {objectType: 'teams', arrayProperty: 'ConnectedSecurityGroups'} - looks for teams with 'ConnectedSecurityGroups' array containing group IDs.",
   "type": "object",
   "required": ["id", "name", "description", "sourceEnvironment", "targetEnvironment", "objectTypes", "mappings", "data"],
   "properties": {
@@ -41,7 +41,7 @@
     },
     "connectionRules": {
       "type": "array",
-      "description": "Rules for generating connections between objects",
+      "description": "Rules for generating connections between objects. IMPORTANT: The connection engine looks FROM 'from' objects TO 'to' objects by checking if the 'to' objects contain references to the 'from' objects. For example, if Users own Mailboxes, the rule would be from: {objectType: 'user'} to: {objectType: 'mailbox', property: 'OwnedBy'} - meaning look for mailbox objects that have 'OwnedBy' property pointing to user IDs.",
       "items": {
         "$ref": "#/definitions/connectionRule"
       }
@@ -242,21 +242,23 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "Connection type identifier"
+          "description": "Connection type identifier (e.g., 'ownership', 'membership', 'association')"
         },
         "name": {
           "type": "string",
           "description": "Display name for the connection type"
         },
         "from": {
-          "$ref": "#/definitions/connectionEndpoint"
+          "$ref": "#/definitions/connectionEndpoint",
+          "description": "Starting point of the connection - the engine looks FROM this object type"
         },
         "to": {
-          "$ref": "#/definitions/connectionEndpoint"
+          "$ref": "#/definitions/connectionEndpoint",
+          "description": "Target of the connection - the engine looks for references TO the 'from' objects in these objects"
         },
         "condition": {
           "type": "string",
-          "description": "JavaScript expression to evaluate if connection should be created"
+          "description": "Optional JavaScript expression to evaluate if connection should be created"
         }
       }
     },
@@ -270,13 +272,14 @@
         },
         "property": {
           "type": "string",
-          "description": "Property that contains the reference (for single references)"
+          "description": "Property that contains a single reference to the 'from' object ID (e.g., 'OwnedBy': 'user_1'). Only used in 'to' endpoints."
         },
         "arrayProperty": {
           "type": "string",
-          "description": "Property that contains an array of references"
+          "description": "Property that contains an array of references to 'from' object IDs (e.g., 'Members': ['user_1', 'user_2']). Only used in 'to' endpoints."
         }
-      }
+      },
+      "additionalProperties": false
     }
   }
 }

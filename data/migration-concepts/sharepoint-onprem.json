@@ -245,6 +245,28 @@
         "objectType": "sp-onprem-site",
         "property": "ConnectedSite"
       }
+    },
+    {
+      "type": "infopath-author",
+      "name": "Created InfoPath Form",
+      "from": {
+        "objectType": "ad-user"
+      },
+      "to": {
+        "objectType": "infopath-form",
+        "property": "CreatedBy"
+      }
+    },
+    {
+      "type": "workflow-author",
+      "name": "Created Workflow",
+      "from": {
+        "objectType": "ad-user"
+      },
+      "to": {
+        "objectType": "sp-workflow",
+        "property": "CreatedBy"
+      }
     }
   ],
   

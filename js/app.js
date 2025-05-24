@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   // Add smooth scrolling for anchor links
   setupSmoothScrolling();
+  
+  // Make logo clickable to go home
+  setupLogoNavigation();
 });
 
 /**
@@ -59,6 +62,20 @@ function setupSmoothScrolling() {
       }
     });
   });
+}
+
+/**
+ * Make logo clickable to navigate to home page
+ */
+function setupLogoNavigation() {
+  const logo = document.querySelector('.logo');
+  if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', function() {
+      // Navigate to home page
+      window.location.href = 'index.html';
+    });
+  }
 }
 
 /**
