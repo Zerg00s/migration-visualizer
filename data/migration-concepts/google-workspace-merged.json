@@ -1,0 +1,452 @@
+{
+  "id": "google-workspace",
+  "name": "Google Workspace to Microsoft 365",
+  "description": "Google Workspace to Microsoft 365 migration with email and drive transformation",
+  
+  "sourceEnvironment": {
+    "name": "source",
+    "title": "Google Workspace",
+    "description": "Google Workspace environment",
+    "buckets": [
+      {
+        "id": "source-google-users",
+        "title": "Google Users",
+        "objectType": "google-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "source-google-groups",
+        "title": "Google Groups",
+        "objectType": "google-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "source-google-mailboxes",
+        "title": "Gmail",
+        "objectType": "gmail",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "source-google-shared-drives",
+        "title": "Shared Drives",
+        "objectType": "google-shared-drive",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "source-google-drives",
+        "title": "Google Drive",
+        "objectType": "google-drive",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "targetEnvironment": {
+    "name": "destination",
+    "title": "Microsoft 365",
+    "description": "Microsoft 365 cloud environment",
+    "buckets": [
+      {
+        "id": "destination-entra-users",
+        "title": "Entra ID Users",
+        "objectType": "entra-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "destination-entra-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "entra-security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "destination-exchange-online",
+        "title": "Exchange Online",
+        "objectType": "exchange-mailbox",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "destination-sharepoint-online",
+        "title": "SharePoint Online",
+        "objectType": "sharepoint-site",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "destination-onedrive",
+        "title": "OneDrive",
+        "objectType": "onedrive",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "objectTypes": {
+    "google-user": {
+      "name": "Google User",
+      "pluralName": "Google Users",
+      "icon": "fab fa-google",
+      "color": "#4285f4",
+      "collection": "GoogleUsers"
+    },
+    "google-group": {
+      "name": "Google Group",
+      "pluralName": "Google Groups",
+      "icon": "fa-users",
+      "color": "#34a853",
+      "collection": "GoogleGroups"
+    },
+    "gmail": {
+      "name": "Gmail",
+      "pluralName": "Gmail Mailboxes",
+      "icon": "fa-envelope",
+      "color": "#ea4335",
+      "collection": "GoogleMailboxes"
+    },
+    "google-shared-drive": {
+      "name": "Shared Drive",
+      "pluralName": "Shared Drives",
+      "icon": "fa-folder-open",
+      "color": "#fbbc05",
+      "collection": "GoogleSharedDrives"
+    },
+    "google-drive": {
+      "name": "Google Drive",
+      "pluralName": "Google Drives",
+      "icon": "fab fa-google-drive",
+      "color": "#ff6d01",
+      "collection": "GoogleDrives"
+    },
+    "entra-user": {
+      "name": "Entra ID User",
+      "pluralName": "Entra ID Users",
+      "icon": "fa-user",
+      "color": "#64b5f6",
+      "collection": "GoogleUsers"
+    },
+    "entra-security-group": {
+      "name": "Entra ID Security Group",
+      "pluralName": "Entra ID Security Groups",
+      "icon": "fa-users",
+      "color": "#7e57c2",
+      "collection": "GoogleGroups"
+    },
+    "exchange-mailbox": {
+      "name": "Exchange Mailbox",
+      "pluralName": "Exchange Mailboxes",
+      "icon": "fa-envelope",
+      "color": "#0078d4",
+      "collection": "GoogleMailboxes"
+    },
+    "sharepoint-site": {
+      "name": "SharePoint Site",
+      "pluralName": "SharePoint Sites",
+      "icon": "fa-share-alt",
+      "color": "#4caf50",
+      "collection": "GoogleSharedDrives"
+    },
+    "onedrive": {
+      "name": "OneDrive",
+      "pluralName": "OneDrive",
+      "icon": "fa-cloud",
+      "color": "#2196f3",
+      "collection": "GoogleDrives"
+    }
+  },
+  
+  "mappings": [
+    {
+      "sourceType": "google-user",
+      "targetType": "entra-user",
+      "transformations": {
+        "icon": "fa-user",
+        "color": "#64b5f6"
+      }
+    },
+    {
+      "sourceType": "google-group",
+      "targetType": "entra-security-group",
+      "transformations": {
+        "icon": "fa-users",
+        "color": "#7e57c2"
+      }
+    },
+    {
+      "sourceType": "gmail",
+      "targetType": "exchange-mailbox",
+      "transformations": {
+        "icon": "fa-envelope",
+        "color": "#0078d4"
+      }
+    },
+    {
+      "sourceType": "google-shared-drive",
+      "targetType": "sharepoint-site",
+      "transformations": {
+        "icon": "fa-share-alt",
+        "color": "#4caf50"
+      }
+    },
+    {
+      "sourceType": "google-drive",
+      "targetType": "onedrive",
+      "transformations": {
+        "icon": "fa-cloud",
+        "color": "#2196f3"
+      }
+    }
+  ],
+  
+  "connectionRules": [
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "google-user"
+      },
+      "to": {
+        "objectType": "gmail",
+        "property": "Owner"
+      }
+    },
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "google-user"
+      },
+      "to": {
+        "objectType": "google-drive",
+        "property": "Owner"
+      }
+    },
+    {
+      "type": "membership",
+      "name": "Member of",
+      "from": {
+        "objectType": "google-user"
+      },
+      "to": {
+        "objectType": "google-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "organizer",
+      "name": "Organizer",
+      "from": {
+        "objectType": "google-user"
+      },
+      "to": {
+        "objectType": "google-shared-drive",
+        "arrayProperty": "Organizers"
+      }
+    },
+    {
+      "type": "content-manager",
+      "name": "Content Manager",
+      "from": {
+        "objectType": "google-user"
+      },
+      "to": {
+        "objectType": "google-shared-drive",
+        "arrayProperty": "ContentManagers"
+      }
+    }
+  ],
+  
+  "data": {
+    "_metadata": {
+      "categoryMap": {
+        "Email": "Contact Information",
+        "Title": "Contact Information", 
+        "Department": "Contact Information",
+        "Phone": "Contact Information",
+        "Manager": "Contact Information",
+        "AccountStatus": "Account Status",
+        "Disabled": "Account Status",
+        "LastLogin": "Account Status",
+        "CreatedDate": "Account Status",
+        "ModifiedDate": "Account Status",
+        "MFAEnabled": "Account Status",
+        "TwoFactorEnabled": "Account Status",
+        "LicenseType": "Account Status",
+        "GoogleUsername": "Technical Details",
+        "GoogleWorkspaceRole": "Technical Details",
+        "URL": "Technical Details",
+        "Server": "Technical Details",
+        "UncPath": "Technical Details",
+        "StorageUsed": "Storage & Usage",
+        "StorageQuota": "Storage & Usage",
+        "FileCount": "Storage & Usage",
+        "MessageCount": "Storage & Usage",
+        "ItemCount": "Storage & Usage",
+        "Migrated": "Migration Status",
+        "MigrationDate": "Migration Status",
+        "ReadOnly": "Access Control",
+        "Owners": "Access Control",
+        "Members": "Access Control",
+        "Visitors": "Access Control",
+        "Classification": "Access Control",
+        "SensitivityLabel": "Access Control",
+        "Organizers": "Access Control",
+        "ContentManagers": "Access Control",
+        "Contributors": "Access Control",
+        "Commenters": "Access Control",
+        "Viewers": "Access Control",
+        "State": "Configuration",
+        "Runs": "Configuration",
+        "Users": "Configuration",
+        "Category": "Configuration",
+        "AppType": "Configuration",
+        "WorkspaceName": "Configuration",
+        "RefreshSchedule": "Configuration",
+        "GroupType": "Configuration",
+        "WhoCanJoin": "Configuration",
+        "WhoCanViewMembership": "Configuration",
+        "AccessLevel": "Configuration",
+        "SyncEnabled": "Configuration",
+        "BackupStatus": "Configuration",
+        "IMAPEnabled": "Configuration",
+        "POPEnabled": "Configuration",
+        "ForwardingEnabled": "Configuration"
+      }
+    },
+    "GoogleUsers": [
+      {
+        "id": "guser_1",
+        "DisplayName": "John Smith",
+        "Title": "CEO",
+        "Department": "Executive",
+        "Email": "john.smith@contoso.com",
+        "GoogleUsername": "john.smith",
+        "AccountStatus": "Active",
+        "LastLogin": "2025-04-15T08:45:23Z",
+        "TwoFactorEnabled": true,
+        "GoogleWorkspaceRole": "Super Admin"
+      },
+      {
+        "id": "guser_2",
+        "DisplayName": "Sarah Johnson",
+        "Title": "CFO",
+        "Department": "Finance",
+        "Email": "sarah.johnson@contoso.com",
+        "GoogleUsername": "sarah.johnson",
+        "AccountStatus": "Active",
+        "LastLogin": "2025-04-20T14:30:11Z",
+        "TwoFactorEnabled": true,
+        "GoogleWorkspaceRole": "Admin"
+      }
+    ],
+    "GoogleGroups": [
+      {
+        "id": "ggroup_1",
+        "DisplayName": "Executive Team",
+        "Description": "Executive leadership team members",
+        "Email": "executive-team@contoso.com",
+        "Members": ["guser_1", "guser_2"],
+        "CreatedDate": "2023-05-10T09:00:00Z",
+        "GroupType": "Security",
+        "WhoCanJoin": "INVITED_CAN_JOIN",
+        "WhoCanViewMembership": "ALL_MEMBERS_CAN_VIEW"
+      },
+      {
+        "id": "ggroup_2",
+        "DisplayName": "Finance Department",
+        "Description": "All finance department staff",
+        "Email": "finance-dept@contoso.com",
+        "Members": ["guser_2"],
+        "CreatedDate": "2023-05-11T10:15:00Z",
+        "GroupType": "Security",
+        "WhoCanJoin": "INVITED_CAN_JOIN",
+        "WhoCanViewMembership": "ALL_MEMBERS_CAN_VIEW"
+      }
+    ],
+    "GoogleSharedDrives": [
+      {
+        "id": "gshared_1",
+        "DisplayName": "Executive Documents",
+        "Description": "Executive leadership shared documents and strategic files",
+        "CreatedDate": "2023-07-01T09:00:00Z",
+        "StorageUsed": 15360,
+        "FileCount": 487,
+        "LastActivity": "2025-04-20T16:30:22Z",
+        "Organizers": ["guser_1"],
+        "ContentManagers": ["guser_2"],
+        "Contributors": [],
+        "Commenters": [],
+        "Viewers": ["ggroup_1"],
+        "AccessLevel": "Restricted"
+      },
+      {
+        "id": "gshared_2",
+        "DisplayName": "Finance Shared Drive",
+        "Description": "Finance department shared documents and reports",
+        "CreatedDate": "2023-07-02T10:15:00Z",
+        "StorageUsed": 12288,
+        "FileCount": 892,
+        "LastActivity": "2025-04-20T15:25:33Z",
+        "Organizers": ["guser_2"],
+        "ContentManagers": [],
+        "Contributors": [],
+        "Commenters": [],
+        "Viewers": ["ggroup_2"],
+        "AccessLevel": "Restricted"
+      }
+    ],
+    "GoogleDrives": [
+      {
+        "id": "gdrive_1",
+        "DisplayName": "John Smith's Drive",
+        "Owner": "guser_1",
+        "StorageUsed": 8192,
+        "StorageQuota": 2097152,
+        "FileCount": 156,
+        "LastActivity": "2025-04-20T14:22:33Z",
+        "SharedWith": ["guser_2", "ggroup_1"],
+        "SyncEnabled": true,
+        "BackupStatus": "Enabled"
+      },
+      {
+        "id": "gdrive_2",
+        "DisplayName": "Sarah Johnson's Drive",
+        "Owner": "guser_2",
+        "StorageUsed": 6144,
+        "StorageQuota": 2097152,
+        "FileCount": 234,
+        "LastActivity": "2025-04-20T15:45:11Z",
+        "SharedWith": ["guser_1", "ggroup_2"],
+        "SyncEnabled": true,
+        "BackupStatus": "Enabled"
+      }
+    ],
+    "GoogleMailboxes": [
+      {
+        "id": "gmailbox_1",
+        "DisplayName": "John Smith",
+        "Email": "john.smith@contoso.com",
+        "Owner": "guser_1",
+        "StorageUsed": 18432,
+        "StorageQuota": 104857600,
+        "MessageCount": 15420,
+        "LastAccessed": "2025-04-20T16:30:22Z",
+        "IMAPEnabled": true,
+        "POPEnabled": false,
+        "ForwardingEnabled": false,
+        "DelegateAccess": ["guser_2"]
+      },
+      {
+        "id": "gmailbox_2",
+        "DisplayName": "Sarah Johnson",
+        "Email": "sarah.johnson@contoso.com",
+        "Owner": "guser_2",
+        "StorageUsed": 15360,
+        "StorageQuota": 104857600,
+        "MessageCount": 12850,
+        "LastAccessed": "2025-04-20T15:25:33Z",
+        "IMAPEnabled": true,
+        "POPEnabled": false,
+        "ForwardingEnabled": false,
+        "DelegateAccess": []
+      }
+    ]
+  }
+}

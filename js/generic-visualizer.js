@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     console.log(`Loading migration concept: ${concept}`);
     
     // Create the generic visualizer using JSON configuration
-    const visualizer = await createMigrationVisualizer(concept);
+    // Now all concept files are merged
+    const visualizer = await createMigrationVisualizer(`${concept}-merged`);
+    console.log(`Loaded merged concept: ${concept}-merged`);
     
     // Make it globally available for migration zone (temporary for compatibility)
     window.migrationVisualizer = visualizer;

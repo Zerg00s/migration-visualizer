@@ -2,9 +2,9 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://migration-visualizer.com/schemas/migration-concept.json",
   "title": "Migration Concept Definition",
-  "description": "Schema for defining migration visualization concepts",
+  "description": "Schema for defining migration visualization concepts with embedded data",
   "type": "object",
-  "required": ["id", "name", "description", "sourceEnvironment", "targetEnvironment", "objectTypes", "mappings"],
+  "required": ["id", "name", "description", "sourceEnvironment", "targetEnvironment", "objectTypes", "mappings", "data"],
   "properties": {
     "id": {
       "type": "string",
@@ -18,10 +18,6 @@
     "description": {
       "type": "string",
       "description": "Description of the migration concept"
-    },
-    "dataSource": {
-      "type": "string",
-      "description": "Path to the data file containing objects and connections"
     },
     "sourceEnvironment": {
       "$ref": "#/definitions/environment"
@@ -50,6 +46,32 @@
         "$ref": "#/definitions/connectionRule"
       }
     },
+    "data": {
+      "type": "object",
+      "description": "The actual migration data containing all objects",
+      "properties": {
+        "_metadata": {
+          "type": "object",
+          "description": "Optional metadata for the data",
+          "properties": {
+            "categoryMap": {
+              "type": "object",
+              "description": "Mapping of field names to display categories",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": {
+        "type": "array",
+        "description": "Collections of objects",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
     "customStyles": {
       "type": "string",
       "description": "Custom CSS styles for this migration concept"
@@ -60,6 +82,10 @@
       "type": "object",
       "required": ["title", "buckets"],
       "properties": {
+        "name": {
+          "type": "string",
+          "description": "Internal name for the environment (e.g., 'source' or 'destination')"
+        },
         "title": {
           "type": "string",
           "description": "Display title for the environment"
@@ -125,7 +151,7 @@
     },
     "objectType": {
       "type": "object",
-      "required": ["icon", "color"],
+      "required": ["icon", "color", "collection"],
       "properties": {
         "name": {
           "type": "string",
@@ -145,32 +171,25 @@
           "description": "Hex color code or CSS color variable",
           "pattern": "^(#[0-9A-Fa-f]{6}|var\\(--[a-z\\-]+\\)|#[0-9A-Fa-f]{3})$"
         },
-        "dataProperties": {
-          "type": "object",
-          "description": "Mapping of data properties to source data",
-          "required": ["collection"],
-          "properties": {
-            "collection": {
-              "type": "string",
-              "description": "Property name in data file for this collection"
-            },
-            "idField": {
-              "type": "string",
-              "default": "id",
-              "description": "Field name containing the unique identifier"
-            },
-            "nameField": {
-              "type": "string",
-              "default": "DisplayName",
-              "description": "Field name containing the display name"
-            },
-            "additionalFields": {
-              "type": "array",
-              "description": "Additional fields to extract from the data",
-              "items": {
-                "type": "string"
-              }
-            }
+        "collection": {
+          "type": "string",
+          "description": "Property name in the data object for this collection"
+        },
+        "idField": {
+          "type": "string",
+          "default": "id",
+          "description": "Field name containing the unique identifier (optional)"
+        },
+        "nameField": {
+          "type": "string",
+          "default": "DisplayName",
+          "description": "Field name containing the display name (optional)"
+        },
+        "additionalFields": {
+          "type": "array",
+          "description": "Additional fields to extract from the data (optional)",
+          "items": {
+            "type": "string"
           }
         }
       }

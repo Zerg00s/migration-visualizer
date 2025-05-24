@@ -8,7 +8,7 @@ import { createFlyingAnimation } from '../visualizer/animations.js';
 export class GenericMigrationVisualizer extends BaseVisualizer {
   constructor(conceptDefinition) {
     super({
-      dataFile: conceptDefinition.dataSource,
+      dataFile: conceptDefinition.dataSource || null, // dataSource is now optional
       migrationType: conceptDefinition.id,
       enableSelectionBox: true,
       enableAnimations: true
@@ -18,22 +18,33 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
     this.objectTypeMap = conceptDefinition.objectTypes;
     this.mappings = conceptDefinition.mappings;
     this.connectionRules = conceptDefinition.connectionRules;
+    this.embeddedData = conceptDefinition.data || null; // Store embedded data if present
   }
   
   /**
    * Load migration data
    */
   async loadData() {
-    try {
-      const response = await fetch(this.config.dataFile);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Error loading migration data:', error);
-      throw error;
+    // If data is embedded in the concept definition, use it directly
+    if (this.embeddedData) {
+      return this.embeddedData;
     }
+    
+    // Otherwise, load from external file (backward compatibility)
+    if (this.config.dataFile) {
+      try {
+        const response = await fetch(this.config.dataFile);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Error loading migration data:', error);
+        throw error;
+      }
+    }
+    
+    throw new Error('No data source found. Either embed data or provide dataSource path.');
   }
   
   /**
@@ -44,19 +55,37 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
     
     // Iterate through defined object types
     Object.entries(this.objectTypeMap).forEach(([typeKey, typeDefinition]) => {
-      const collectionName = typeDefinition.dataProperties.collection;
+      // Support both simplified and full dataProperties structure
+      const collectionName = typeDefinition.collection || 
+                           (typeDefinition.dataProperties && typeDefinition.dataProperties.collection);
+      
+      if (!collectionName) {
+        console.warn(`No collection defined for object type: ${typeKey}`);
+        return;
+      }
+      
       const collection = data[collectionName];
       
       if (collection && Array.isArray(collection)) {
+        // Support simplified structure
+        const idField = typeDefinition.idField || 
+                       (typeDefinition.dataProperties && typeDefinition.dataProperties.idField) || 
+                       'id';
+        const nameField = typeDefinition.nameField || 
+                         (typeDefinition.dataProperties && typeDefinition.dataProperties.nameField) || 
+                         'DisplayName';
+        const additionalFields = typeDefinition.additionalFields || 
+                               (typeDefinition.dataProperties && typeDefinition.dataProperties.additionalFields);
+        
         objects.push(...collection.map(item => ({
           ...item,
-          id: item[typeDefinition.dataProperties.idField || 'id'],
-          name: item[typeDefinition.dataProperties.nameField || 'DisplayName'],
+          id: item[idField],
+          name: item[nameField],
           type: typeKey,
           icon: typeDefinition.icon,
           color: typeDefinition.color,
           // Include additional fields
-          ...this.extractAdditionalFields(item, typeDefinition.dataProperties.additionalFields)
+          ...this.extractAdditionalFields(item, additionalFields)
         })));
       }
     });
@@ -94,8 +123,14 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
         return;
       }
       
-      const fromCollection = data[fromType.dataProperties.collection];
-      const toCollection = data[toType.dataProperties.collection];
+      // Support both simplified and full structure
+      const fromCollectionName = fromType.collection || 
+                               (fromType.dataProperties && fromType.dataProperties.collection);
+      const toCollectionName = toType.collection || 
+                             (toType.dataProperties && toType.dataProperties.collection);
+      
+      const fromCollection = data[fromCollectionName];
+      const toCollection = data[toCollectionName];
       
       if (!fromCollection || !toCollection) {
         return;
@@ -107,11 +142,20 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
         toCollection.forEach(toItem => {
           const fromId = toItem[rule.to.property];
           if (fromId) {
-            const fromItem = fromCollection.find(f => f[fromType.dataProperties.idField] === fromId);
+            const fromIdField = fromType.idField || 
+                            (fromType.dataProperties && fromType.dataProperties.idField) || 
+                            'id';
+            const fromItem = fromCollection.find(f => f[fromIdField] === fromId);
             if (fromItem) {
+              const fromIdField = fromType.idField || 
+                              (fromType.dataProperties && fromType.dataProperties.idField) || 
+                              'id';
+              const toIdField = toType.idField || 
+                               (toType.dataProperties && toType.dataProperties.idField) || 
+                               'id';
               connections.push({
-                source: fromItem[fromType.dataProperties.idField],
-                target: toItem[toType.dataProperties.idField],
+                source: fromItem[fromIdField],
+                target: toItem[toIdField],
                 type: rule.type,
                 name: rule.name
               });
@@ -126,14 +170,20 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
             fromIds.forEach(fromRef => {
               // Handle both direct IDs and objects with conditions
               const fromId = typeof fromRef === 'string' ? fromRef : fromRef.Principal || fromRef.id;
-              const fromItem = fromCollection.find(f => f[fromType.dataProperties.idField] === fromId);
+              const fromIdField = fromType.idField || 
+                                (fromType.dataProperties && fromType.dataProperties.idField) || 
+                                'id';
+              const fromItem = fromCollection.find(f => f[fromIdField] === fromId);
               
               if (fromItem) {
                 // Check condition if specified
                 if (!rule.condition || this.evaluateCondition(rule.condition, fromItem, toItem, fromRef)) {
+                  const toIdField = toType.idField || 
+                                   (toType.dataProperties && toType.dataProperties.idField) || 
+                                   'id';
                   connections.push({
-                    source: fromItem[fromType.dataProperties.idField],
-                    target: toItem[toType.dataProperties.idField],
+                    source: fromItem[fromIdField],
+                    target: toItem[toIdField],
                     type: rule.type,
                     name: rule.name
                   });
@@ -150,11 +200,17 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
           const toIds = fromItem[rule.from.arrayProperty];
           if (toIds && Array.isArray(toIds)) {
             toIds.forEach(toId => {
-              const toItem = toCollection.find(t => t[toType.dataProperties.idField] === toId);
+              const toIdField = toType.idField || 
+                             (toType.dataProperties && toType.dataProperties.idField) || 
+                             'id';
+              const toItem = toCollection.find(t => t[toIdField] === toId);
               if (toItem) {
+                const fromIdField = fromType.idField || 
+                                  (fromType.dataProperties && fromType.dataProperties.idField) || 
+                                  'id';
                 connections.push({
-                  source: fromItem[fromType.dataProperties.idField],
-                  target: toItem[toType.dataProperties.idField],
+                  source: fromItem[fromIdField],
+                  target: toItem[toIdField],
                   type: rule.type,
                   name: rule.name
                 });
