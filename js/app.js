@@ -121,7 +121,7 @@ function createConceptCard(concept) {
     </div>
     <h3>${concept.name}</h3>
     <p>${concept.description}</p>
-    <a href="tenant-to-tenant-generic.html?concept=${concept.id}" class="btn-secondary">Explore</a>
+    <a href="visualizer.html?concept=${concept.id}" class="btn-secondary">Explore</a>
   `;
   
   return card;

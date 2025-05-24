@@ -124,7 +124,7 @@
       "name": "Personal Folder",
       "pluralName": "Personal Folders",
       "icon": "fab fa-dropbox",
-      "color": "#0061FF",
+      "color": "#0060FF",
       "collection": "DropboxPersonalFolders"
     },
     "dropbox-paper": {
@@ -138,14 +138,14 @@
       "name": "Entra ID User",
       "pluralName": "Entra ID Users",
       "icon": "fas fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "DropboxUsers"
     },
     "entra-security-group": {
       "name": "Entra ID Security Group",
       "pluralName": "Entra ID Security Groups",
       "icon": "fas fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "DropboxCompanyGroups"
     },
     "m365-group": {
@@ -160,21 +160,21 @@
       "name": "SharePoint Site",
       "pluralName": "SharePoint Sites",
       "icon": "fas fa-share-alt",
-      "color": "#4caf50",
+      "color": "#0078d4",
       "collection": "DropboxTeamFolders"
     },
     "onedrive": {
       "name": "OneDrive",
       "pluralName": "OneDrive",
       "icon": "fas fa-cloud",
-      "color": "#2196f3",
+      "color": "#0078d4",
       "collection": "DropboxPersonalFolders"
     },
     "onenote": {
       "name": "OneNote",
       "pluralName": "OneNote Notebooks",
       "icon": "fas fa-book",
-      "color": "#80397b",
+      "color": "#7719aa",
       "collection": "DropboxPaper"
     }
   },
@@ -185,7 +185,7 @@
       "targetType": "entra-user",
       "transformations": {
         "icon": "fas fa-user",
-        "color": "#64b5f6"
+        "color": "#0078d4"
       }
     },
     {
@@ -203,7 +203,7 @@
       "targetBucket": "destination-entra-groups",
       "transformations": {
         "icon": "fas fa-users",
-        "color": "#7e57c2"
+        "color": "#0078d4"
       }
     },
     {
@@ -211,7 +211,7 @@
       "targetType": "sharepoint-site",
       "transformations": {
         "icon": "fas fa-share-alt",
-        "color": "#4caf50"
+        "color": "#0078d4"
       }
     },
     {
@@ -219,7 +219,7 @@
       "targetType": "onedrive",
       "transformations": {
         "icon": "fas fa-cloud",
-        "color": "#2196f3",
+        "color": "#0078d4",
         "nameTransform": "append_onedrive"
       }
     },
@@ -228,7 +228,7 @@
       "targetType": "onenote",
       "transformations": {
         "icon": "fas fa-book",
-        "color": "#80397b"
+        "color": "#7719aa"
       }
     }
   ],

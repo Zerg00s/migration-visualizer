@@ -38,12 +38,12 @@
   "objectTypes": {
     "user": {
       "icon": "fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "Users"
     },
     "group": {
       "icon": "fas fa-users", 
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "SecurityGroups"
     },
     "m365-group": {
@@ -53,27 +53,27 @@
     },
     "sharepoint": {
       "icon": "fa-share-alt",
-      "color": "#4caf50",
+      "color": "#0078d4",
       "collection": "SharePointSites"
     },
     "teams": {
       "icon": "fa-comments",
-      "color": "#673ab7",
+      "color": "#0078d4",
       "collection": "Teams"
     },
     "onedrive": {
       "icon": "fa-cloud",
-      "color": "#2196f3",
+      "color": "#0078d4",
       "collection": "OneDrives"
     },
     "mailbox": {
       "icon": "fa-envelope",
-      "color": "#e91e63",
+      "color": "#0072c6",
       "collection": "Mailboxes"
     },
     "power-automate": {
       "icon": "fa-bolt", 
-      "color": "#0066ff",
+      "color": "#0078d4",
       "collection": "PowerAutomate"
     },
     "power-apps": {

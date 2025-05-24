@@ -60,14 +60,14 @@
       "name": "AD User",
       "pluralName": "AD Users",
       "icon": "fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "Users"
     },
     "ad-security-group": {
       "name": "AD Security Group",
       "pluralName": "AD Security Groups",
       "icon": "fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "SecurityGroups"
     },
     "file-share": {
@@ -81,21 +81,21 @@
       "name": "Entra ID User",
       "pluralName": "Entra ID Users",
       "icon": "fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "Users"
     },
     "entra-security-group": {
       "name": "Entra ID Security Group",
       "pluralName": "Entra ID Security Groups",
       "icon": "fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "SecurityGroups"
     },
     "sharepoint-site": {
       "name": "SharePoint Site",
       "pluralName": "SharePoint Sites",
       "icon": "fa-share-alt",
-      "color": "#4caf50",
+      "color": "#0078d4",
       "collection": "FileShares"
     }
   },
@@ -117,7 +117,7 @@
       "targetBucket": "destination-sharepoint-sites",
       "transformations": {
         "icon": "fa-share-alt",
-        "color": "#4caf50"
+        "color": "#0078d4"
       }
     }
   ],

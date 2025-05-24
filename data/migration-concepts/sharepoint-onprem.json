@@ -84,14 +84,14 @@
       "name": "AD User",
       "pluralName": "AD Users",
       "icon": "fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "Users"
     },
     "ad-security-group": {
       "name": "AD Security Group",
       "pluralName": "AD Security Groups",
       "icon": "fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "SecurityGroups"
     },
     "sp-onprem-site": {
@@ -119,21 +119,21 @@
       "name": "Entra ID User",
       "pluralName": "Entra ID Users",
       "icon": "fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "Users"
     },
     "entra-security-group": {
       "name": "Entra ID Security Group",
       "pluralName": "Entra ID Security Groups",
       "icon": "fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "SecurityGroups"
     },
     "sp-online-site": {
       "name": "SharePoint Online Site",
       "pluralName": "SharePoint Online Sites",
       "icon": "fa-share-alt",
-      "color": "#4caf50",
+      "color": "#0078d4",
       "collection": "SharePointSites"
     },
     "power-app": {
@@ -147,7 +147,7 @@
       "name": "Power Automate Flow",
       "pluralName": "Power Automate Flows",
       "icon": "fa-bolt",
-      "color": "#0066ff",
+      "color": "#0078d4",
       "collection": "Workflows"
     }
   },
@@ -166,7 +166,7 @@
       "targetType": "sp-online-site",
       "transformations": {
         "icon": "fa-share-alt",
-        "color": "#4caf50",
+        "color": "#0078d4",
         "nameTransform": "append_modern"
       }
     },
@@ -184,7 +184,7 @@
       "targetType": "power-automate-flow",
       "transformations": {
         "icon": "fa-bolt",
-        "color": "#0066ff",
+        "color": "#0078d4",
         "nameTransform": "append_flow"
       }
     }

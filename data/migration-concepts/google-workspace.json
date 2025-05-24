@@ -98,7 +98,7 @@
       "name": "Gmail",
       "pluralName": "Gmail Mailboxes",
       "icon": "fa-envelope",
-      "color": "#ea4335",
+      "color": "#34a853",
       "collection": "GoogleMailboxes"
     },
     "google-shared-drive": {
@@ -112,42 +112,42 @@
       "name": "Google Drive",
       "pluralName": "Google Drives",
       "icon": "fab fa-google-drive",
-      "color": "#ff6d01",
+      "color": "#4285f4",
       "collection": "GoogleDrives"
     },
     "entra-user": {
       "name": "Entra ID User",
       "pluralName": "Entra ID Users",
       "icon": "fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "GoogleUsers"
     },
     "entra-security-group": {
       "name": "Entra ID Security Group",
       "pluralName": "Entra ID Security Groups",
       "icon": "fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "GoogleGroups"
     },
     "exchange-mailbox": {
       "name": "Exchange Mailbox",
       "pluralName": "Exchange Mailboxes",
       "icon": "fa-envelope",
-      "color": "#0078d4",
+      "color": "#0072c6",
       "collection": "GoogleMailboxes"
     },
     "sharepoint-site": {
       "name": "SharePoint Site",
       "pluralName": "SharePoint Sites",
       "icon": "fa-share-alt",
-      "color": "#4caf50",
+      "color": "#0078d4",
       "collection": "GoogleSharedDrives"
     },
     "onedrive": {
       "name": "OneDrive",
       "pluralName": "OneDrive",
       "icon": "fa-cloud",
-      "color": "#2196f3",
+      "color": "#0078d4",
       "collection": "GoogleDrives"
     }
   },
@@ -158,7 +158,7 @@
       "targetType": "entra-user",
       "transformations": {
         "icon": "fa-user",
-        "color": "#64b5f6"
+        "color": "#0078d4"
       }
     },
     {
@@ -166,7 +166,7 @@
       "targetType": "entra-security-group",
       "transformations": {
         "icon": "fa-users",
-        "color": "#7e57c2"
+        "color": "#0078d4"
       }
     },
     {
@@ -174,7 +174,7 @@
       "targetType": "exchange-mailbox",
       "transformations": {
         "icon": "fa-envelope",
-        "color": "#0078d4"
+        "color": "#0072c6"
       }
     },
     {
@@ -182,7 +182,7 @@
       "targetType": "sharepoint-site",
       "transformations": {
         "icon": "fa-share-alt",
-        "color": "#4caf50"
+        "color": "#0078d4"
       }
     },
     {
@@ -190,7 +190,7 @@
       "targetType": "onedrive",
       "transformations": {
         "icon": "fa-cloud",
-        "color": "#2196f3"
+        "color": "#0078d4"
       }
     }
   ],

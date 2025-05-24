@@ -138,42 +138,42 @@
       "name": "Entra ID User",
       "pluralName": "Entra ID Users",
       "icon": "fas fa-user",
-      "color": "#64b5f6",
+      "color": "#0078d4",
       "collection": "BoxUsers"
     },
     "entra-security-group": {
       "name": "Entra ID Security Group",
       "pluralName": "Entra ID Security Groups",
       "icon": "fas fa-users",
-      "color": "#7e57c2",
+      "color": "#0078d4",
       "collection": "BoxGroups"
     },
     "sharepoint-site": {
       "name": "SharePoint Site",
       "pluralName": "SharePoint Sites",
       "icon": "fas fa-share-alt",
-      "color": "#4caf50",
+      "color": "#0078d4",
       "collection": "BoxSharedFolders"
     },
     "onedrive": {
       "name": "OneDrive",
       "pluralName": "OneDrive",
       "icon": "fas fa-cloud",
-      "color": "#2196f3",
+      "color": "#0078d4",
       "collection": "BoxPersonalFolders"
     },
     "onenote": {
       "name": "OneNote",
       "pluralName": "OneNote Notebooks",
       "icon": "fas fa-book",
-      "color": "#80397b",
+      "color": "#7719aa",
       "collection": "BoxNotes"
     },
     "power-automate-flow": {
       "name": "Power Automate Flow",
       "pluralName": "Power Automate Flows",
       "icon": "fas fa-bolt",
-      "color": "#0066ff",
+      "color": "#0078d4",
       "collection": "BoxRelay"
     }
   },
@@ -184,7 +184,7 @@
       "targetType": "entra-user",
       "transformations": {
         "icon": "fas fa-user",
-        "color": "#64b5f6"
+        "color": "#0078d4"
       }
     },
     {
@@ -192,7 +192,7 @@
       "targetType": "entra-security-group",
       "transformations": {
         "icon": "fas fa-users",
-        "color": "#7e57c2"
+        "color": "#0078d4"
       }
     },
     {
@@ -200,7 +200,7 @@
       "targetType": "sharepoint-site",
       "transformations": {
         "icon": "fas fa-share-alt",
-        "color": "#4caf50"
+        "color": "#0078d4"
       }
     },
     {
@@ -208,7 +208,7 @@
       "targetType": "onedrive",
       "transformations": {
         "icon": "fas fa-cloud",
-        "color": "#2196f3",
+        "color": "#0078d4",
         "nameTransform": "append_onedrive"
       }
     },
@@ -217,7 +217,7 @@
       "targetType": "onenote",
       "transformations": {
         "icon": "fas fa-book",
-        "color": "#80397b"
+        "color": "#7719aa"
       }
     },
     {
@@ -225,7 +225,7 @@
       "targetType": "power-automate-flow",
       "transformations": {
         "icon": "fas fa-bolt",
-        "color": "#0066ff",
+        "color": "#0078d4",
         "nameTransform": "append_flow"
       }
     }
