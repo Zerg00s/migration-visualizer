@@ -82,7 +82,7 @@
       "collection": "PowerApps"
     },
     "power-bi": {
-      "icon": "fa-chart-bar",
+      "icon": "fas fa-chart-bar",
       "color": "#f2c811",
       "collection": "PowerBI"
     }
