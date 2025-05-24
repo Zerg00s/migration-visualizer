@@ -6,7 +6,7 @@
       "description": "Microsoft 365 Tenant-to-Tenant migration visualization",
       "icon": "fas fa-exchange-alt",
       "page": "tenant-to-tenant.html",
-      "configFile": "data/migration-concepts/tenant-to-tenant-merged.json"
+      "configFile": "data/migration-concepts/tenant-to-tenant.json"
     },
     {
       "id": "file-shares",
@@ -14,7 +14,7 @@
       "description": "Visualize migration from on-premises file shares to SharePoint Online with AD to Entra ID mapping",
       "icon": "fas fa-folder",
       "page": "file-shares.html",
-      "configFile": "data/migration-concepts/file-shares-merged.json"
+      "configFile": "data/migration-concepts/file-shares.json"
     },
     {
       "id": "sharepoint-onprem",
@@ -22,7 +22,7 @@
       "description": "Visualize migration from on-premises SharePoint to Microsoft 365 with InfoPath to Power Apps transformation",
       "icon": "fas fa-server",
       "page": "sharepoint-onprem.html",
-      "configFile": "data/migration-concepts/sharepoint-onprem-merged.json"
+      "configFile": "data/migration-concepts/sharepoint-onprem.json"
     },
     {
       "id": "google-workspace",
@@ -30,7 +30,23 @@
       "description": "Visualize migration from Google Workspace to Microsoft 365 with Gmail to Exchange transformation",
       "icon": "fab fa-google",
       "page": "google-workspace.html",
-      "configFile": "data/migration-concepts/google-workspace-merged.json"
+      "configFile": "data/migration-concepts/google-workspace.json"
+    },
+    {
+      "id": "dropbox",
+      "name": "Dropbox to M365",
+      "description": "Visualize migration from Dropbox Business to Microsoft 365 with team folders to SharePoint transformation",
+      "icon": "fab fa-dropbox",
+      "page": "dropbox.html",
+      "configFile": "data/migration-concepts/dropbox.json"
+    },
+    {
+      "id": "box",
+      "name": "Box to M365",
+      "description": "Visualize migration from Box Enterprise to Microsoft 365 with shared folders to SharePoint transformation",
+      "icon": "fas fa-cube",
+      "page": "box.html",
+      "configFile": "data/migration-concepts/box.json"
     }
   ]
 }

@@ -1,0 +1,551 @@
+{
+  "id": "box",
+  "name": "Box to Microsoft 365",
+  "description": "Box Enterprise to Microsoft 365 migration with collaboration and workflow transformation",
+  
+  "sourceEnvironment": {
+    "name": "source",
+    "title": "Box Enterprise",
+    "description": "Box Enterprise environment",
+    "buckets": [
+      {
+        "id": "source-box-users",
+        "title": "Box Users",
+        "objectType": "box-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "source-box-groups",
+        "title": "Box Groups",
+        "objectType": "box-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "source-box-folders",
+        "title": "Shared Folders",
+        "objectType": "box-shared-folder",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "source-box-personal",
+        "title": "Personal Files",
+        "objectType": "box-personal-folder",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "source-box-notes",
+        "title": "Box Notes",
+        "objectType": "box-note",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      },
+      {
+        "id": "source-box-relay",
+        "title": "Box Relay",
+        "objectType": "box-relay",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "targetEnvironment": {
+    "name": "destination",
+    "title": "Microsoft 365",
+    "description": "Microsoft 365 cloud environment",
+    "buckets": [
+      {
+        "id": "destination-entra-users",
+        "title": "Entra ID Users",
+        "objectType": "entra-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "destination-entra-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "entra-security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "destination-sharepoint-sites",
+        "title": "SharePoint Online Sites",
+        "objectType": "sharepoint-site",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "destination-onedrive",
+        "title": "OneDrive",
+        "objectType": "onedrive",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "destination-onenote",
+        "title": "OneNote",
+        "objectType": "onenote",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      },
+      {
+        "id": "destination-power-automate",
+        "title": "Power Automate",
+        "objectType": "power-automate-flow",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "objectTypes": {
+    "box-user": {
+      "name": "Box User",
+      "pluralName": "Box Users",
+      "icon": "fas fa-user",
+      "color": "#0061d5",
+      "collection": "BoxUsers"
+    },
+    "box-group": {
+      "name": "Box Group",
+      "pluralName": "Box Groups",
+      "icon": "fas fa-users",
+      "color": "#004aa0",
+      "collection": "BoxGroups"
+    },
+    "box-shared-folder": {
+      "name": "Shared Folder",
+      "pluralName": "Shared Folders",
+      "icon": "fas fa-folder-open",
+      "color": "#00a1c9",
+      "collection": "BoxSharedFolders"
+    },
+    "box-personal-folder": {
+      "name": "Personal Folder",
+      "pluralName": "Personal Folders",
+      "icon": "fas fa-folder",
+      "color": "#2e86c1",
+      "collection": "BoxPersonalFolders"
+    },
+    "box-note": {
+      "name": "Box Note",
+      "pluralName": "Box Notes",
+      "icon": "fas fa-sticky-note",
+      "color": "#5dade2",
+      "collection": "BoxNotes"
+    },
+    "box-relay": {
+      "name": "Box Relay Workflow",
+      "pluralName": "Box Relay Workflows",
+      "icon": "fas fa-cogs",
+      "color": "#148cc9",
+      "collection": "BoxRelay"
+    },
+    "entra-user": {
+      "name": "Entra ID User",
+      "pluralName": "Entra ID Users",
+      "icon": "fas fa-user",
+      "color": "#64b5f6",
+      "collection": "BoxUsers"
+    },
+    "entra-security-group": {
+      "name": "Entra ID Security Group",
+      "pluralName": "Entra ID Security Groups",
+      "icon": "fas fa-users",
+      "color": "#7e57c2",
+      "collection": "BoxGroups"
+    },
+    "sharepoint-site": {
+      "name": "SharePoint Site",
+      "pluralName": "SharePoint Sites",
+      "icon": "fas fa-share-alt",
+      "color": "#4caf50",
+      "collection": "BoxSharedFolders"
+    },
+    "onedrive": {
+      "name": "OneDrive",
+      "pluralName": "OneDrive",
+      "icon": "fas fa-cloud",
+      "color": "#2196f3",
+      "collection": "BoxPersonalFolders"
+    },
+    "onenote": {
+      "name": "OneNote",
+      "pluralName": "OneNote Notebooks",
+      "icon": "fas fa-book",
+      "color": "#80397b",
+      "collection": "BoxNotes"
+    },
+    "power-automate-flow": {
+      "name": "Power Automate Flow",
+      "pluralName": "Power Automate Flows",
+      "icon": "fas fa-bolt",
+      "color": "#0066ff",
+      "collection": "BoxRelay"
+    }
+  },
+  
+  "mappings": [
+    {
+      "sourceType": "box-user",
+      "targetType": "entra-user",
+      "transformations": {
+        "icon": "fas fa-user",
+        "color": "#64b5f6"
+      }
+    },
+    {
+      "sourceType": "box-group",
+      "targetType": "entra-security-group",
+      "transformations": {
+        "icon": "fas fa-users",
+        "color": "#7e57c2"
+      }
+    },
+    {
+      "sourceType": "box-shared-folder",
+      "targetType": "sharepoint-site",
+      "transformations": {
+        "icon": "fas fa-share-alt",
+        "color": "#4caf50"
+      }
+    },
+    {
+      "sourceType": "box-personal-folder",
+      "targetType": "onedrive",
+      "transformations": {
+        "icon": "fas fa-cloud",
+        "color": "#2196f3",
+        "nameTransform": "append_onedrive"
+      }
+    },
+    {
+      "sourceType": "box-note",
+      "targetType": "onenote",
+      "transformations": {
+        "icon": "fas fa-book",
+        "color": "#80397b"
+      }
+    },
+    {
+      "sourceType": "box-relay",
+      "targetType": "power-automate-flow",
+      "transformations": {
+        "icon": "fas fa-bolt",
+        "color": "#0066ff",
+        "nameTransform": "append_flow"
+      }
+    }
+  ],
+  
+  "connectionRules": [
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-personal-folder",
+        "property": "Owner"
+      }
+    },
+    {
+      "type": "group-membership",
+      "name": "Member of Group",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "group-admin",
+      "name": "Group Admin",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-group",
+        "arrayProperty": "Admins"
+      }
+    },
+    {
+      "type": "folder-collaborator",
+      "name": "Collaborator",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-shared-folder",
+        "arrayProperty": "Collaborators"
+      }
+    },
+    {
+      "type": "folder-owner",
+      "name": "Folder Owner",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-shared-folder",
+        "property": "OwnedBy"
+      }
+    },
+    {
+      "type": "note-author",
+      "name": "Author",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-note",
+        "property": "CreatedBy"
+      }
+    },
+    {
+      "type": "note-collaborator",
+      "name": "Collaborator",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-note",
+        "arrayProperty": "Collaborators"
+      }
+    },
+    {
+      "type": "workflow-owner",
+      "name": "Workflow Owner",
+      "from": {
+        "objectType": "box-user"
+      },
+      "to": {
+        "objectType": "box-relay",
+        "property": "CreatedBy"
+      }
+    }
+  ],
+  
+  "data": {
+    "_metadata": {
+      "categoryMap": {
+        "Email": "Contact Information",
+        "JobTitle": "Contact Information",
+        "Department": "Contact Information",
+        "Phone": "Contact Information",
+        "Role": "Contact Information",
+        "AccountStatus": "Account Status",
+        "LastLogin": "Account Status",
+        "CreatedAt": "Account Status",
+        "ModifiedAt": "Account Status",
+        "TwoFactorEnabled": "Account Status",
+        "ExternalCollabEnabled": "Account Status",
+        "StorageUsed": "Storage & Usage",
+        "StorageQuota": "Storage & Usage",
+        "FileCount": "Storage & Usage",
+        "FolderCount": "Storage & Usage",
+        "SharedLinkCount": "Storage & Usage",
+        "FolderPath": "Technical Details",
+        "FolderType": "Technical Details",
+        "SyncStatus": "Technical Details",
+        "AccessLevel": "Access Control",
+        "SharingPolicy": "Access Control",
+        "Collaborators": "Access Control",
+        "Members": "Access Control",
+        "Admins": "Access Control",
+        "Permissions": "Access Control",
+        "GroupType": "Configuration",
+        "Privacy": "Configuration",
+        "NoteType": "Configuration",
+        "WorkflowType": "Configuration",
+        "Status": "Configuration",
+        "TriggerType": "Configuration",
+        "ActionCount": "Configuration"
+      }
+    },
+    "BoxUsers": [
+      {
+        "id": "boxuser_1",
+        "DisplayName": "John Smith",
+        "Email": "john.smith@contoso.com",
+        "JobTitle": "CEO",
+        "Department": "Executive",
+        "Role": "Admin",
+        "AccountStatus": "Active",
+        "LastLogin": "2025-04-20T14:30:22Z",
+        "CreatedAt": "2023-02-10T09:00:00Z",
+        "TwoFactorEnabled": true,
+        "ExternalCollabEnabled": true,
+        "StorageUsed": 68157440,
+        "StorageQuota": 107374182400
+      },
+      {
+        "id": "boxuser_2",
+        "DisplayName": "Sarah Johnson",
+        "Email": "sarah.johnson@contoso.com",
+        "JobTitle": "CFO",
+        "Department": "Finance",
+        "Role": "User",
+        "AccountStatus": "Active",
+        "LastLogin": "2025-04-19T16:45:11Z",
+        "CreatedAt": "2023-02-11T10:15:00Z",
+        "TwoFactorEnabled": true,
+        "ExternalCollabEnabled": false,
+        "StorageUsed": 54525952,
+        "StorageQuota": 107374182400
+      }
+    ],
+    "BoxGroups": [
+      {
+        "id": "boxgroup_1",
+        "DisplayName": "Executive Leadership",
+        "Description": "Executive team collaboration group",
+        "GroupType": "Managed",
+        "Privacy": "Private",
+        "Admins": ["boxuser_1"],
+        "Members": ["boxuser_1", "boxuser_2"],
+        "CreatedAt": "2023-02-10T12:00:00Z",
+        "ModifiedAt": "2025-03-15T14:22:33Z",
+        "MemberCount": 2,
+        "ExternalCollabEnabled": false
+      },
+      {
+        "id": "boxgroup_2",
+        "DisplayName": "Finance Team",
+        "Description": "Finance department working group",
+        "GroupType": "Managed",
+        "Privacy": "Private",
+        "Admins": ["boxuser_2"],
+        "Members": ["boxuser_2", "boxuser_1"],
+        "CreatedAt": "2023-02-11T14:30:00Z",
+        "ModifiedAt": "2025-03-20T11:15:44Z",
+        "MemberCount": 2,
+        "ExternalCollabEnabled": false
+      }
+    ],
+    "BoxSharedFolders": [
+      {
+        "id": "boxfolder_1",
+        "DisplayName": "Executive Strategic Planning",
+        "Description": "Executive team strategic documents and planning materials",
+        "FolderPath": "/Executive Strategic Planning",
+        "FolderType": "Shared",
+        "OwnedBy": "boxuser_1",
+        "Collaborators": ["boxuser_2"],
+        "AccessLevel": "Co-owner",
+        "CreatedAt": "2023-02-10T15:00:00Z",
+        "ModifiedAt": "2025-04-20T11:30:15Z",
+        "StorageUsed": 41943040,
+        "FileCount": 186,
+        "FolderCount": 12,
+        "SharingPolicy": "Company Only",
+        "SyncStatus": "Synced"
+      },
+      {
+        "id": "boxfolder_2",
+        "DisplayName": "Finance Department Resources",
+        "Description": "Finance team shared resources and collaboration space",
+        "FolderPath": "/Finance Department Resources",
+        "FolderType": "Shared",
+        "OwnedBy": "boxuser_2",
+        "Collaborators": ["boxuser_1"],
+        "AccessLevel": "Editor",
+        "CreatedAt": "2023-02-11T16:30:00Z",
+        "ModifiedAt": "2025-04-19T09:22:44Z",
+        "StorageUsed": 33554432,
+        "FileCount": 145,
+        "FolderCount": 8,
+        "SharingPolicy": "Company Only",
+        "SyncStatus": "Synced"
+      }
+    ],
+    "BoxPersonalFolders": [
+      {
+        "id": "boxpersonal_1",
+        "DisplayName": "John's Personal Workspace",
+        "Owner": "boxuser_1",
+        "FolderPath": "/Personal",
+        "FolderType": "Personal",
+        "StorageUsed": 26214400,
+        "FileCount": 78,
+        "FolderCount": 5,
+        "SharedLinkCount": 4,
+        "LastAccessed": "2025-04-20T14:30:22Z",
+        "SyncStatus": "Synced",
+        "SharingPolicy": "Private"
+      },
+      {
+        "id": "boxpersonal_2",
+        "DisplayName": "Sarah's Personal Workspace",
+        "Owner": "boxuser_2",
+        "FolderPath": "/Personal",
+        "FolderType": "Personal",
+        "StorageUsed": 20971520,
+        "FileCount": 62,
+        "FolderCount": 4,
+        "SharedLinkCount": 2,
+        "LastAccessed": "2025-04-19T16:45:11Z",
+        "SyncStatus": "Synced",
+        "SharingPolicy": "Private"
+      }
+    ],
+    "BoxNotes": [
+      {
+        "id": "boxnote_1",
+        "DisplayName": "Executive Strategy Framework 2025",
+        "Description": "Comprehensive strategic framework for 2025 business objectives",
+        "CreatedBy": "boxuser_1",
+        "CreatedAt": "2024-11-15T10:00:00Z",
+        "ModifiedAt": "2025-04-15T14:22:33Z",
+        "NoteType": "Collaborative",
+        "Collaborators": ["boxuser_2"],
+        "Privacy": "Company",
+        "WordCount": 3247,
+        "CommentCount": 28,
+        "LastActivity": "2025-04-15T14:22:33Z"
+      },
+      {
+        "id": "boxnote_2",
+        "DisplayName": "Q1 Financial Analysis & Planning",
+        "Description": "Detailed Q1 financial performance analysis and future planning notes",
+        "CreatedBy": "boxuser_2",
+        "CreatedAt": "2025-01-05T09:30:00Z",
+        "ModifiedAt": "2025-04-10T11:45:18Z",
+        "NoteType": "Collaborative",
+        "Collaborators": ["boxuser_1"],
+        "Privacy": "Company",
+        "WordCount": 2156,
+        "CommentCount": 19,
+        "LastActivity": "2025-04-10T11:45:18Z"
+      }
+    ],
+    "BoxRelay": [
+      {
+        "id": "boxrelay_1",
+        "DisplayName": "Executive Document Approval Workflow",
+        "Description": "Multi-step approval process for executive-level documents",
+        "CreatedBy": "boxuser_1",
+        "CreatedAt": "2023-08-15T10:00:00Z",
+        "ModifiedAt": "2025-03-20T14:22:33Z",
+        "WorkflowType": "Approval",
+        "Status": "Active",
+        "TriggerType": "File Upload",
+        "ActionCount": 4,
+        "CompletedInstances": 67,
+        "ActiveInstances": 3,
+        "FailedInstances": 1
+      },
+      {
+        "id": "boxrelay_2",
+        "DisplayName": "Finance Review and Sign-off Process",
+        "Description": "Automated workflow for finance document review and approval",
+        "CreatedBy": "boxuser_2",
+        "CreatedAt": "2023-09-20T11:30:00Z",
+        "ModifiedAt": "2025-04-05T09:15:22Z",
+        "WorkflowType": "Review",
+        "Status": "Active",
+        "TriggerType": "File Modified",
+        "ActionCount": 3,
+        "CompletedInstances": 124,
+        "ActiveInstances": 5,
+        "FailedInstances": 2
+      }
+    ]
+  }
+}

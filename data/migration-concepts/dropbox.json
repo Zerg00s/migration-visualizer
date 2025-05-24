@@ -1,0 +1,531 @@
+{
+  "id": "dropbox",
+  "name": "Dropbox to Microsoft 365",
+  "description": "Dropbox Business to Microsoft 365 migration with file and team transformation",
+  
+  "sourceEnvironment": {
+    "name": "source",
+    "title": "Dropbox Business",
+    "description": "Dropbox Business environment",
+    "buckets": [
+      {
+        "id": "source-dropbox-users",
+        "title": "Dropbox Users",
+        "objectType": "dropbox-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "source-dropbox-user-groups",
+        "title": "User-managed Groups",
+        "objectType": "dropbox-user-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "source-dropbox-company-groups",
+        "title": "Company-managed Groups",
+        "objectType": "dropbox-company-group",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      },
+      {
+        "id": "source-dropbox-folders",
+        "title": "Team Folders",
+        "objectType": "dropbox-team-folder",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "source-dropbox-personal",
+        "title": "Personal Folders",
+        "objectType": "dropbox-personal-folder",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "source-dropbox-paper",
+        "title": "Dropbox Paper",
+        "objectType": "dropbox-paper",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "targetEnvironment": {
+    "name": "destination",
+    "title": "Microsoft 365",
+    "description": "Microsoft 365 cloud environment",
+    "buckets": [
+      {
+        "id": "destination-entra-users",
+        "title": "Entra ID Users",
+        "objectType": "entra-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "destination-entra-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "entra-security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "destination-m365-groups",
+        "title": "Microsoft 365 Groups",
+        "objectType": "m365-group",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      },
+      {
+        "id": "destination-sharepoint-sites",
+        "title": "SharePoint Online Sites",
+        "objectType": "sharepoint-site",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "destination-onedrive",
+        "title": "OneDrive",
+        "objectType": "onedrive",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      },
+      {
+        "id": "destination-onenote",
+        "title": "OneNote",
+        "objectType": "onenote",
+        "layout": { "gridColumn": 2, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "objectTypes": {
+    "dropbox-user": {
+      "name": "Dropbox User",
+      "pluralName": "Dropbox Users",
+      "icon": "fas fa-user",
+      "color": "#64B5F6",
+      "collection": "DropboxUsers"
+    },
+    "dropbox-user-group": {
+      "name": "User-managed Group",
+      "pluralName": "User-managed Groups",
+      "icon": "fas fa-users",
+      "color": "#0051cc",
+      "collection": "DropboxUserGroups"
+    },
+    "dropbox-company-group": {
+      "name": "Company-managed Group",
+      "pluralName": "Company-managed Groups",
+      "icon": "fas fa-users-cog",
+      "color": "#003d99",
+      "collection": "DropboxCompanyGroups"
+    },
+    "dropbox-team-folder": {
+      "name": "Team Folder",
+      "pluralName": "Team Folders",
+      "icon": "fas fa-folder-open",
+      "color": "#7b68ee",
+      "collection": "DropboxTeamFolders"
+    },
+    "dropbox-personal-folder": {
+      "name": "Personal Folder",
+      "pluralName": "Personal Folders",
+      "icon": "fab fa-dropbox",
+      "color": "#0061FF",
+      "collection": "DropboxPersonalFolders"
+    },
+    "dropbox-paper": {
+      "name": "Dropbox Paper",
+      "pluralName": "Dropbox Paper Docs",
+      "icon": "fas fa-file-alt",
+      "color": "#4169e1",
+      "collection": "DropboxPaper"
+    },
+    "entra-user": {
+      "name": "Entra ID User",
+      "pluralName": "Entra ID Users",
+      "icon": "fas fa-user",
+      "color": "#64b5f6",
+      "collection": "DropboxUsers"
+    },
+    "entra-security-group": {
+      "name": "Entra ID Security Group",
+      "pluralName": "Entra ID Security Groups",
+      "icon": "fas fa-users",
+      "color": "#7e57c2",
+      "collection": "DropboxCompanyGroups"
+    },
+    "m365-group": {
+      "name": "Microsoft 365 Group",
+      "pluralName": "Microsoft 365 Groups",
+      "icon": "fas fa-users-cog",
+      "color": "#ff9800",
+      "collection": "DropboxUserGroups"
+    },
+
+    "sharepoint-site": {
+      "name": "SharePoint Site",
+      "pluralName": "SharePoint Sites",
+      "icon": "fas fa-share-alt",
+      "color": "#4caf50",
+      "collection": "DropboxTeamFolders"
+    },
+    "onedrive": {
+      "name": "OneDrive",
+      "pluralName": "OneDrive",
+      "icon": "fas fa-cloud",
+      "color": "#2196f3",
+      "collection": "DropboxPersonalFolders"
+    },
+    "onenote": {
+      "name": "OneNote",
+      "pluralName": "OneNote Notebooks",
+      "icon": "fas fa-book",
+      "color": "#80397b",
+      "collection": "DropboxPaper"
+    }
+  },
+  
+  "mappings": [
+    {
+      "sourceType": "dropbox-user",
+      "targetType": "entra-user",
+      "transformations": {
+        "icon": "fas fa-user",
+        "color": "#64b5f6"
+      }
+    },
+    {
+      "sourceType": "dropbox-user-group",
+      "targetType": "m365-group",
+      "targetBucket": "destination-m365-groups",
+      "transformations": {
+        "icon": "fas fa-users-cog",
+        "color": "#ff9800"
+      }
+    },
+    {
+      "sourceType": "dropbox-company-group",
+      "targetType": "entra-security-group",
+      "targetBucket": "destination-entra-groups",
+      "transformations": {
+        "icon": "fas fa-users",
+        "color": "#7e57c2"
+      }
+    },
+    {
+      "sourceType": "dropbox-team-folder",
+      "targetType": "sharepoint-site",
+      "transformations": {
+        "icon": "fas fa-share-alt",
+        "color": "#4caf50"
+      }
+    },
+    {
+      "sourceType": "dropbox-personal-folder",
+      "targetType": "onedrive",
+      "transformations": {
+        "icon": "fas fa-cloud",
+        "color": "#2196f3",
+        "nameTransform": "append_onedrive"
+      }
+    },
+    {
+      "sourceType": "dropbox-paper",
+      "targetType": "onenote",
+      "transformations": {
+        "icon": "fas fa-book",
+        "color": "#80397b"
+      }
+    }
+  ],
+  
+  "connectionRules": [
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-personal-folder",
+        "property": "Owner"
+      }
+    },
+    {
+      "type": "user-group-membership",
+      "name": "Member of User Group",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-user-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "user-group-admin",
+      "name": "User Group Admin",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-user-group",
+        "arrayProperty": "Admins"
+      }
+    },
+    {
+      "type": "company-group-membership",
+      "name": "Member of Company Group",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-company-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "company-group-admin",
+      "name": "Company Group Admin",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-company-group",
+        "arrayProperty": "Admins"
+      }
+    },
+    {
+      "type": "folder-access",
+      "name": "Has Access",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-team-folder",
+        "arrayProperty": "AccessMembers"
+      }
+    },
+    {
+      "type": "paper-author",
+      "name": "Author",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-paper",
+        "property": "CreatedBy"
+      }
+    },
+    {
+      "type": "paper-collaborator",
+      "name": "Collaborator",
+      "from": {
+        "objectType": "dropbox-user"
+      },
+      "to": {
+        "objectType": "dropbox-paper",
+        "arrayProperty": "Collaborators"
+      }
+    }
+  ],
+  
+  "data": {
+    "_metadata": {
+      "categoryMap": {
+        "Email": "Contact Information",
+        "TeamRole": "Contact Information",
+        "GroupRole": "Contact Information",
+        "JoinedDate": "Account Status",
+        "AccountStatus": "Account Status",
+        "LastActivity": "Account Status",
+        "TwoFactorEnabled": "Account Status",
+        "StorageUsed": "Storage & Usage",
+        "StorageQuota": "Storage & Usage",
+        "FileCount": "Storage & Usage",
+        "SharedLinkCount": "Storage & Usage",
+        "FolderPath": "Technical Details",
+        "SyncStatus": "Technical Details",
+        "AccessType": "Access Control",
+        "SharingPermissions": "Access Control",
+        "AccessMembers": "Access Control",
+        "Admins": "Access Control",
+        "Members": "Access Control",
+        "Collaborators": "Access Control",
+        "CreatedDate": "Configuration",
+        "ModifiedDate": "Configuration",
+        "GroupName": "Configuration",
+        "GroupType": "Configuration",
+        "FolderType": "Configuration",
+        "DocumentType": "Configuration",
+        "Privacy": "Configuration"
+      }
+    },
+    "DropboxUsers": [
+      {
+        "id": "dbuser_1",
+        "DisplayName": "John Smith",
+        "Email": "john.smith@contoso.com",
+        "TeamRole": "Team Admin",
+        "JoinedDate": "2023-03-15T09:00:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-20T14:30:22Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 52428800,
+        "StorageQuota": 5368709120
+      },
+      {
+        "id": "dbuser_2",
+        "DisplayName": "Sarah Johnson",
+        "Email": "sarah.johnson@contoso.com",
+        "TeamRole": "Member",
+        "JoinedDate": "2023-03-16T10:15:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-19T16:45:11Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 41943040,
+        "StorageQuota": 5368709120
+      }
+    ],
+    "DropboxUserGroups": [
+      {
+        "id": "dbgroup_3",
+        "DisplayName": "Marketing Project Team",
+        "Description": "User-created group for marketing project collaboration",
+        "GroupName": "MarketingProject",
+        "GroupType": "User-managed",
+        "Admins": ["dbuser_1"],
+        "Members": ["dbuser_1", "dbuser_2"],
+        "CreatedDate": "2024-01-20T14:30:00Z",
+        "ModifiedDate": "2025-04-10T09:15:22Z",
+        "MemberCount": 2,
+        "Privacy": "Private"
+      },
+      {
+        "id": "dbgroup_4",
+        "DisplayName": "Budget Review Team",
+        "Description": "User-created group for quarterly budget reviews",
+        "GroupName": "BudgetReview",
+        "GroupType": "User-managed",
+        "Admins": ["dbuser_2"],
+        "Members": ["dbuser_2", "dbuser_1"],
+        "CreatedDate": "2024-02-15T11:45:00Z",
+        "ModifiedDate": "2025-04-05T16:20:33Z",
+        "MemberCount": 2,
+        "Privacy": "Private"
+      }
+    ],
+    "DropboxCompanyGroups": [
+      {
+        "id": "dbgroup_1",
+        "DisplayName": "Executive Group",
+        "Description": "Executive leadership collaboration group",
+        "GroupName": "Executive",
+        "GroupType": "Company-managed",
+        "Admins": ["dbuser_1"],
+        "Members": ["dbuser_1", "dbuser_2"],
+        "CreatedDate": "2023-03-15T09:00:00Z",
+        "ModifiedDate": "2025-03-15T14:22:33Z",
+        "MemberCount": 2,
+        "Privacy": "Private"
+      },
+      {
+        "id": "dbgroup_2",
+        "DisplayName": "Finance Group",
+        "Description": "Finance department collaboration group",
+        "GroupName": "Finance",
+        "GroupType": "Company-managed",
+        "Admins": ["dbuser_2"],
+        "Members": ["dbuser_2", "dbuser_1"],
+        "CreatedDate": "2023-03-16T10:15:00Z",
+        "ModifiedDate": "2025-03-20T11:15:44Z",
+        "MemberCount": 2,
+        "Privacy": "Private"
+      }
+    ],
+    "DropboxTeamFolders": [
+      {
+        "id": "dbfolder_1",
+        "DisplayName": "Executive Documents",
+        "Description": "Executive team shared documents and strategic files",
+        "FolderPath": "/Executive Documents",
+        "TeamName": "Executive",
+        "GroupName": "Executive",
+        "AccessType": "Team",
+        "AccessMembers": ["dbuser_1", "dbuser_2"],
+        "CreatedDate": "2023-03-15T12:00:00Z",
+        "ModifiedDate": "2025-04-20T11:30:15Z",
+        "StorageUsed": 62914560,
+        "FileCount": 247,
+        "SyncStatus": "Synced",
+        "SharingPermissions": "Team only"
+      },
+      {
+        "id": "dbfolder_2",
+        "DisplayName": "Finance Shared",
+        "Description": "Finance department shared resources and reports",
+        "FolderPath": "/Finance Shared",
+        "TeamName": "Finance",
+        "GroupName": "Finance",
+        "AccessType": "Team",
+        "AccessMembers": ["dbuser_2", "dbuser_1"],
+        "CreatedDate": "2023-03-16T14:30:00Z",
+        "ModifiedDate": "2025-04-19T09:22:44Z",
+        "StorageUsed": 41943040,
+        "FileCount": 189,
+        "SyncStatus": "Synced",
+        "SharingPermissions": "Team only"
+      }
+    ],
+    "DropboxPersonalFolders": [
+      {
+        "id": "dbpersonal_1",
+        "DisplayName": "John's Personal Files",
+        "Owner": "dbuser_1",
+        "FolderPath": "/Personal",
+        "FolderType": "Personal",
+        "StorageUsed": 20971520,
+        "FileCount": 89,
+        "SharedLinkCount": 3,
+        "LastAccessed": "2025-04-20T14:30:22Z",
+        "SyncStatus": "Synced",
+        "SharingPermissions": "Private"
+      },
+      {
+        "id": "dbpersonal_2",
+        "DisplayName": "Sarah's Personal Files",
+        "Owner": "dbuser_2",
+        "FolderPath": "/Personal",
+        "FolderType": "Personal",
+        "StorageUsed": 16777216,
+        "FileCount": 67,
+        "SharedLinkCount": 1,
+        "LastAccessed": "2025-04-19T16:45:11Z",
+        "SyncStatus": "Synced",
+        "SharingPermissions": "Private"
+      }
+    ],
+    "DropboxPaper": [
+      {
+        "id": "dbpaper_1",
+        "DisplayName": "Executive Strategy 2025",
+        "Description": "Strategic planning document for 2025 initiatives",
+        "CreatedBy": "dbuser_1",
+        "CreatedDate": "2024-12-01T10:00:00Z",
+        "ModifiedDate": "2025-04-15T14:22:33Z",
+        "DocumentType": "Strategy",
+        "Collaborators": ["dbuser_2"],
+        "Privacy": "Team",
+        "WordCount": 2847,
+        "CommentCount": 23
+      },
+      {
+        "id": "dbpaper_2",
+        "DisplayName": "Finance Q1 Review",
+        "Description": "Quarterly financial review and analysis",
+        "CreatedBy": "dbuser_2",
+        "CreatedDate": "2025-01-15T09:30:00Z",
+        "ModifiedDate": "2025-04-10T11:45:18Z",
+        "DocumentType": "Report",
+        "Collaborators": ["dbuser_1"],
+        "Privacy": "Team",
+        "WordCount": 1923,
+        "CommentCount": 15
+      }
+    ]
+  }
+}
