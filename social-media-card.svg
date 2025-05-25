@@ -1,0 +1,69 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="cardShadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.1"/>
+    </filter>
+    
+    <filter id="textShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.2"/>
+    </filter>
+    
+    <linearGradient id="arrowGradient">
+      <stop offset="0%" stop-color="#6B9AF7"/>
+      <stop offset="50%" stop-color="#4B86E1"/>
+      <stop offset="100%" stop-color="#3864BD"/>
+    </linearGradient>
+    
+    <filter id="arrowGlow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <rect width="1200" height="630" fill="#F5F5F5"/>
+  
+  <text x="600" y="120" font-family="Arial, sans-serif" font-size="72" font-weight="900" text-anchor="middle" fill="#3864BD" filter="url(#textShadow)">
+    Migration Visualizer
+  </text>
+  
+  <g transform="translate(150, 200)">
+    <!-- SOURCE BUCKET -->
+    <rect width="280" height="320" rx="20" fill="#FFFFFF" filter="url(#cardShadow)"/>
+    <rect width="280" height="8" rx="20" fill="#4B86E1"/>
+    <rect x="20" y="40" width="240" height="260" rx="15" fill="#F5F5F5"/>
+    
+    <g transform="translate(140, 90)">
+      <circle r="28" fill="#7EB3F3"/>
+      <circle cy="80" r="28" fill="#7e57c2"/>
+      <circle cy="160" r="28" fill="#4caf50"/>
+    </g>
+    
+    <!-- ARROW -->
+    <polygon transform="translate(320, 130)" points="0,15 0,45 180,45 180,60 240,30 180,0 180,15" fill="url(#arrowGradient)" filter="url(#arrowGlow)"/>
+    
+    <!-- TARGET BUCKET -->
+    <g transform="translate(620, 0)">
+      <rect width="280" height="320" rx="20" fill="#FFFFFF" filter="url(#cardShadow)"/>
+      <rect width="280" height="8" rx="20" fill="#619D4D"/>
+      <rect x="20" y="40" width="240" height="260" rx="15" fill="#F5F5F5"/>
+      
+      <g transform="translate(140, 90)">
+        <circle r="28" fill="#7EB3F3">
+          <animate attributeName="r" values="28;32;28" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cy="80" r="28" fill="#7e57c2">
+          <animate attributeName="r" values="28;32;28" dur="2s" begin="0.7s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" begin="0.7s" repeatCount="indefinite"/>
+        </circle>
+        <circle cy="160" r="28" fill="#4caf50">
+          <animate attributeName="r" values="28;32;28" dur="2s" begin="1.4s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" begin="1.4s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+  </g>
+</svg>
