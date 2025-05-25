@@ -228,10 +228,10 @@
       "type": "hosted-on",
       "name": "Hosted on",
       "from": {
-        "objectType": "infopath-form"
+        "objectType": "sp-onprem-site"
       },
       "to": {
-        "objectType": "sp-onprem-site",
+        "objectType": "infopath-form",
         "property": "ConnectedSite"
       }
     },
@@ -239,10 +239,10 @@
       "type": "runs-on",
       "name": "Runs on",
       "from": {
-        "objectType": "sp-workflow"
+        "objectType": "sp-onprem-site"
       },
       "to": {
-        "objectType": "sp-onprem-site",
+        "objectType": "sp-workflow",
         "property": "ConnectedSite"
       }
     },
@@ -266,6 +266,17 @@
       "to": {
         "objectType": "sp-workflow",
         "property": "CreatedBy"
+      }
+    },
+    {
+      "type": "group-site-access",
+      "name": "Has Site Access",
+      "from": {
+        "objectType": "ad-security-group"
+      },
+      "to": {
+        "objectType": "sp-onprem-site",
+        "arrayProperty": "Members"
       }
     }
   ],
@@ -357,6 +368,61 @@
         "Domain": "CONTOSO",
         "LastLogin": "2025-04-20T14:30:11Z",
         "AccountStatus": "Active"
+      },
+      {
+        "id": "user_3",
+        "DisplayName": "Michael Brown",
+        "Title": "CTO",
+        "Department": "IT",
+        "Email": "michael.brown@contoso.com",
+        "SamAccountName": "mbrown",
+        "Domain": "CONTOSO",
+        "LastLogin": "2025-04-19T16:22:15Z",
+        "AccountStatus": "Active"
+      },
+      {
+        "id": "user_4",
+        "DisplayName": "Emily Davis",
+        "Title": "Marketing Director",
+        "Department": "Marketing",
+        "Email": "emily.davis@contoso.com",
+        "SamAccountName": "edavis",
+        "Domain": "CONTOSO",
+        "LastLogin": "2025-04-21T09:15:44Z",
+        "AccountStatus": "Active"
+      },
+      {
+        "id": "user_5",
+        "DisplayName": "David Wilson",
+        "Title": "HR Manager",
+        "Department": "Human Resources",
+        "Email": "david.wilson@contoso.com",
+        "SamAccountName": "dwilson",
+        "Domain": "CONTOSO",
+        "LastLogin": "2025-04-18T13:45:22Z",
+        "AccountStatus": "Active"
+      },
+      {
+        "id": "user_6",
+        "DisplayName": "Lisa Garcia",
+        "Title": "Operations Manager",
+        "Department": "Operations",
+        "Email": "lisa.garcia@contoso.com",
+        "SamAccountName": "lgarcia",
+        "Domain": "CONTOSO",
+        "LastLogin": "2025-04-20T11:30:18Z",
+        "AccountStatus": "Active"
+      },
+      {
+        "id": "user_7",
+        "DisplayName": "James Rodriguez",
+        "Title": "Sales Director",
+        "Department": "Sales",
+        "Email": "james.rodriguez@contoso.com",
+        "SamAccountName": "jrodriguez",
+        "Domain": "CONTOSO",
+        "LastLogin": "2025-04-21T14:20:33Z",
+        "AccountStatus": "Active"
       }
     ],
     "SecurityGroups": [
@@ -364,7 +430,7 @@
         "id": "sg_1",
         "DisplayName": "Executive Team",
         "Description": "Executive leadership team members",
-        "Members": ["user_1", "user_2"],
+        "Members": ["user_1", "user_2", "user_3"],
         "SamAccountName": "ExecutiveTeam",
         "Domain": "CONTOSO",
         "CreatedDate": "2023-05-10T09:00:00Z",
@@ -375,10 +441,32 @@
         "id": "sg_2",
         "DisplayName": "Finance Department",
         "Description": "All finance department staff",
-        "Members": ["user_2"],
+        "Members": ["user_2", "user_6"],
         "SamAccountName": "FinanceDept",
         "Domain": "CONTOSO",
         "CreatedDate": "2023-05-11T10:15:00Z",
+        "GroupType": "Security",
+        "GroupScope": "Global"
+      },
+      {
+        "id": "sg_3",
+        "DisplayName": "IT Department",
+        "Description": "Information Technology department",
+        "Members": ["user_3"],
+        "SamAccountName": "ITDept",
+        "Domain": "CONTOSO",
+        "CreatedDate": "2023-05-12T11:30:00Z",
+        "GroupType": "Security",
+        "GroupScope": "Global"
+      },
+      {
+        "id": "sg_4",
+        "DisplayName": "Marketing and Sales",
+        "Description": "Marketing and Sales departments",
+        "Members": ["user_4", "user_7"],
+        "SamAccountName": "MarketingSales",
+        "Domain": "CONTOSO",
+        "CreatedDate": "2023-05-13T12:45:00Z",
         "GroupType": "Security",
         "GroupScope": "Global"
       }
@@ -421,6 +509,63 @@
         "ListCount": 23,
         "PageViews": 4321,
         "SharePointVersion": "2019"
+      },
+      {
+        "id": "sp_3",
+        "DisplayName": "IT Knowledge Base",
+        "Description": "Information Technology documentation and support resources",
+        "URL": "http://sharepoint.contoso.com/sites/it-kb",
+        "Server": "SP-FARM-01",
+        "TemplateType": "Wiki Site",
+        "WebApplication": "http://sharepoint.contoso.com",
+        "ContentDatabase": "WSS_Content_IT",
+        "Owners": ["user_3"],
+        "Members": ["sg_3"],
+        "Visitors": ["sg_1"],
+        "CreatedDate": "2020-07-03T11:30:00Z",
+        "LastModified": "2025-04-18T16:45:22Z",
+        "StorageUsed": 6144,
+        "ListCount": 18,
+        "PageViews": 3567,
+        "SharePointVersion": "2019"
+      },
+      {
+        "id": "sp_4",
+        "DisplayName": "Marketing Central",
+        "Description": "Marketing campaigns, brand resources, and sales collaboration",
+        "URL": "http://sharepoint.contoso.com/sites/marketing",
+        "Server": "SP-FARM-02",
+        "TemplateType": "Publishing Site",
+        "WebApplication": "http://sharepoint.contoso.com",
+        "ContentDatabase": "WSS_Content_Marketing",
+        "Owners": ["user_4"],
+        "Members": ["sg_4"],
+        "Visitors": ["user_5"],
+        "CreatedDate": "2020-07-04T12:45:00Z",
+        "LastModified": "2025-04-21T12:15:33Z",
+        "StorageUsed": 12288,
+        "ListCount": 31,
+        "PageViews": 5892,
+        "SharePointVersion": "2019"
+      },
+      {
+        "id": "sp_5",
+        "DisplayName": "Company Intranet",
+        "Description": "Company-wide information, announcements, and HR resources",
+        "URL": "http://sharepoint.contoso.com/sites/intranet",
+        "Server": "SP-FARM-01",
+        "TemplateType": "Publishing Portal",
+        "WebApplication": "http://sharepoint.contoso.com",
+        "ContentDatabase": "WSS_Content_Intranet",
+        "Owners": ["user_5", "user_6"],
+        "Members": ["sg_1", "sg_2", "sg_3", "sg_4"],
+        "Visitors": [],
+        "CreatedDate": "2020-06-30T08:00:00Z",
+        "LastModified": "2025-04-20T11:30:18Z",
+        "StorageUsed": 15360,
+        "ListCount": 42,
+        "PageViews": 9843,
+        "SharePointVersion": "2019"
       }
     ],
     "InfoPathForms": [
@@ -453,6 +598,54 @@
         "FormVersion": "2.1.0.1",
         "DataConnections": ["SharePoint List", "SQL Database"],
         "SubmissionCount": 89,
+        "Status": "Published",
+        "BrowserEnabled": true
+      },
+      {
+        "id": "ip_3",
+        "DisplayName": "IT Support Request",
+        "Description": "Help desk and IT support request form",
+        "FormTemplate": "ITSupportRequest.xsn",
+        "ConnectedSite": "sp_3",
+        "FormLibrary": "Support Requests",
+        "CreatedBy": "user_3",
+        "CreatedDate": "2021-02-10T11:30:00Z",
+        "LastModified": "2025-03-10T16:45:22Z",
+        "FormVersion": "1.2.0.3",
+        "DataConnections": ["SharePoint List", "Email Service"],
+        "SubmissionCount": 245,
+        "Status": "Published",
+        "BrowserEnabled": true
+      },
+      {
+        "id": "ip_4",
+        "DisplayName": "Marketing Campaign Brief",
+        "Description": "Marketing campaign planning and approval form",
+        "FormTemplate": "MarketingCampaignBrief.xsn",
+        "ConnectedSite": "sp_4",
+        "FormLibrary": "Campaign Briefs",
+        "CreatedBy": "user_4",
+        "CreatedDate": "2021-04-05T12:45:00Z",
+        "LastModified": "2025-04-21T12:15:33Z",
+        "FormVersion": "1.1.0.2",
+        "DataConnections": ["SharePoint List", "Budget System"],
+        "SubmissionCount": 67,
+        "Status": "Published",
+        "BrowserEnabled": true
+      },
+      {
+        "id": "ip_5",
+        "DisplayName": "Employee Onboarding Form",
+        "Description": "New employee onboarding and documentation form",
+        "FormTemplate": "EmployeeOnboardingForm.xsn",
+        "ConnectedSite": "sp_5",
+        "FormLibrary": "HR Forms",
+        "CreatedBy": "user_5",
+        "CreatedDate": "2021-05-12T13:20:00Z",
+        "LastModified": "2025-04-17T14:30:18Z",
+        "FormVersion": "2.0.0.1",
+        "DataConnections": ["SharePoint List", "HR System", "Email Service"],
+        "SubmissionCount": 34,
         "Status": "Published",
         "BrowserEnabled": true
       }
@@ -491,6 +684,57 @@
         "InstancesCompleted": 298,
         "InstancesError": 5,
         "ApprovalSteps": 2
+      },
+      {
+        "id": "wf_3",
+        "DisplayName": "IT Change Management",
+        "Description": "IT infrastructure change request and approval workflow",
+        "WorkflowType": "SharePoint Designer",
+        "ConnectedSite": "sp_3",
+        "AssociatedList": "Change Requests",
+        "CreatedBy": "user_3",
+        "CreatedDate": "2021-03-20T11:30:00Z",
+        "LastModified": "2025-04-18T16:45:22Z",
+        "WorkflowVersion": "1.3",
+        "Status": "Published",
+        "InstancesRunning": 5,
+        "InstancesCompleted": 187,
+        "InstancesError": 8,
+        "ApprovalSteps": 4
+      },
+      {
+        "id": "wf_4",
+        "DisplayName": "Marketing Asset Review",
+        "Description": "Creative asset review and approval workflow",
+        "WorkflowType": "SharePoint Designer",
+        "ConnectedSite": "sp_4",
+        "AssociatedList": "Marketing Assets",
+        "CreatedBy": "user_4",
+        "CreatedDate": "2021-05-10T12:45:00Z",
+        "LastModified": "2025-04-21T12:15:33Z",
+        "WorkflowVersion": "1.1",
+        "Status": "Published",
+        "InstancesRunning": 2,
+        "InstancesCompleted": 156,
+        "InstancesError": 3,
+        "ApprovalSteps": 2
+      },
+      {
+        "id": "wf_5",
+        "DisplayName": "Employee Onboarding Process",
+        "Description": "New employee onboarding and task assignment workflow",
+        "WorkflowType": "SharePoint Designer",
+        "ConnectedSite": "sp_5",
+        "AssociatedList": "Onboarding Tasks",
+        "CreatedBy": "user_5",
+        "CreatedDate": "2021-06-01T13:20:00Z",
+        "LastModified": "2025-04-17T14:30:18Z",
+        "WorkflowVersion": "2.0",
+        "Status": "Published",
+        "InstancesRunning": 1,
+        "InstancesCompleted": 78,
+        "InstancesError": 1,
+        "ApprovalSteps": 3
       }
     ]
   }

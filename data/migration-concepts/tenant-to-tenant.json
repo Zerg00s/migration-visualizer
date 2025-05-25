@@ -15,7 +15,9 @@
       {"id": "source-mailboxes", "title": "Mailboxes", "objectType": "mailbox"},
       {"id": "source-power-automate", "title": "Power Automate", "objectType": "power-automate"},
       {"id": "source-power-apps", "title": "Power Apps", "objectType": "power-apps"},
-      {"id": "source-power-bi", "title": "Power BI", "objectType": "power-bi"}
+      {"id": "source-power-bi", "title": "Power BI", "objectType": "power-bi"},
+      {"id": "source-microsoft-forms", "title": "Microsoft Forms", "objectType": "microsoft-forms"},
+      {"id": "source-loop-workspaces", "title": "Loop Workspaces", "objectType": "loop-workspace"}
     ]
   },
   
@@ -31,7 +33,9 @@
       {"id": "destination-mailboxes", "title": "Mailboxes", "objectType": "mailbox"},
       {"id": "destination-power-automate", "title": "Power Automate", "objectType": "power-automate"},
       {"id": "destination-power-apps", "title": "Power Apps", "objectType": "power-apps"},
-      {"id": "destination-power-bi", "title": "Power BI", "objectType": "power-bi"}
+      {"id": "destination-power-bi", "title": "Power BI", "objectType": "power-bi"},
+      {"id": "destination-microsoft-forms", "title": "Microsoft Forms", "objectType": "microsoft-forms"},
+      {"id": "destination-loop-workspaces", "title": "Loop Workspaces", "objectType": "loop-workspace"}
     ]
   },
   
@@ -85,6 +89,20 @@
       "icon": "fas fa-chart-bar",
       "color": "#f2c811",
       "collection": "PowerBI"
+    },
+    "microsoft-forms": {
+      "name": "Microsoft Forms",
+      "pluralName": "Microsoft Forms",
+      "icon": "fa-clipboard-list",
+      "color": "#0078d4",
+      "collection": "MicrosoftForms"
+    },
+    "loop-workspace": {
+      "name": "Loop Workspace", 
+      "pluralName": "Loop Workspaces",
+      "icon": "fa-infinity",
+      "color": "#6264a7",
+      "collection": "LoopWorkspaces"
     }
   },
   
@@ -98,7 +116,9 @@
     {"sourceType": "mailbox", "targetType": "mailbox"},
     {"sourceType": "power-automate", "targetType": "power-automate"},
     {"sourceType": "power-apps", "targetType": "power-apps"},
-    {"sourceType": "power-bi", "targetType": "power-bi"}
+    {"sourceType": "power-bi", "targetType": "power-bi"},
+    {"sourceType": "microsoft-forms", "targetType": "microsoft-forms"},
+    {"sourceType": "loop-workspace", "targetType": "loop-workspace"}
   ],
   
   "connectionRules": [
@@ -173,6 +193,42 @@
       "type": "permission",
       "from": {"objectType": "group"},
       "to": {"objectType": "teams", "arrayProperty": "ConnectedSecurityGroups"}
+    },
+    {
+      "name": "User owns Microsoft Forms",
+      "type": "ownership",
+      "from": {"objectType": "user"},
+      "to": {"objectType": "microsoft-forms", "property": "OwnedBy"}
+    },
+    {
+      "name": "User collaborates on Microsoft Forms",
+      "type": "collaboration",
+      "from": {"objectType": "user"},
+      "to": {"objectType": "microsoft-forms", "arrayProperty": "Collaborators"}
+    },
+    {
+      "name": "User owns Loop Workspace",
+      "type": "ownership",
+      "from": {"objectType": "user"},
+      "to": {"objectType": "loop-workspace", "property": "OwnedBy"}
+    },
+    {
+      "name": "User collaborates on Loop Workspace",
+      "type": "collaboration",
+      "from": {"objectType": "user"},
+      "to": {"objectType": "loop-workspace", "arrayProperty": "Collaborators"}
+    },
+    {
+      "name": "Power App triggers Power Automate Flow",
+      "type": "integration",
+      "from": {"objectType": "power-apps"},
+      "to": {"objectType": "power-automate", "arrayProperty": "TriggeredByApps"}
+    },
+    {
+      "name": "Power Automate Flow used by Power App",
+      "type": "integration",
+      "from": {"objectType": "power-automate"},
+      "to": {"objectType": "power-apps", "arrayProperty": "ConnectedFlows"}
     }
   ],
   
@@ -240,6 +296,61 @@
         "LastLogin": "2025-04-20T14:30:11Z",
         "MFAEnabled": true,
         "LicenseType": "E5"
+      },
+      {
+        "id": "user_3",
+        "DisplayName": "Michael Brown",
+        "Title": "CTO",
+        "Department": "IT",
+        "Email": "michael.brown@contoso.com",
+        "Disabled": false,
+        "LastLogin": "2025-04-19T16:22:15Z",
+        "MFAEnabled": true,
+        "LicenseType": "E5"
+      },
+      {
+        "id": "user_4",
+        "DisplayName": "Emily Davis",
+        "Title": "Marketing Director",
+        "Department": "Marketing",
+        "Email": "emily.davis@contoso.com",
+        "Disabled": false,
+        "LastLogin": "2025-04-21T09:15:44Z",
+        "MFAEnabled": true,
+        "LicenseType": "E3"
+      },
+      {
+        "id": "user_5",
+        "DisplayName": "David Wilson",
+        "Title": "HR Manager",
+        "Department": "Human Resources",
+        "Email": "david.wilson@contoso.com",
+        "Disabled": false,
+        "LastLogin": "2025-04-18T13:45:22Z",
+        "MFAEnabled": true,
+        "LicenseType": "E3"
+      },
+      {
+        "id": "user_6",
+        "DisplayName": "Lisa Garcia",
+        "Title": "Operations Manager",
+        "Department": "Operations",
+        "Email": "lisa.garcia@contoso.com",
+        "Disabled": false,
+        "LastLogin": "2025-04-20T11:30:18Z",
+        "MFAEnabled": true,
+        "LicenseType": "E3"
+      },
+      {
+        "id": "user_7",
+        "DisplayName": "James Rodriguez",
+        "Title": "Sales Director",
+        "Department": "Sales",
+        "Email": "james.rodriguez@contoso.com",
+        "Disabled": false,
+        "LastLogin": "2025-04-21T14:20:33Z",
+        "MFAEnabled": true,
+        "LicenseType": "E3"
       }
     ],
     "SecurityGroups": [
@@ -247,7 +358,7 @@
         "id": "sg_1",
         "DisplayName": "Executive Team",
         "Description": "Executive leadership team members",
-        "Members": ["user_1", "user_2"],
+        "Members": ["user_1", "user_2", "user_3"],
         "CreatedDate": "2023-05-10T09:00:00Z",
         "ModifiedDate": "2025-03-15T14:22:10Z",
         "Classification": "Confidential"
@@ -256,9 +367,36 @@
         "id": "sg_2",
         "DisplayName": "Finance Department",
         "Description": "Finance department staff",
-        "Members": ["user_2"],
+        "Members": ["user_2", "user_6"],
         "CreatedDate": "2023-05-11T10:15:00Z",
         "ModifiedDate": "2025-03-15T14:22:10Z",
+        "Classification": "Internal"
+      },
+      {
+        "id": "sg_3",
+        "DisplayName": "IT Department",
+        "Description": "Information Technology department",
+        "Members": ["user_3"],
+        "CreatedDate": "2023-05-12T11:30:00Z",
+        "ModifiedDate": "2025-03-20T16:15:30Z",
+        "Classification": "Internal"
+      },
+      {
+        "id": "sg_4",
+        "DisplayName": "Marketing Team",
+        "Description": "Marketing and communications team",
+        "Members": ["user_4", "user_7"],
+        "CreatedDate": "2023-05-13T12:45:00Z",
+        "ModifiedDate": "2025-03-25T09:40:15Z",
+        "Classification": "Public"
+      },
+      {
+        "id": "sg_5",
+        "DisplayName": "All Staff",
+        "Description": "All company employees",
+        "Members": ["user_1", "user_2", "user_3", "user_4", "user_5", "user_6", "user_7"],
+        "CreatedDate": "2023-05-10T08:00:00Z",
+        "ModifiedDate": "2025-04-01T10:00:00Z",
         "Classification": "Internal"
       }
     ],
@@ -268,7 +406,7 @@
         "DisplayName": "Executive Team",
         "Description": "Executive leadership collaboration",
         "Owners": ["user_1"],
-        "Members": ["user_2"],
+        "Members": ["user_2", "user_3"],
         "Channels": 5,
         "ConnectedM365Group": "m365_1",
         "ConnectedSecurityGroups": ["sg_1"],
@@ -279,11 +417,44 @@
         "DisplayName": "Finance Team",
         "Description": "Finance department collaboration",
         "Owners": ["user_2"],
-        "Members": ["user_1"],
+        "Members": ["user_6"],
         "Channels": 3,
         "ConnectedM365Group": "m365_2",
         "ConnectedSecurityGroups": ["sg_2"],
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "team_3",
+        "DisplayName": "IT Department",
+        "Description": "Information Technology team workspace",
+        "Owners": ["user_3"],
+        "Members": ["user_1"],
+        "Channels": 4,
+        "ConnectedM365Group": "m365_3",
+        "ConnectedSecurityGroups": ["sg_3"],
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "team_4",
+        "DisplayName": "Marketing Hub",
+        "Description": "Marketing team collaboration space",
+        "Owners": ["user_4"],
+        "Members": ["user_7", "user_5"],
+        "Channels": 6,
+        "ConnectedM365Group": "m365_4",
+        "ConnectedSecurityGroups": ["sg_4"],
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "team_5",
+        "DisplayName": "Operations Center",
+        "Description": "Operations management and coordination",
+        "Owners": ["user_6"],
+        "Members": ["user_5", "user_3"],
+        "Channels": 3,
+        "ConnectedM365Group": "m365_5",
+        "ConnectedSecurityGroups": ["sg_5"],
+        "CreatedDate": "2023-05-14T13:20:00Z"
       }
     ],
     "SharePointSites": [
@@ -293,7 +464,7 @@
         "Description": "Executive team resources",
         "URL": "https://contoso.sharepoint.com/sites/executive",
         "Owners": ["user_1"],
-        "Members": ["user_2"],
+        "Members": ["user_2", "user_3"],
         "StorageUsed": 5120,
         "ConnectedM365Group": "m365_1",
         "CreatedDate": "2023-05-10T09:00:00Z"
@@ -304,10 +475,43 @@
         "Description": "Finance department resources",
         "URL": "https://contoso.sharepoint.com/sites/finance",
         "Owners": ["user_2"],
-        "Members": ["user_1"],
+        "Members": ["user_6"],
         "StorageUsed": 3072,
         "ConnectedM365Group": "m365_2",
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "sp_3",
+        "DisplayName": "IT Knowledge Base",
+        "Description": "Information Technology documentation and resources",
+        "URL": "https://contoso.sharepoint.com/sites/it-kb",
+        "Owners": ["user_3"],
+        "Members": ["user_1", "user_6"],
+        "StorageUsed": 4096,
+        "ConnectedM365Group": "m365_3",
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "sp_4",
+        "DisplayName": "Marketing Central",
+        "Description": "Marketing campaigns and brand resources",
+        "URL": "https://contoso.sharepoint.com/sites/marketing",
+        "Owners": ["user_4"],
+        "Members": ["user_7", "user_5"],
+        "StorageUsed": 6144,
+        "ConnectedM365Group": "m365_4",
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "sp_5",
+        "DisplayName": "Company Intranet",
+        "Description": "Company-wide information and announcements",
+        "URL": "https://contoso.sharepoint.com/sites/intranet",
+        "Owners": ["user_5", "user_6"],
+        "Members": ["user_1", "user_2", "user_3", "user_4", "user_7"],
+        "StorageUsed": 8192,
+        "ConnectedM365Group": "m365_5",
+        "CreatedDate": "2023-05-14T13:20:00Z"
       }
     ],
     "OneDrives": [
@@ -316,7 +520,7 @@
         "DisplayName": "John Smith's OneDrive",
         "OwnedBy": "user_1",
         "StorageUsed": 2048,
-        "SharedWith": ["user_2"],
+        "SharedWith": ["user_2", "user_3"],
         "CreatedDate": "2023-05-10T09:00:00Z"
       },
       {
@@ -324,24 +528,48 @@
         "DisplayName": "Sarah Johnson's OneDrive",
         "OwnedBy": "user_2",
         "StorageUsed": 1536,
-        "SharedWith": ["user_1"],
+        "SharedWith": ["user_1", "user_6"],
         "CreatedDate": "2023-05-11T10:15:00Z"
       },
       {
         "id": "od_3",
-        "DisplayName": "Executive Leadership Group OneDrive",
-        "ConnectedM365Group": "m365_1",
-        "StorageUsed": 512,
-        "SharedWith": ["user_1", "user_2"],
-        "CreatedDate": "2023-05-10T09:00:00Z"
+        "DisplayName": "Michael Brown's OneDrive",
+        "OwnedBy": "user_3",
+        "StorageUsed": 3072,
+        "SharedWith": ["user_1"],
+        "CreatedDate": "2023-05-12T11:30:00Z"
       },
       {
         "id": "od_4",
-        "DisplayName": "Finance Department Group OneDrive",
-        "ConnectedM365Group": "m365_2",
-        "StorageUsed": 256,
-        "SharedWith": ["user_1", "user_2"],
-        "CreatedDate": "2023-05-11T10:15:00Z"
+        "DisplayName": "Emily Davis's OneDrive",
+        "OwnedBy": "user_4",
+        "StorageUsed": 2560,
+        "SharedWith": ["user_7", "user_5"],
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "od_5",
+        "DisplayName": "David Wilson's OneDrive",
+        "OwnedBy": "user_5",
+        "StorageUsed": 1024,
+        "SharedWith": ["user_6", "user_4"],
+        "CreatedDate": "2023-05-14T13:20:00Z"
+      },
+      {
+        "id": "od_6",
+        "DisplayName": "Lisa Garcia's OneDrive",
+        "OwnedBy": "user_6",
+        "StorageUsed": 1792,
+        "SharedWith": ["user_5", "user_2"],
+        "CreatedDate": "2023-05-15T14:10:00Z"
+      },
+      {
+        "id": "od_7",
+        "DisplayName": "James Rodriguez's OneDrive",
+        "OwnedBy": "user_7",
+        "StorageUsed": 2304,
+        "SharedWith": ["user_4"],
+        "CreatedDate": "2023-05-16T15:25:00Z"
       }
     ],
     "Mailboxes": [
@@ -362,6 +590,51 @@
         "StorageUsed": 3072,
         "ItemCount": 12850,
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "mb_3",
+        "DisplayName": "Michael Brown",
+        "Email": "michael.brown@contoso.com",
+        "OwnedBy": "user_3",
+        "StorageUsed": 5120,
+        "ItemCount": 18340,
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "mb_4",
+        "DisplayName": "Emily Davis",
+        "Email": "emily.davis@contoso.com",
+        "OwnedBy": "user_4",
+        "StorageUsed": 2048,
+        "ItemCount": 9670,
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "mb_5",
+        "DisplayName": "David Wilson",
+        "Email": "david.wilson@contoso.com",
+        "OwnedBy": "user_5",
+        "StorageUsed": 1536,
+        "ItemCount": 7230,
+        "CreatedDate": "2023-05-14T13:20:00Z"
+      },
+      {
+        "id": "mb_6",
+        "DisplayName": "Lisa Garcia",
+        "Email": "lisa.garcia@contoso.com",
+        "OwnedBy": "user_6",
+        "StorageUsed": 2560,
+        "ItemCount": 11450,
+        "CreatedDate": "2023-05-15T14:10:00Z"
+      },
+      {
+        "id": "mb_7",
+        "DisplayName": "James Rodriguez",
+        "Email": "james.rodriguez@contoso.com",
+        "OwnedBy": "user_7",
+        "StorageUsed": 3584,
+        "ItemCount": 14780,
+        "CreatedDate": "2023-05-16T15:25:00Z"
       }
     ],
     "M365Groups": [
@@ -371,7 +644,7 @@
         "Email": "executive@contoso.com",
         "Description": "Executive leadership group",
         "Owners": ["user_1"],
-        "Members": ["user_2"],
+        "Members": ["user_2", "user_3"],
         "Visibility": "Private",
         "CreatedDate": "2023-05-10T09:00:00Z"
       },
@@ -381,9 +654,39 @@
         "Email": "finance@contoso.com",
         "Description": "Finance department group",
         "Owners": ["user_2"],
-        "Members": ["user_1"],
+        "Members": ["user_6"],
         "Visibility": "Private",
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "m365_3",
+        "DisplayName": "IT Department",
+        "Email": "it@contoso.com",
+        "Description": "Information Technology department group",
+        "Owners": ["user_3"],
+        "Members": ["user_1"],
+        "Visibility": "Private",
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "m365_4",
+        "DisplayName": "Marketing Team",
+        "Email": "marketing@contoso.com",
+        "Description": "Marketing and communications group",
+        "Owners": ["user_4"],
+        "Members": ["user_7", "user_5"],
+        "Visibility": "Public",
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "m365_5",
+        "DisplayName": "Operations Group",
+        "Email": "operations@contoso.com",
+        "Description": "Operations management group",
+        "Owners": ["user_6"],
+        "Members": ["user_5", "user_3"],
+        "Visibility": "Private",
+        "CreatedDate": "2023-05-14T13:20:00Z"
       }
     ],
     "PowerAutomate": [
@@ -394,6 +697,7 @@
         "State": "Started",
         "Runs": 45,
         "Category": "Business Process",
+        "TriggeredByApps": ["papp_1"],
         "CreatedDate": "2023-05-10T09:00:00Z"
       },
       {
@@ -403,7 +707,38 @@
         "State": "Started",
         "Runs": 128,
         "Category": "Notification",
+        "TriggeredByApps": ["papp_2"],
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "pa_3",
+        "DisplayName": "IT Ticket Routing",
+        "OwnedBy": "user_3",
+        "State": "Started",
+        "Runs": 234,
+        "Category": "IT Support",
+        "TriggeredByApps": ["papp_3"],
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "pa_4",
+        "DisplayName": "Marketing Campaign Automation",
+        "OwnedBy": "user_4",
+        "State": "Started",
+        "Runs": 67,
+        "Category": "Marketing",
+        "TriggeredByApps": ["papp_4"],
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "pa_5",
+        "DisplayName": "HR Onboarding Process",
+        "OwnedBy": "user_5",
+        "State": "Started",
+        "Runs": 23,
+        "Category": "Human Resources",
+        "TriggeredByApps": ["papp_5"],
+        "CreatedDate": "2023-05-14T13:20:00Z"
       }
     ],
     "PowerApps": [
@@ -414,6 +749,7 @@
         "AppType": "Canvas",
         "Users": 5,
         "Category": "Business Intelligence",
+        "ConnectedFlows": ["pa_1"],
         "CreatedDate": "2023-05-10T09:00:00Z"
       },
       {
@@ -423,7 +759,38 @@
         "AppType": "Model-driven",
         "Users": 12,
         "Category": "Data Management",
+        "ConnectedFlows": ["pa_2"],
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "papp_3",
+        "DisplayName": "IT Asset Management",
+        "OwnedBy": "user_3",
+        "AppType": "Canvas",
+        "Users": 8,
+        "Category": "Asset Management",
+        "ConnectedFlows": ["pa_3"],
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "papp_4",
+        "DisplayName": "Marketing Campaign Planner",
+        "OwnedBy": "user_4",
+        "AppType": "Canvas",
+        "Users": 15,
+        "Category": "Project Management",
+        "ConnectedFlows": ["pa_4"],
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "papp_5",
+        "DisplayName": "Employee Directory",
+        "OwnedBy": "user_5",
+        "AppType": "Model-driven",
+        "Users": 45,
+        "Category": "Human Resources",
+        "ConnectedFlows": ["pa_5"],
+        "CreatedDate": "2023-05-14T13:20:00Z"
       }
     ],
     "PowerBI": [
@@ -444,6 +811,75 @@
         "Viewers": 8,
         "RefreshSchedule": "Weekly",
         "CreatedDate": "2023-05-11T10:15:00Z"
+      },
+      {
+        "id": "pbi_3",
+        "DisplayName": "IT Performance Metrics",
+        "OwnedBy": "user_3",
+        "WorkspaceName": "IT Workspace",
+        "Viewers": 5,
+        "RefreshSchedule": "Daily",
+        "CreatedDate": "2023-05-12T11:30:00Z"
+      },
+      {
+        "id": "pbi_4",
+        "DisplayName": "Marketing Analytics",
+        "OwnedBy": "user_4",
+        "WorkspaceName": "Marketing Workspace",
+        "Viewers": 12,
+        "RefreshSchedule": "Daily",
+        "CreatedDate": "2023-05-13T12:45:00Z"
+      },
+      {
+        "id": "pbi_5",
+        "DisplayName": "Operations Dashboard",
+        "OwnedBy": "user_6",
+        "WorkspaceName": "Operations Workspace",
+        "Viewers": 7,
+        "RefreshSchedule": "Weekly",
+        "CreatedDate": "2023-05-14T13:20:00Z"
+      }
+    ],
+    "MicrosoftForms": [
+      {
+        "id": "form_1",
+        "DisplayName": "Employee Feedback Survey",
+        "OwnedBy": "user_5",
+        "Collaborators": ["user_1", "user_6"],
+        "ResponseCount": 47,
+        "Status": "Active",
+        "FormType": "Survey",
+        "CreatedDate": "2023-06-15T10:00:00Z"
+      },
+      {
+        "id": "form_2",
+        "DisplayName": "IT Support Request",
+        "OwnedBy": "user_3",
+        "Collaborators": ["user_1", "user_6"],
+        "ResponseCount": 124,
+        "Status": "Active",
+        "FormType": "Request",
+        "CreatedDate": "2023-07-20T11:30:00Z"
+      }
+    ],
+    "LoopWorkspaces": [
+      {
+        "id": "loop_1",
+        "DisplayName": "Executive Planning Workspace",
+        "OwnedBy": "user_1",
+        "Collaborators": ["user_2", "user_3"],
+        "ComponentCount": 15,
+        "LastActivity": "2025-04-20T14:30:00Z",
+        "CreatedDate": "2024-01-15T09:00:00Z"
+      },
+      {
+        "id": "loop_2",
+        "DisplayName": "Marketing Campaign Workspace",
+        "OwnedBy": "user_4",
+        "Collaborators": ["user_7"],
+        "ComponentCount": 8,
+        "LastActivity": "2025-04-21T16:15:00Z",
+        "CreatedDate": "2024-02-10T10:30:00Z"
       }
     ]
   }

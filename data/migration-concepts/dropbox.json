@@ -401,6 +401,66 @@
         "TwoFactorEnabled": true,
         "StorageUsed": 41943040,
         "StorageQuota": 5368709120
+      },
+      {
+        "id": "dbuser_3",
+        "DisplayName": "Michael Brown",
+        "Email": "michael.brown@contoso.com",
+        "TeamRole": "Member",
+        "JoinedDate": "2023-03-17T11:30:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-18T12:22:15Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 67108864,
+        "StorageQuota": 5368709120
+      },
+      {
+        "id": "dbuser_4",
+        "DisplayName": "Emily Davis",
+        "Email": "emily.davis@contoso.com",
+        "TeamRole": "Member",
+        "JoinedDate": "2023-03-18T12:45:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-21T09:15:44Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 33554432,
+        "StorageQuota": 5368709120
+      },
+      {
+        "id": "dbuser_5",
+        "DisplayName": "David Wilson",
+        "Email": "david.wilson@contoso.com",
+        "TeamRole": "Member",
+        "JoinedDate": "2023-03-19T13:20:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-18T13:45:22Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 25165824,
+        "StorageQuota": 5368709120
+      },
+      {
+        "id": "dbuser_6",
+        "DisplayName": "Lisa Garcia",
+        "Email": "lisa.garcia@contoso.com",
+        "TeamRole": "Member",
+        "JoinedDate": "2023-03-20T14:10:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-20T11:30:18Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 58720256,
+        "StorageQuota": 5368709120
+      },
+      {
+        "id": "dbuser_7",
+        "DisplayName": "James Rodriguez",
+        "Email": "james.rodriguez@contoso.com",
+        "TeamRole": "Member",
+        "JoinedDate": "2023-03-21T15:25:00Z",
+        "AccountStatus": "Active",
+        "LastActivity": "2025-04-21T14:20:33Z",
+        "TwoFactorEnabled": true,
+        "StorageUsed": 46137344,
+        "StorageQuota": 5368709120
       }
     ],
     "DropboxUserGroups": [
