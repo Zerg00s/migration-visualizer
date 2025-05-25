@@ -5,6 +5,9 @@
 import { animateHero, animateCards } from './visualizer/animations.js';
 
 document.addEventListener('DOMContentLoaded', async function() {
+  // Check for mobile devices and show warning
+  checkMobileDevice();
+  
   // Animate hero section elements
   animateHero();
   
@@ -142,4 +145,45 @@ function createConceptCard(concept) {
   `;
   
   return card;
+}
+
+/**
+ * Check if user is on a mobile device and show warning
+ */
+function checkMobileDevice() {
+  const mobileWarning = document.getElementById('mobile-warning');
+  const dismissButton = document.getElementById('mobile-warning-dismiss');
+  
+  if (!mobileWarning) return;
+  
+  // Check if user is on mobile device
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                   window.innerWidth < 768;
+  
+  // Check if warning was already dismissed in this session
+  const warningDismissed = sessionStorage.getItem('mobileWarningDismissed');
+  
+  if (isMobile && !warningDismissed) {
+    mobileWarning.style.display = 'flex';
+  }
+  
+  // Handle dismiss button
+  if (dismissButton) {
+    dismissButton.addEventListener('click', () => {
+      mobileWarning.style.display = 'none';
+      sessionStorage.setItem('mobileWarningDismissed', 'true');
+    });
+  }
+  
+  // Also check on window resize
+  window.addEventListener('resize', () => {
+    const isNowMobile = window.innerWidth < 768;
+    const warningDismissed = sessionStorage.getItem('mobileWarningDismissed');
+    
+    if (isNowMobile && !warningDismissed && mobileWarning) {
+      mobileWarning.style.display = 'flex';
+    } else if (!isNowMobile && mobileWarning) {
+      mobileWarning.style.display = 'none';
+    }
+  });
 }
