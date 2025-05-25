@@ -21,6 +21,8 @@ An interactive web application for visualizing Microsoft 365 migration scenarios
 - Limited to predefined object types
 - No authentication required
 
+⚠️ This is a visualization tool for educational and planning purposes. It does not perform actual migrations or connect to live Microsoft 365 environments.
+
 ---
 ## 👨‍💻 Author
 
