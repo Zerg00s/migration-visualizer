@@ -1,4 +1,4 @@
-# Migration Visualizer
+# ![Migration Visualizer](social-media-card.svg)
 
 An interactive web application for visualizing Microsoft 365 migration scenarios.
 
@@ -12,10 +12,6 @@ An interactive web application for visualizing Microsoft 365 migration scenarios
 
 ![Sample Screenshot](IMG/image.png)
 
-## 👨‍💻 Author
-
-**By Denis Molodtsov with 💗**
-
 ---
 
 ### Known Limitations
@@ -24,3 +20,8 @@ An interactive web application for visualizing Microsoft 365 migration scenarios
 - No persistent state across sessions
 - Limited to predefined object types
 - No authentication required
+
+---
+## 👨‍💻 Author
+
+**By Denis Molodtsov with 💗**
