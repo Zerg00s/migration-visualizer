@@ -48,7 +48,7 @@
     },
     "data": {
       "type": "object",
-      "description": "The actual migration data containing all objects",
+      "description": "The actual migration data containing all objects. Each collection contains objects that may include the special '_targetBucket' property to override individual object routing during migration.",
       "properties": {
         "_metadata": {
           "type": "object",
@@ -66,9 +66,9 @@
       },
       "additionalProperties": {
         "type": "array",
-        "description": "Collections of objects",
+        "description": "Collections of objects. Each object may optionally include a '_targetBucket' property to override the default mapping destination.",
         "items": {
-          "type": "object"
+          "$ref": "#/definitions/dataObject"
         }
       }
     },
@@ -261,6 +261,27 @@
           "description": "Optional JavaScript expression to evaluate if connection should be created"
         }
       }
+    },
+    "dataObject": {
+      "type": "object",
+      "description": "A data object within a collection that can be migrated and visualized",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this object"
+        },
+        "DisplayName": {
+          "type": "string",
+          "description": "Human-readable display name for this object"
+        },
+        "_targetBucket": {
+          "type": "string",
+          "description": "OBJECT-LEVEL ROUTING OVERRIDE: Optional property to specify which destination bucket this specific object should migrate to, overriding the global mapping. Must match a valid bucket ID from the targetEnvironment. This allows individual objects within the same source bucket to migrate to different destination buckets. Example: While most Google Drives migrate to OneDrive, a specific drive with '_targetBucket': 'destination-sharepoint-online' will migrate to SharePoint Online instead.",
+          "pattern": "^[a-z\\-]+-[a-z0-9\\-]+$"
+        }
+      },
+      "additionalProperties": true
     },
     "connectionEndpoint": {
       "type": "object",

@@ -790,7 +790,8 @@
         "LastActivity": "2025-04-20T14:22:33Z",
         "SharedWith": ["guser_2", "ggroup_1"],
         "SyncEnabled": true,
-        "BackupStatus": "Enabled"
+        "BackupStatus": "Enabled",
+        "_targetBucket": "destination-onedrive"
       },
       {
         "id": "gdrive_2",
@@ -802,7 +803,8 @@
         "LastActivity": "2025-04-20T15:45:11Z",
         "SharedWith": ["guser_1", "ggroup_2"],
         "SyncEnabled": true,
-        "BackupStatus": "Enabled"
+        "BackupStatus": "Enabled",
+        "_targetBucket": "destination-sharepoint-online"
       }
     ],
     "GoogleMailboxes": [

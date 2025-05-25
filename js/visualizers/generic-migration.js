@@ -346,15 +346,25 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
       return null;
     }
     
-    // Find the destination bucket
-    let destBucket = mapping.targetBucket;
-    if (!destBucket) {
-      // Auto-find bucket based on target type
-      const targetBucket = this.conceptDefinition.targetEnvironment.buckets.find(
-        b => b.objectType === mapping.targetType
-      );
-      if (targetBucket) {
-        destBucket = targetBucket.id;
+    // Check for object-level _targetBucket override
+    let destBucket = null;
+    
+    // First check if the original source object has a _targetBucket property
+    const originalSourceData = this.findOriginalObjectData(objectId, objectType);
+    if (originalSourceData && originalSourceData._targetBucket) {
+      destBucket = originalSourceData._targetBucket;
+      console.log(`Using object-level target bucket override: ${destBucket} for object ${objectId}`);
+    } else {
+      // Fall back to mapping-defined target bucket
+      destBucket = mapping.targetBucket;
+      if (!destBucket) {
+        // Auto-find bucket based on target type
+        const targetBucket = this.conceptDefinition.targetEnvironment.buckets.find(
+          b => b.objectType === mapping.targetType
+        );
+        if (targetBucket) {
+          destBucket = targetBucket.id;
+        }
       }
     }
     
@@ -363,26 +373,57 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
       return null;
     }
     
+    // Find the target type - check if we need to override this too based on destination bucket
+    let targetType = mapping.targetType;
+    let effectiveMapping = mapping;
+    
+    if (originalSourceData && originalSourceData._targetBucket) {
+      // Find the bucket and its object type
+      const targetBucket = this.conceptDefinition.targetEnvironment.buckets.find(
+        b => b.id === destBucket
+      );
+      if (targetBucket) {
+        targetType = targetBucket.objectType;
+        
+        // Find the mapping that would normally go to this target type
+        // This ensures we get the right transformations (icon, color, etc.)
+        const alternativeMapping = this.mappings.find(m => m.targetType === targetType);
+        if (alternativeMapping) {
+          effectiveMapping = alternativeMapping;
+          console.log(`Using alternative mapping transformations for ${targetType}`);
+        }
+      }
+    }
+    
     // Apply transformations
     const transformedData = {
       ...sourceObj,
-      type: mapping.targetType,
+      type: targetType,
       migrated: true
     };
     
-    // Apply transformation rules
-    if (mapping.transformations) {
-      if (mapping.transformations.icon) {
-        transformedData.icon = mapping.transformations.icon;
+    // Apply transformation rules from the effective mapping
+    if (effectiveMapping.transformations) {
+      if (effectiveMapping.transformations.icon) {
+        transformedData.icon = effectiveMapping.transformations.icon;
       }
-      if (mapping.transformations.color) {
-        transformedData.color = mapping.transformations.color;
+      if (effectiveMapping.transformations.color) {
+        transformedData.color = effectiveMapping.transformations.color;
       }
-      if (mapping.transformations.nameTransform) {
+      if (effectiveMapping.transformations.nameTransform) {
         transformedData.name = this.transformName(
           sourceObj.name, 
-          mapping.transformations.nameTransform
+          effectiveMapping.transformations.nameTransform
         );
+      }
+    }
+    
+    // If no transformations found, use the object type definition defaults
+    if (!effectiveMapping.transformations || !effectiveMapping.transformations.icon) {
+      const targetTypeDefinition = this.objectTypeMap[targetType];
+      if (targetTypeDefinition) {
+        transformedData.icon = targetTypeDefinition.icon;
+        transformedData.color = targetTypeDefinition.color;
       }
     }
     
@@ -421,6 +462,31 @@ export class GenericMigrationVisualizer extends BaseVisualizer {
     this.updateConnections();
     
     return destObj;
+  }
+  
+  /**
+   * Find the original object data from the loaded data collections
+   */
+  findOriginalObjectData(objectId, objectType) {
+    // Get the object type definition
+    const typeDefinition = this.objectTypeMap[objectType];
+    if (!typeDefinition) return null;
+    
+    // Get the collection name
+    const collectionName = typeDefinition.collection || 
+                          (typeDefinition.dataProperties && typeDefinition.dataProperties.collection);
+    if (!collectionName) return null;
+    
+    // Find the object in the original data
+    const collection = this.embeddedData ? this.embeddedData[collectionName] : null;
+    if (!collection || !Array.isArray(collection)) return null;
+    
+    // Support different ID field names
+    const idField = typeDefinition.idField || 
+                   (typeDefinition.dataProperties && typeDefinition.dataProperties.idField) || 
+                   'id';
+    
+    return collection.find(item => item[idField] === objectId);
   }
   
   /**
