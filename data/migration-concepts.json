@@ -47,6 +47,14 @@
       "icon": "fas fa-cube",
       "page": "box.html",
       "configFile": "data/migration-concepts/box.json"
+    },
+    {
+      "id": "egnyte",
+      "name": "Egnyte to M365",
+      "description": "Visualize migration from Egnyte Connect to Microsoft 365 with enterprise file governance and Smart Room transformation",
+      "icon": "fas fa-cloud-download-alt",
+      "page": "egnyte.html",
+      "configFile": "data/migration-concepts/egnyte.json"
     }
   ]
 }

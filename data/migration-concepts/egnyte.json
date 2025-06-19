@@ -1,0 +1,586 @@
+{
+  "id": "egnyte",
+  "name": "Egnyte to Microsoft 365",
+  "description": "Egnyte Cloud Storage to Microsoft 365 migration with enterprise file governance and collaboration transformation",
+  
+  "sourceEnvironment": {
+    "name": "source",
+    "title": "Egnyte Connect",
+    "description": "Egnyte enterprise cloud storage environment",
+    "buckets": [
+      {
+        "id": "source-egnyte-users",
+        "title": "Egnyte Users",
+        "objectType": "egnyte-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "source-egnyte-groups",
+        "title": "Egnyte Groups",
+        "objectType": "egnyte-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "source-egnyte-folders",
+        "title": "Shared Folders",
+        "objectType": "egnyte-shared-folder",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "source-egnyte-workspaces",
+        "title": "Team Workspaces",
+        "objectType": "egnyte-workspace",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      },
+      {
+        "id": "source-egnyte-personal",
+        "title": "Personal Folders",
+        "objectType": "egnyte-personal-folder",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "targetEnvironment": {
+    "name": "destination",
+    "title": "Microsoft 365",
+    "description": "Microsoft 365 cloud environment",
+    "buckets": [
+      {
+        "id": "destination-entra-users",
+        "title": "Entra ID Users",
+        "objectType": "entra-user",
+        "layout": { "gridColumn": 1, "gridRow": 1 }
+      },
+      {
+        "id": "destination-entra-groups",
+        "title": "Entra ID Security Groups",
+        "objectType": "entra-security-group",
+        "layout": { "gridColumn": 2, "gridRow": 1 }
+      },
+      {
+        "id": "destination-sharepoint-sites",
+        "title": "SharePoint Online Sites",
+        "objectType": "sharepoint-site",
+        "layout": { "gridColumn": 3, "gridRow": 1 }
+      },
+      {
+        "id": "destination-teams-sites",
+        "title": "Microsoft Teams Sites",
+        "objectType": "teams-site",
+        "layout": { "gridColumn": 3, "gridRow": 2 }
+      },
+      {
+        "id": "destination-onedrive",
+        "title": "OneDrive",
+        "objectType": "onedrive",
+        "layout": { "gridColumn": 1, "gridRow": 2 }
+      }
+    ]
+  },
+  
+  "objectTypes": {
+    "egnyte-user": {
+      "name": "Egnyte User",
+      "pluralName": "Egnyte Users",
+      "icon": "fas fa-user",
+      "color": "#00a4e4",
+      "collection": "EgnyteUsers"
+    },
+    "egnyte-group": {
+      "name": "Egnyte Group",
+      "pluralName": "Egnyte Groups",
+      "icon": "fas fa-users",
+      "color": "#0078d4",
+      "collection": "EgnyteGroups"
+    },
+    "egnyte-shared-folder": {
+      "name": "Shared Folder",
+      "pluralName": "Shared Folders",
+      "icon": "fas fa-folder-open",
+      "color": "#4a90e2",
+      "collection": "EgnyteSharedFolders"
+    },
+    "egnyte-workspace": {
+      "name": "Team Workspace",
+      "pluralName": "Team Workspaces",
+      "icon": "fas fa-users-cog",
+      "color": "#7b68ee",
+      "collection": "EgnyteWorkspaces"
+    },
+    "egnyte-personal-folder": {
+      "name": "Personal Folder",
+      "pluralName": "Personal Folders",
+      "icon": "fas fa-folder",
+      "color": "#64b5f6",
+      "collection": "EgnytePersonalFolders"
+    },
+    "entra-user": {
+      "name": "Entra ID User",
+      "pluralName": "Entra ID Users",
+      "icon": "fas fa-user",
+      "color": "#0078d4",
+      "collection": "EgnyteUsers"
+    },
+    "entra-security-group": {
+      "name": "Entra ID Security Group",
+      "pluralName": "Entra ID Security Groups",
+      "icon": "fas fa-users",
+      "color": "#0078d4",
+      "collection": "EgnyteGroups"
+    },
+    "sharepoint-site": {
+      "name": "SharePoint Site",
+      "pluralName": "SharePoint Sites",
+      "icon": "fas fa-share-alt",
+      "color": "#0078d4",
+      "collection": "EgnyteSharedFolders"
+    },
+    "teams-site": {
+      "name": "Teams Site",
+      "pluralName": "Teams Sites",
+      "icon": "fab fa-microsoft",
+      "color": "#6264a7",
+      "collection": "EgnyteWorkspaces"
+    },
+    "onedrive": {
+      "name": "OneDrive",
+      "pluralName": "OneDrive",
+      "icon": "fas fa-cloud",
+      "color": "#0078d4",
+      "collection": "EgnytePersonalFolders"
+    }
+  },
+  
+  "mappings": [
+    {
+      "sourceType": "egnyte-user",
+      "targetType": "entra-user",
+      "transformations": {
+        "icon": "fas fa-user",
+        "color": "#0078d4"
+      }
+    },
+    {
+      "sourceType": "egnyte-group",
+      "targetType": "entra-security-group",
+      "targetBucket": "destination-entra-groups",
+      "transformations": {
+        "icon": "fas fa-users",
+        "color": "#0078d4"
+      }
+    },
+    {
+      "sourceType": "egnyte-shared-folder",
+      "targetType": "sharepoint-site",
+      "transformations": {
+        "icon": "fas fa-share-alt",
+        "color": "#0078d4"
+      }
+    },
+    {
+      "sourceType": "egnyte-workspace",
+      "targetType": "teams-site",
+      "transformations": {
+        "icon": "fab fa-microsoft",
+        "color": "#6264a7"
+      }
+    },
+    {
+      "sourceType": "egnyte-personal-folder",
+      "targetType": "onedrive",
+      "transformations": {
+        "icon": "fas fa-cloud",
+        "color": "#0078d4",
+        "nameTransform": "append_onedrive"
+      }
+    }
+  ],
+  
+  "connectionRules": [
+    {
+      "type": "ownership",
+      "name": "Owns",
+      "from": {
+        "objectType": "egnyte-user"
+      },
+      "to": {
+        "objectType": "egnyte-personal-folder",
+        "property": "Owner"
+      }
+    },
+    {
+      "type": "group-membership",
+      "name": "Member of Group",
+      "from": {
+        "objectType": "egnyte-user"
+      },
+      "to": {
+        "objectType": "egnyte-group",
+        "arrayProperty": "Members"
+      }
+    },
+    {
+      "type": "group-admin",
+      "name": "Group Admin",
+      "from": {
+        "objectType": "egnyte-user"
+      },
+      "to": {
+        "objectType": "egnyte-group",
+        "arrayProperty": "Admins"
+      }
+    },
+    {
+      "type": "folder-access",
+      "name": "Has Folder Access",
+      "from": {
+        "objectType": "egnyte-user"
+      },
+      "to": {
+        "objectType": "egnyte-shared-folder",
+        "arrayProperty": "AccessUsers"
+      }
+    },
+    {
+      "type": "workspace-member",
+      "name": "Workspace Member",
+      "from": {
+        "objectType": "egnyte-user"
+      },
+      "to": {
+        "objectType": "egnyte-workspace",
+        "arrayProperty": "WorkspaceMembers"
+      }
+    },
+    {
+      "type": "workspace-owner",
+      "name": "Workspace Owner",
+      "from": {
+        "objectType": "egnyte-user"
+      },
+      "to": {
+        "objectType": "egnyte-workspace",
+        "property": "WorkspaceOwner"
+      }
+    },
+    {
+      "type": "group-folder-access",
+      "name": "Group has Folder Access",
+      "from": {
+        "objectType": "egnyte-group"
+      },
+      "to": {
+        "objectType": "egnyte-shared-folder",
+        "arrayProperty": "AccessGroups"
+      }
+    },
+    {
+      "type": "group-workspace-access",
+      "name": "Group has Workspace Access",
+      "from": {
+        "objectType": "egnyte-group"
+      },
+      "to": {
+        "objectType": "egnyte-workspace",
+        "arrayProperty": "WorkspaceGroups"
+      }
+    }
+  ],
+  
+  "data": {
+    "_metadata": {
+      "categoryMap": {
+        "Email": "Contact Information",
+        "Role": "Contact Information",
+        "Department": "Contact Information",
+        "JoinDate": "Account Status",
+        "Status": "Account Status",
+        "LastLogin": "Account Status",
+        "StorageQuota": "Storage & Usage",
+        "StorageUsed": "Storage & Usage",
+        "FileCount": "Storage & Usage",
+        "ShareCount": "Storage & Usage",
+        "FolderPath": "Technical Details",
+        "WorkspacePath": "Technical Details",
+        "SyncEnabled": "Technical Details",
+        "PermissionLevel": "Access Control",
+        "AccessUsers": "Access Control",
+        "AccessGroups": "Access Control",
+        "Members": "Access Control",
+        "Admins": "Access Control",
+        "WorkspaceMembers": "Access Control",
+        "AuthorizedUsers": "Access Control",
+        "CreatedDate": "Configuration",
+        "ModifiedDate": "Configuration",
+        "GroupType": "Configuration",
+        "FolderType": "Configuration",
+        "WorkspaceType": "Configuration",
+        "ComplianceSettings": "Configuration",
+        "RetentionPolicy": "Governance",
+        "DataClassification": "Governance",
+        "AuditEnabled": "Governance"
+      }
+    },
+    "EgnyteUsers": [
+      {
+        "id": "eguser_1",
+        "DisplayName": "Alice Thompson",
+        "Email": "alice.thompson@contoso.com",
+        "Role": "Administrator",
+        "Department": "IT",
+        "JoinDate": "2022-08-15T09:00:00Z",
+        "Status": "Active",
+        "LastLogin": "2025-04-21T10:30:00Z",
+        "StorageQuota": 107374182400,
+        "StorageUsed": 8589934592
+      },
+      {
+        "id": "eguser_2",
+        "DisplayName": "Robert Chen",
+        "Email": "robert.chen@contoso.com",
+        "Role": "User",
+        "Department": "Engineering",
+        "JoinDate": "2022-09-10T11:15:00Z",
+        "Status": "Active",
+        "LastLogin": "2025-04-20T16:45:00Z",
+        "StorageQuota": 53687091200,
+        "StorageUsed": 12884901888
+      },
+      {
+        "id": "eguser_3",
+        "DisplayName": "Maria Rodriguez",
+        "Email": "maria.rodriguez@contoso.com",
+        "Role": "Power User",
+        "Department": "Marketing",
+        "JoinDate": "2022-10-05T14:30:00Z",
+        "Status": "Active",
+        "LastLogin": "2025-04-21T08:15:00Z",
+        "StorageQuota": 53687091200,
+        "StorageUsed": 6442450944
+      },
+      {
+        "id": "eguser_4",
+        "DisplayName": "David Kim",
+        "Email": "david.kim@contoso.com",
+        "Role": "User",
+        "Department": "Finance",
+        "JoinDate": "2023-01-12T13:20:00Z",
+        "Status": "Active",
+        "LastLogin": "2025-04-19T12:30:00Z",
+        "StorageQuota": 53687091200,
+        "StorageUsed": 3221225472
+      },
+      {
+        "id": "eguser_5",
+        "DisplayName": "Sarah Wilson",
+        "Email": "sarah.wilson@contoso.com",
+        "Role": "User",
+        "Department": "Legal",
+        "JoinDate": "2023-02-20T15:45:00Z",
+        "Status": "Active",
+        "LastLogin": "2025-04-21T14:20:00Z",
+        "StorageQuota": 53687091200,
+        "StorageUsed": 7516192768
+      }
+    ],
+    "EgnyteGroups": [
+      {
+        "id": "eggroup_1",
+        "DisplayName": "IT Administrators",
+        "Description": "IT department administrators with full access",
+        "GroupType": "Security",
+        "Department": "IT",
+        "Admins": ["eguser_1"],
+        "Members": ["eguser_1", "eguser_2"],
+        "CreatedDate": "2022-08-15T10:00:00Z",
+        "ModifiedDate": "2025-04-10T11:30:00Z",
+        "MemberCount": 2
+      },
+      {
+        "id": "eggroup_2",
+        "DisplayName": "Engineering Team",
+        "Description": "Software engineering collaboration group",
+        "GroupType": "Collaboration",
+        "Department": "Engineering",
+        "Admins": ["eguser_2"],
+        "Members": ["eguser_2", "eguser_1"],
+        "CreatedDate": "2022-09-01T12:00:00Z",
+        "ModifiedDate": "2025-04-15T09:45:00Z",
+        "MemberCount": 2
+      },
+      {
+        "id": "eggroup_3",
+        "DisplayName": "Marketing Content",
+        "Description": "Marketing content creation and review team",
+        "GroupType": "Content",
+        "Department": "Marketing",
+        "Admins": ["eguser_3"],
+        "Members": ["eguser_3", "eguser_4"],
+        "CreatedDate": "2022-10-15T14:15:00Z",
+        "ModifiedDate": "2025-04-18T16:20:00Z",
+        "MemberCount": 2
+      },
+      {
+        "id": "eggroup_4",
+        "DisplayName": "Finance & Legal",
+        "Description": "Finance and legal document collaboration",
+        "GroupType": "Compliance",
+        "Department": "Finance",
+        "Admins": ["eguser_4", "eguser_5"],
+        "Members": ["eguser_4", "eguser_5", "eguser_1"],
+        "CreatedDate": "2023-01-20T11:30:00Z",
+        "ModifiedDate": "2025-04-20T13:45:00Z",
+        "MemberCount": 3
+      }
+    ],
+    "EgnyteSharedFolders": [
+      {
+        "id": "egfolder_1",
+        "DisplayName": "IT Infrastructure",
+        "Description": "IT infrastructure documentation and resources",
+        "FolderPath": "/Shared/IT/Infrastructure",
+        "FolderType": "Departmental",
+        "Department": "IT",
+        "AccessUsers": ["eguser_1", "eguser_2"],
+        "AccessGroups": ["eggroup_1"],
+        "PermissionLevel": "Full Control",
+        "CreatedDate": "2022-08-20T10:30:00Z",
+        "ModifiedDate": "2025-04-19T15:22:00Z",
+        "StorageUsed": 2147483648,
+        "FileCount": 342,
+        "SyncEnabled": true
+      },
+      {
+        "id": "egfolder_2",
+        "DisplayName": "Marketing Assets",
+        "Description": "Brand assets and marketing materials",
+        "FolderPath": "/Shared/Marketing/Assets",
+        "FolderType": "Departmental",
+        "Department": "Marketing",
+        "AccessUsers": ["eguser_3"],
+        "AccessGroups": ["eggroup_3"],
+        "PermissionLevel": "Edit",
+        "CreatedDate": "2022-10-25T13:45:00Z",
+        "ModifiedDate": "2025-04-21T11:15:00Z",
+        "StorageUsed": 5368709120,
+        "FileCount": 187,
+        "SyncEnabled": true
+      },
+      {
+        "id": "egfolder_3",
+        "DisplayName": "Financial Reports",
+        "Description": "Confidential financial reports and analysis",
+        "FolderPath": "/Shared/Finance/Reports",
+        "FolderType": "Confidential",
+        "Department": "Finance",
+        "AccessUsers": ["eguser_4", "eguser_5"],
+        "AccessGroups": ["eggroup_4"],
+        "PermissionLevel": "View Only",
+        "CreatedDate": "2023-02-01T09:15:00Z",
+        "ModifiedDate": "2025-04-20T10:30:00Z",
+        "StorageUsed": 1073741824,
+        "FileCount": 89,
+        "SyncEnabled": false,
+        "ComplianceSettings": "GDPR,SOX",
+        "RetentionPolicy": "7 years"
+      }
+    ],
+    "EgnyteWorkspaces": [
+      {
+        "id": "egworkspace_1",
+        "DisplayName": "Digital Transformation 2025",
+        "Description": "Company-wide digital transformation workspace",
+        "WorkspacePath": "/Workspaces/DigitalTransform2025",
+        "WorkspaceType": "Strategic",
+        "WorkspaceOwner": "eguser_1",
+        "WorkspaceMembers": ["eguser_1", "eguser_2", "eguser_3"],
+        "WorkspaceGroups": ["eggroup_1", "eggroup_2"],
+        "CreatedDate": "2024-01-15T10:00:00Z",
+        "ModifiedDate": "2025-04-21T14:30:00Z",
+        "StorageUsed": 3221225472,
+        "FileCount": 256,
+        "Status": "Active"
+      },
+      {
+        "id": "egworkspace_2",
+        "DisplayName": "Compliance Audit 2025",
+        "Description": "Annual compliance audit documentation workspace",
+        "WorkspacePath": "/Workspaces/ComplianceAudit2025",
+        "WorkspaceType": "Compliance",
+        "WorkspaceOwner": "eguser_5",
+        "WorkspaceMembers": ["eguser_5", "eguser_4", "eguser_1"],
+        "WorkspaceGroups": ["eggroup_4"],
+        "CreatedDate": "2024-12-01T11:30:00Z",
+        "ModifiedDate": "2025-04-18T09:45:00Z",
+        "StorageUsed": 1610612736,
+        "FileCount": 145,
+        "Status": "Active",
+        "ComplianceSettings": "SOX,GDPR,HIPAA",
+        "AuditEnabled": true
+      }
+    ],
+    "EgnytePersonalFolders": [
+      {
+        "id": "egpersonal_1",
+        "DisplayName": "Alice's Personal Files",
+        "Owner": "eguser_1",
+        "FolderPath": "/Private/alice.thompson",
+        "FolderType": "Personal",
+        "StorageUsed": 1073741824,
+        "FileCount": 167,
+        "ShareCount": 2,
+        "LastAccessed": "2025-04-21T10:30:00Z",
+        "SyncEnabled": true
+      },
+      {
+        "id": "egpersonal_2",
+        "DisplayName": "Robert's Personal Files",
+        "Owner": "eguser_2",
+        "FolderPath": "/Private/robert.chen",
+        "FolderType": "Personal",
+        "StorageUsed": 2147483648,
+        "FileCount": 289,
+        "ShareCount": 5,
+        "LastAccessed": "2025-04-20T16:45:00Z",
+        "SyncEnabled": true
+      },
+      {
+        "id": "egpersonal_3",
+        "DisplayName": "Maria's Personal Files",
+        "Owner": "eguser_3",
+        "FolderPath": "/Private/maria.rodriguez",
+        "FolderType": "Personal",
+        "StorageUsed": 1610612736,
+        "FileCount": 198,
+        "ShareCount": 8,
+        "LastAccessed": "2025-04-21T08:15:00Z",
+        "SyncEnabled": true
+      },
+      {
+        "id": "egpersonal_4",
+        "DisplayName": "David's Personal Files",
+        "Owner": "eguser_4",
+        "FolderPath": "/Private/david.kim",
+        "FolderType": "Personal",
+        "StorageUsed": 805306368,
+        "FileCount": 124,
+        "ShareCount": 1,
+        "LastAccessed": "2025-04-19T12:30:00Z",
+        "SyncEnabled": true
+      },
+      {
+        "id": "egpersonal_5",
+        "DisplayName": "Sarah's Personal Files",
+        "Owner": "eguser_5",
+        "FolderPath": "/Private/sarah.wilson",
+        "FolderType": "Personal",
+        "StorageUsed": 1879048192,
+        "FileCount": 234,
+        "ShareCount": 3,
+        "LastAccessed": "2025-04-21T14:20:00Z",
+        "SyncEnabled": true
+      }
+    ]
+  }
+}
